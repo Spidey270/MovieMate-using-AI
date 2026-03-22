@@ -1,0 +1,92 @@
+[
+  {
+    "_id": "69ac09c0188c6bff7c3715df",
+    "sender_id": "69ac06396e541668baaf791b",
+    "sender_username": "engine",
+    "receiver_id": "699e8072bcd64502ada0f063",
+    "content": "HI",
+    "timestamp": "2026-03-07 11:19:28.712000",
+    "is_read": false
+  },
+  {
+    "_id": "69ac09c9188c6bff7c3715e0",
+    "sender_id": "69ac06396e541668baaf791b",
+    "sender_username": "engine",
+    "receiver_id": "global",
+    "content": "HLO",
+    "timestamp": "2026-03-07 11:19:37.026000",
+    "is_read": false
+  },
+  {
+    "_id": "69ac09f3188c6bff7c3715e1",
+    "sender_id": "699e8072bcd64502ada0f063",
+    "sender_username": "Spidey",
+    "receiver_id": "69ac06396e541668baaf791b",
+    "content": "YO",
+    "timestamp": "2026-03-07 11:20:19.173000",
+    "is_read": false
+  },
+  {
+    "_id": "69ac0a1f188c6bff7c3715e2",
+    "sender_id": "699e8072bcd64502ada0f063",
+    "sender_username": "Spidey",
+    "receiver_id": "global",
+    "content": "Hello world! WebSocket is fixed!",
+    "timestamp": "2026-03-07 11:21:03.201000",
+    "is_read": false
+  },
+  {
+    "_id": "69ac0a41188c6bff7c3715e3",
+    "sender_id": "699e8072bcd64502ada0f063",
+    "sender_username": "Spidey",
+    "receiver_id": "699e937a4b1ea86bf184a34d",
+    "content": "Is this working?",
+    "timestamp": "2026-03-07 11:21:37.806000",
+    "is_read": false
+  },
+  {
+    "_id": "69b7be7e7cbabd0348d5e22f",
+    "sender_id": "699e8072bcd64502ada0f063",
+    "sender_username": "Spidey",
+    "receiver_id": "69ac06396e541668baaf791b",
+    "content": "HI",
+    "timestamp": "2026-03-16 08:25:34.403000",
+    "is_read": false
+  },
+  {
+    "_id": "69b7d1e9a90d791b3e191db2",
+    "sender_id": "699e8072bcd64502ada0f063",
+    "sender_username": "Spidey",
+    "receiver_id": "69ac06396e541668baaf791b",
+    "content": "HI",
+    "timestamp": "2026-03-16 09:48:25.527000",
+    "is_read": false
+  },
+  {
+    "_id": "69b7d1f5a90d791b3e191db3",
+    "sender_id": "69ac06396e541668baaf791b",
+    "sender_username": "engine",
+    "receiver_id": "699e8072bcd64502ada0f063",
+    "content": "HLO",
+    "timestamp": "2026-03-16 09:48:37.187000",
+    "is_read": false
+  },
+  {
+    "_id": "69b7d331a90d791b3e191db4",
+    "sender_id": "699e8072bcd64502ada0f063",
+    "sender_username": "Spidey",
+    "receiver_id": "global",
+    "content": "Hell0",
+    "timestamp": "2026-03-16 09:53:53.040000",
+    "is_read": false
+  },
+  {
+    "_id": "69b7d70fa90d791b3e191db7",
+    "sender_id": "699e8072bcd64502ada0f063",
+    "sender_username": "Spidey",
+    "receiver_id": "global",
+    "content": "Hello @Spidey check this out!",
+    "timestamp": "2026-03-16 10:10:23.654000",
+    "is_read": false
+  }
+]
