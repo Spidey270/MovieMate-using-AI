@@ -10,6 +10,7 @@ export default function Movies() {
   const [loading, setLoading] = useState(true);
 
   // Filter & Sort State
+  const [searchQuery, setSearchQuery] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("");
   const [selectedLanguage, setSelectedLanguage] = useState("");
   const [sortBy, setSortBy] = useState("");
@@ -43,6 +44,7 @@ export default function Movies() {
       setLoading(true);
       try {
         const params = new URLSearchParams();
+        if (searchQuery) params.append("search", searchQuery);
         if (selectedGenre) params.append("genre", selectedGenre);
         if (selectedLanguage) params.append("language", selectedLanguage);
         if (sortBy) {
@@ -59,7 +61,7 @@ export default function Movies() {
       }
     };
     fetchMovies();
-  }, [selectedGenre, selectedLanguage, sortBy, sortOrder]);
+  }, [searchQuery, selectedGenre, selectedLanguage, sortBy, sortOrder]);
 
   return (
     <div className="min-h-screen bg-secondary pb-20">
@@ -70,7 +72,14 @@ export default function Movies() {
           <h1 className="text-3xl font-bold text-white">All Movies</h1>
 
           {/* Filters & Sort Toolbar */}
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3 w-full md:w-auto mt-4 md:mt-0">
+            <input 
+              type="text" 
+              placeholder="Search movies..." 
+              className="bg-zinc-900 border border-white/10 text-white text-sm rounded-lg p-2 focus:ring-primary focus:border-primary outline-none flex-grow min-w-[200px]"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
             <select
               className="bg-zinc-900 border border-white/10 text-white text-sm rounded-lg p-2 focus:ring-primary focus:border-primary outline-none"
               value={selectedGenre}
@@ -140,6 +149,7 @@ export default function Movies() {
                 </p>
                 <button
                   onClick={() => {
+                    setSearchQuery("");
                     setSelectedGenre("");
                     setSelectedLanguage("");
                     setSortBy("");

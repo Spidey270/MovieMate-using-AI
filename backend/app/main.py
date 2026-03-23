@@ -16,10 +16,22 @@ from app.routers import (
 
 app = FastAPI(title="MovieMate API", version="1.0.0")
 
+import os
+
 # CORS Middleware
+origins = [
+    "http://localhost:5173",
+    "http://localhost:3000",
+]
+
+# Add production URL if provided
+prod_origin = os.getenv("FRONTEND_URL")
+if prod_origin:
+    origins.append(prod_origin)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, specify the frontend URL
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MovieMate Project Report</title>
+    <!-- Mermaid JS for identical DFD visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true, theme: 'neutral'});</script>
+    <style>
+        body { font-family: "Times New Roman", Times, serif; line-height: 1.6; margin: 0 auto; max-width: 800px; padding: 40px; color: black; background-color: white;}
+        h1, h2, h3, h4 { text-align: center; font-weight: bold; }
+        h1 { font-size: 24pt; margin-bottom: 5px; }
+        h2 { font-size: 18pt; margin-bottom: 10px; }
+        h3 { font-size: 14pt; margin-bottom: 15px; }
+        p { text-align: justify; font-size: 12pt; margin-bottom: 15px; }
+        .center { text-align: center; }
+        .page-break { page-break-after: always; margin-bottom: 60px; padding-bottom: 60px; border-bottom: 1px dashed #ccc; }
+        /* Certificates */
+        .signature-section { display: flex; justify-content: space-between; margin-top: 80px; }
+        .signature-block { text-align: center; }
+        /* Tables */
+        table { width: 100%; border-collapse: collapse; margin-block: 20px; font-size: 11pt; }
+        table, th, td { border: 1px solid black; }
+        th { padding: 12px; background-color: #f2f2f2; text-align: center; }
+        td { padding: 10px; }
+        /* Lists */
+        ul { margin-bottom: 15px; font-size: 12pt; }
+        li { margin-bottom: 5px; }
+        /* TOC */
+        .toc-item { display: flex; justify-content: space-between; font-size: 12pt; margin-bottom: 10px; }
+        .toc-dots { flex-grow: 1; border-bottom: 1px dotted black; margin: 0 10px; position: relative; top: -6px; }
+        /* DFD Graph */
+        .mermaid { display: flex; justify-content: center; margin: 40px 0; }
+        @media print {
+            body { max-width: 100%; padding: 0; }
+            .page-break { border-bottom: none; page-break-after: always; margin-bottom: 0; padding-bottom: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- PAGE 1: TITLE -->
+<div class="page-break">
+    <br><br><br><br>
+    <h1>MOUNT CARMEL COLLEGE</h1>
+    <p class="center" style="font-size: 14pt;">KARUKADOM, KOTHAMANGALAM 686691<br>
+    NAAC Accredited With A Grade (CGPA 3.21)<br>
+    <em>(Affiliated to MG University, Kottayam)</em></p>
+    <br><br><br><br><br>
+    
+    <h2>PROJECT REPORT ON</h2>
+    <h2>AI-POWERED SOCIAL MOVIE PLATFORM</h2>
+    <p class="center">(MovieMate)</p>
+    <br><br>
+    <p class="center" style="font-style: italic;">Submitted in partial fulfillment of the requirement for the award of the Bachelor of Computer Applications Degree from Mahatma Gandhi University, Kottayam.</p>
+    
+    <br><br><br><br>
+    <h3 style="margin-bottom: 5px;">Submitted By</h3>
+    <h3 style="margin-top: 0;">ALEENA RAJU</h3>
+    
+    <br><br><br><br>
+    <h3>Department of Computer Science</h3>
+    <br>
+    <h3>Mount Carmel College</h3>
+    <h3>Karukadom, Kothamangalam</h3>
+</div>
+
+<!-- PAGE 2: CERTIFICATE -->
+<div class="page-break">
+    <br><br>
+    <h1>MOUNT CARMEL COLLEGE</h1>
+    <p class="center" style="font-size: 12pt;">KARUKADOM, KOTHAMANGALAM 686691<br>
+    NAAC Accredited With A Grade (CGPA 3.21)<br>
+    <em>(Affiliated to MG University, Kottayam)</em></p>
+    <br><br><br>
+    <h2>DEPARTMENT OF COMPUTER SCIENCE</h2>
+    <br><br>
+    <h3 style="color: #2b5490; font-weight: bold; font-family: Arial, sans-serif;">CERTIFICATE</h3>
+    <br><br>
+    <p>This is to certify that the project entitled <strong>"MOVIEMATE"</strong> is a bonafide record of the work done by <strong>ALEENA RAJU (Reg.no 230021082710)</strong> of the 5th Semester for the partial fulfilment of the <strong>Bachelor of Computer Applications Degree from Mahatma Gandhi University, Kottayam</strong> during the academic session <strong>2023-2026</strong>.</p>
+    
+    <div class="signature-section">
+        <div class="signature-block">
+            <h4 style="margin-bottom: 60px; text-align: left;">Project Guide</h4>
+            <p style="text-align: left; font-weight: bold;">Ms. Anjali Motilal</p>
+        </div>
+        <div class="signature-block">
+            <h4 style="margin-bottom: 60px; text-align: right;">Head of the Department</h4>
+            <p style="text-align: right; font-weight: bold;">Ms Angel George</p>
+        </div>
+    </div>
+    
+    <br><br><br><br>
+    <p style="text-align: left;">Viva Voce Examination held on ..............................</p>
+    <br><br>
+    <div style="display: flex; justify-content: space-between;">
+        <span>Internal Examiner ..............................</span>
+        <span>External Examiner ..............................</span>
+    </div>
+</div>
+
+<!-- PAGE 3: ACKNOWLEDGEMENT -->
+<div class="page-break">
+    <br><br>
+    <h3 style="margin-bottom: 40px;">ACKNOWLEDGEMENT</h3>
+    <p>It is a great privilege to express my sincere gratitude to all the respected personalities who guided, inspired, and helped complete this project effectively.</p>
+    <p>First and foremost, I thank the “God Almighty” for showering his blessings without which all the effort would not have been successful.</p>
+    <p>I sincerely thank our principal, <strong>Fr. Shaji Mangalath</strong>, for guiding this endeavour and making it successful.</p>
+    <p>I would like to express my deepest gratitude to Assistant Professor <strong>Ms. Angel George</strong>, Head of the Department of Computer Science Department, for initiating this project and for her valuable guidance and suggestions.</p>
+    <p>I also thank <strong>Ms. Anjali Motilal</strong> my project guide, for her immense support, timely suggestions, and technical guidance throughout the project.</p>
+    <p>I sincerely thank my colleagues and friends for their continuous motivation, insightful discussions, and moral support during this project’s challenging phases.</p>
+</div>
+
+<!-- PAGE 4: TABLE OF CONTENTS -->
+<div class="page-break">
+    <br><br>
+    <h3 style="margin-bottom: 40px;">TABLE OF CONTENTS</h3>
+    
+    <div class="toc-item"><span>INTRODUCTION</span><span class="toc-dots"></span><span>6</span></div>
+    <div class="toc-item"><span>SYSTEM ANALYSIS</span><span class="toc-dots"></span><span>8</span></div>
+    <div class="toc-item"><span>EXISTING SYSTEM</span><span class="toc-dots"></span><span>9</span></div>
+    <div class="toc-item"><span>PROPOSED SYSTEM</span><span class="toc-dots"></span><span>10</span></div>
+    <div class="toc-item"><span>SOFTWARE REQUIREMENT SPECIFICATION</span><span class="toc-dots"></span><span>11</span></div>
+    <div class="toc-item"><span>HARDWARE SPECIFICATION</span><span class="toc-dots"></span><span>13</span></div>
+    <div class="toc-item"><span>FEASIBILITY ANALYSIS</span><span class="toc-dots"></span><span>14</span></div>
+    <div class="toc-item"><span>ECONOMIC FEASIBILITY</span><span class="toc-dots"></span><span>15</span></div>
+    <div class="toc-item"><span>TECHNICAL FEASIBILITY</span><span class="toc-dots"></span><span>15</span></div>
+    <div class="toc-item"><span>OPERATIONAL FEASIBILITY</span><span class="toc-dots"></span><span>16</span></div>
+    <div class="toc-item"><span>BEHAVIORAL FEASIBILITY</span><span class="toc-dots"></span><span>17</span></div>
+    <div class="toc-item"><span>DATAFLOW DAIGRAM</span><span class="toc-dots"></span><span>18</span></div>
+    <div class="toc-item"><span>SYSTEM DESIGN</span><span class="toc-dots"></span><span>25</span></div>
+    <div class="toc-item"><span>INPUT DESIGN</span><span class="toc-dots"></span><span>26</span></div>
+    <div class="toc-item"><span>MODULE DESIGN</span><span class="toc-dots"></span><span>27</span></div>
+    <div class="toc-item"><span>DATABASE DESIGN</span><span class="toc-dots"></span><span>29</span></div>
+    <div class="toc-item"><span>OUTPUT DESIGN</span><span class="toc-dots"></span><span>39</span></div>
+    <div class="toc-item"><span>TESTING</span><span class="toc-dots"></span><span>40</span></div>
+    <div class="toc-item"><span>SYSTEM TESTING</span><span class="toc-dots"></span><span>40</span></div>
+    <div class="toc-item"><span>UNIT TESTING</span><span class="toc-dots"></span><span>41</span></div>
+    <div class="toc-item"><span>VALIDATION TESTING</span><span class="toc-dots"></span><span>41</span></div>
+    <div class="toc-item"><span>INTEGRATION TESTING</span><span class="toc-dots"></span><span>42</span></div>
+    <div class="toc-item"><span>USER ACCEPTANCE TESTING</span><span class="toc-dots"></span><span>43</span></div>
+    <div class="toc-item"><span>BETA TESTING</span><span class="toc-dots"></span><span>43</span></div>
+    <div class="toc-item"><span>ALPHA TESTING</span><span class="toc-dots"></span><span>43</span></div>
+    <div class="toc-item"><span>SYSTEM IMPLEMENTATION</span><span class="toc-dots"></span><span>43</span></div>
+    <div class="toc-item"><span>SYSTEM MAINTENANCE</span><span class="toc-dots"></span><span>44</span></div>
+    <div class="toc-item"><span>FUTURE ENHANCEMENT</span><span class="toc-dots"></span><span>44</span></div>
+    <div class="toc-item"><span>CONCLUSION</span><span class="toc-dots"></span><span>45</span></div>
+    <div class="toc-item"><span>SCREENSHOTS</span><span class="toc-dots"></span><span>46</span></div>
+    <div class="toc-item"><span>CODE</span><span class="toc-dots"></span><span>48</span></div>
+</div>
+
+<!-- PAGE 6: INTRODUCTION -->
+<div class="page-break">
+    <br>
+    <div style="display: flex; justify-content: space-between; font-size: 10pt; margin-bottom: 20px; border-bottom: 1px solid black; padding-bottom: 5px;">
+        <span>Department of Computer Science</span>
+        <span>MovieMate</span>
+    </div>
+    
+    <h3>INTRODUCTION</h3>
+    
+    <p>MovieMate is a web-based, AI-powered social movie recommendation platform designed to provide a structured, highly engaging digital space for cinephiles. The system aims to simplify movie discovery, social interaction, and content curation through an integrated and user-friendly interface. By combining essential social media functionalities with advanced Artificial Intelligence within a single platform, MovieMate enhances the movie-watching experience for users globally.</p>
+    
+    <p>In many streaming environments, discovering the perfect movie can be challenging, especially when information and recommendations are generic or scattered across various sources. MovieMate addresses this issue by offering a centralized system where users can access a comprehensive movie catalog, save favorites to their personal wishlist, and manage their cinematic journey effectively. The platform enables users to interact socially through a Live Global Chat and Real-Time Direct Messaging via WebSockets.</p>
+    
+    <p>A key feature of MovieMate is its integration with Gemini AI for dynamic, bespoke movie recommendations. Users can generate highly tailored suggestions based on their unique tastes without leaving the application. These background processes invoke seamless, interactive alert notifications so users are notified the moment their AI list is compiled or a friend sends a message.</p>
+
+    <p>Furthermore, the platform incorporates a dedicated Administrator Dashboard, enabling system administrators to monitor platform statistics, manage active users securely, and manually dispatch global or targeted broadcast notifications to the entire user base.</p>
+
+    <p>Overall, MovieMate serves as a comprehensive, technology-driven solution for modern social movie discovery. By integrating AI exploration, real-time communication, administrative validation, and instantaneous notification assistance, the system contributes to a highly organized, efficient, and user-centered entertainment platform.</p>
+    
+    <div style="text-align: right; margin-top: 50px;">6</div>
+</div>
+
+<!-- PAGE 7: ANALYSIS -->
+<div class="page-break">
+    <div style="display: flex; justify-content: space-between; font-size: 10pt; margin-bottom: 20px; border-bottom: 1px solid black; padding-bottom: 5px;">
+        <span>Department of Computer Science</span>
+        <span>MovieMate</span>
+    </div>
+    
+    <p><strong>Observation:</strong> Studying user interaction with existing movie recommendation platforms to identify usability issues and areas for improvement in cinematic exploration and message delivery.</p>
+    
+    <p><strong>User Experience Analysis</strong></p>
+    <p>Understanding how users interact with the MovieMate platform is important. This includes assessing:</p>
+    <ul>
+        <li>Users’ expectations for a smooth and intuitive web-based streaming-like experience.</li>
+        <li>Essential functionalities such as browsing movies, managing wishlists, and chatting with friends.</li>
+        <li>A simple and user-friendly interface for users to receive personalized AI recommendations and for administrators to manage content efficiently.</li>
+    </ul>
+
+    <p><strong>Analysis Process</strong></p>
+    <ul>
+        <li><strong>Study of the Existing System:</strong><br>Identify limitations in current movie platforms, such as lack of a centralized live chat, difficulty in communicating with friends, inefficient manual searching, and non-intuitive disjointed social networks.</li>
+        <li><strong>Design of the New System:</strong><br>Propose a web-based platform – MovieMate – that enables users to interact globally, track favorite films, message peers synchronously, and prompt advanced Large Language Models for automated curation.</li>
+        <li><strong>Cost-Benefit Analysis:</strong><br>Compare the development and maintenance costs with the potential benefits, such as improved viewer convenience, better social organization, enhanced user engagement, and the project’s academic value.</li>
+        <li><strong>Detailed Examination:</strong><br>View the system as a whole by identifying inputs (e.g., chat messages, AI prompts, user login) and outputs (movie catalogs, verified notifications, WebSocket push streams) and tracing them through the system workflow.</li>
+    </ul>
+    <p><strong>Conclusion</strong><br>System analysis for MovieMate involves a comprehensive study of existing social networking platforms, identifying their limitations, and proposing a technologically feasible, user-friendly, and scalable solution. By applying structured analysis, the system ensures an efficient, organized, and accessible platform for users to manage movie interactions effectively.</p>
+    
+    <div style="text-align: right; margin-top: 50px;">7</div>
+</div>
+
+<!-- PAGE 8: SYSTEM ANALYSIS -->
+<div class="page-break">
+    <div style="display: flex; justify-content: space-between; font-size: 10pt; margin-bottom: 20px; border-bottom: 1px solid black; padding-bottom: 5px;">
+        <span>Department of Computer Science</span>
+        <span>MovieMate</span>
+    </div>
+    
+    <h3>SYSTEM ANALYSIS</h3>
+    
+    <p>System analysis is the process of breaking a problem into manageable components for detailed study. For the MovieMate Platform, system analysis focuses on understanding the operations required to address challenges in movie curation, social connectivity, and AI integration, defining system boundaries, and determining the technical requirements needed to develop a user-friendly and scalable solution.</p>
+
+    <p><strong>Objectives of the Analysis</strong></p>
+    <p>The primary objective of system analysis is to determine the feasibility and effectiveness of the proposed system. The system should:</p>
+    <ul>
+        <li>Deliver optimal performance with minimal cost and development time via Single Page Architecture.</li>
+        <li>Fulfill its core objective of providing an efficient and reliable cinematic social experience.</li>
+        <li>Be implemented using modern and sustainable technologies within budget constraints.</li>
+        <li>Offer a significantly improved user experience compared to existing movie rating platforms.</li>
+    </ul>
+
+    <p><strong>Key Elements of the System Analysis for MovieMate</strong></p>
+    <p><strong>Feasibility Study</strong><br>A feasibility study determines whether the MovieMate project is economically, technologically, and operationally viable.</p>
+
+    <p><strong>Economic Feasibility:</strong> Assessing the cost of development against the benefits, such as improved community engagement, increased user adoption, potential growth in the user base, and the overall academic value of the project.</p>
+    <p><strong>Technological Feasibility:</strong> Ensuring that the proposed features — including WebSocket live chat, MongoDB document structures, Gemini AI integrations with admin approval panels — can be effectively implemented using the chosen technologies such as FastAPI, React JS, Tailwind CSS, and a NoSQL database system.</p>
+    <p><strong>Operational Feasibility:</strong> Confirming that the system meets the needs of end-users (managing wishlists and conversations), contributors (chatting globally), and administrators (reviewing user accounts and pushing systemic notification broadcasts while maintaining system quality).</p>
+    
+    <div style="text-align: right; margin-top: 50px;">8</div>
+</div>
+
+<!-- PAGE 9: EXISTING SYSTEM -->
+<div class="page-break">
+    <div style="display: flex; justify-content: space-between; font-size: 10pt; margin-bottom: 20px; border-bottom: 1px solid black; padding-bottom: 5px;">
+        <span>Department of Computer Science</span>
+        <span>MovieMate</span>
+    </div>
+    
+    <h3>EXISTING SYSTEM</h3>
+    <p>Traditionally, the process of finding movies and interacting with fellow cinephiles is handled through fragmented platforms. Users must browse IMDb or Letterboxd for ratings, traverse to Reddit or Discord for chatting, and jump to streaming platforms hoping to find a good recommendation. Many existing solutions are fragmented or limited in functionality, making it difficult for users to efficiently organize their interests and maintain a connected social network in one place.</p>
+
+    <p><strong>Key Characteristics of Existing Systems</strong></p>
+    <ul>
+        <li><strong>Lack of a Unified Platform:</strong> Most current recommendation solutions focus only on storing reviews or only on forum tracking, but not both, leading to poor integration and inefficiency.</li>
+        <li><strong>Manual Organization Methods:</strong> In many cases, users rely on separate apps, or multiple websites to manage wishlists and converse, resulting in disorganization.</li>
+        <li><strong>Limited User Contribution Features:</strong> Existing platforms often provide restricted options for users to submit dynamic live messages directly to their friends interactively.</li>
+        <li><strong>Absence of Generative AI Tracking:</strong> Users frequently lack a proper Large Language Model capable system natively hooked into the interface to synthesize vast movie databases.</li>
+        <li><strong>Poor User Experience:</strong> Many existing applications have non-intuitive interfaces or lack visual modern responsiveness across devices, making navigation complex and less user-friendly.</li>
+    </ul>
+
+    <p><strong>Limitations of the Existing System</strong></p>
+    <ul>
+        <li><strong>Inefficient Recipe Organization:</strong> The absence of a centralized digital system forces users to depend on scattered sources, making movie management time-consuming and unstructured.</li>
+        <li><strong>Limited User Contribution:</strong> Separated communication domains discourage users from sharing and discussing their own opinions effectively.</li>
+        <li><strong>No Structured Broadcast Monitoring:</strong> Users often lack real-time push tracking of platform maintenance, leading to poor planning and unexpected downtime.</li>
+        <li><strong>Device Compatibility Issues:</strong> Many existing applications are not fully responsive or optimized for different devices, reducing accessibility and convenience.</li>
+        <li><strong>Fragmented Management Approach:</strong> The lack of an integrated platform connecting discovery, chat networking, and administrative overview results in poor coordination and reduced user satisfaction.</li>
+    </ul>
+    
+    <div style="text-align: right; margin-top: 50px;">9</div>
+</div>
+
+<!-- PAGE 10: PROPOSED SYSTEM -->
+<div class="page-break">
+    <div style="display: flex; justify-content: space-between; font-size: 10pt; margin-bottom: 20px; border-bottom: 1px solid black; padding-bottom: 5px;">
+        <span>Department of Computer Science</span>
+        <span>MovieMate</span>
+    </div>
+    
+    <h3>PROPOSED SYSTEM</h3>
+    <p>The proposed system, MovieMate, is a fully functional, web-based Social Recommendation System designed to address the limitations of existing manual forum management solutions. It enables users to browse, manage, and organize wishlists efficiently while also allowing registered users to submit live chat payloads directly to the global platform. Once registered, these accounts and metadata become accessible securely via JWT token verification protocols.</p>
+
+    <p>The system is developed using a modern and scalable technology stack — FastAPI & Python for backend core development, raw WebSockets for low-latency live streaming, React (JS/JSX) orchestrated by Vite with Tailwind CSS for the front-end interface, and a highly flexible MongoDB relational document database — ensuring a seamless, responsive, and user-friendly experience.</p>
+
+    <p><strong>Key Features of the Proposed System</strong></p>
+    <p><strong>Multi-Device Responsive Design:</strong> MovieMate is developed with a responsive design approach utilizing Tailwind CSS, ensuring consistent performance across desktops, tablets, and smartphones. Users can access data and manage social activities anytime and from any device.</p>
+    <p><strong>Dynamic and User-Centric Interface:</strong> The platform features a clean, glassmorphic dark-mode interface that simplifies movie browsing, friend management, and chat submission. Smooth navigation enhances overall usability.</p>
+    <p><strong>User Module:</strong> Registered users can browse the digital movie library, manage their available friends list through a centralized dashboard, create watchlist nodes, and submit their own AI generation prompts. Users can also receive asynchronous real-time Bell Notifications when their queries map successfully.</p>
+    <p><strong>Global Contributor Module:</strong> Users can submit new live messages to the worldwide platform, which are simultaneously tracked to local state management, encouraging massive community participation.</p>
+    <p><strong>Admin Dashboard:</strong> Administrators manage the platform by reviewing database total aggregate statistics, monitoring user registration activities, terminating flagged accounts, and dispatching custom platform-wide System Broadcast Notifications to ensure smooth and secure operation.</p>
+    
+    <div style="text-align: right; margin-top: 50px;">10</div>
+</div>
+
+
+<!-- PAGE 11: SRS FRONTEND -->
+<div class="page-break">
+    <div style="display: flex; justify-content: space-between; font-size: 10pt; margin-bottom: 20px; border-bottom: 1px solid black; padding-bottom: 5px;">
+        <span>Department of Computer Science</span>
+        <span>MovieMate</span>
+    </div>
+    
+    <h3>SOFTWARE REQUIREMENT SPECIFICATION</h3>
+    <br>
+    <p><strong>ABOUT THE FRONT-END - REACT & TAILWIND</strong></p>
+    <p>The front-end of the MovieMate system is developed using modern web technologies such as React JS (JSX logic) and Tailwind CSS. These technologies are responsible for designing and structuring the visual and interactive components of the web application. The front-end acts as the presentation layer of the system, allowing users to interact with the platform in a clear, organized, and remarkably fast Single Page Application (SPA) setting.</p>
+
+    <p>React JSX is used to create the structural foundation of the JavaScript components, mounting headings, interactive forms, button states, and navigational contexts dynamically without reloading the document. Tailwind CSS is used to enhance the visual appearance of the website by instantly applying inline utility classes for colors, fonts, spacing, alignment, constraints, and flexbox design. Tailwind also natively enables breakpoint responsive design, ensuring that the interface adapts flawlessly to different screen widths.</p>
+
+    <p>In the MovieMate system, the front-end is carefully orchestrated to provide an awe-inspiring user experience. Users can easily scroll horizontally through movie carousels, submit live socket connections, manage Wishlist persistence through context variables, and trigger backend jobs instantly. Well-structured Axios forms are implemented to collect user input efficiently, while clear navigation logic blocks non-authorized users using custom wrapper routes (e.g. ProtectedRoute, AdminRoute).</p>
+
+    <p>Responsive design principles are applied utilizing `lucide-react` iconography to ensure compatibility across desktops, tablets, and smartphones. This enhances accessibility and ensures that users can manage workflows conveniently from various devices. The front-end interface is engineered to minimize complexity, reduce DOM-paint errors, and provide hyper-smooth JSON interaction with backend processes.</p>
+
+    <p>Overall, the front-end of MovieMate plays a paramount role in delivering an engaging and highly performant user experience. It serves as the lightning-fast bridge between the viewer and the system’s backend logic, ensuring seamless WebSocket communication and impeccable visual delivery.</p>
+
+    <div style="text-align: right; margin-top: 50px;">11</div>
+</div>
+
+<!-- PAGE 18: DFD -->
+<div class="page-break">
+    <div style="display: flex; justify-content: space-between; font-size: 10pt; margin-bottom: 20px; border-bottom: 1px solid black; padding-bottom: 5px;">
+        <span>Department of Computer Science</span>
+        <span>MovieMate</span>
+    </div>
+    
+    <h3>DATA FLOW DIAGRAM (DFD)</h3>
+    <p>A Data Flow Diagram is a network that describes the flow of data and processes that change, or transform, data throughout the system. This network is constructed by use a set of symbols that do not imply a physical implementation. It is a graphical tool for structured analysis of the system requirements. DFD models a system by using external entities from which data flows to a process, which transforms the data and creates output-data-flows which go to other processes or external entities or files. Data in files may also flow to processes as inputs.</p>
+    
+    <p>There are various symbols used in a DFD. Bubbles represent the processes. Named arrows indicate the data flow. External entities are represented by rectangles. Entities supplying data are known as sources and those that consume data are called sinks. Data are stored in a data store by a process in the system. Each component in a DFD is labelled with a descriptive name. Process names are further identified with a number.</p>
+
+    <p>The Data Flow Diagram shows the logical flow of a system and defines the boundaries of the system. For a candidate system, it describes the input (source), outputs (destination), database (files) and procedures (data flow), all in a format that meet the user’s requirements.</p>
+
+    <p>The main merit of DFD is that it can provide an overview of system requirements, what data a system would process, what transformations of data are done, what files are used, and where the results flow.</p>
+
+    <p><strong>Rules for constructing a Data Flow Diagram</strong></p>
+    <ol>
+        <li>Arrows should not cross each other.</li>
+        <li>Squares, circles and files must bear names.</li>
+        <li>Decomposed data flow squares and circles can have same time.</li>
+        <li>Choose meaningful names for data flow.</li>
+        <li>Draw all data flows around the outside of the diagram.</li>
+    </ol>
+    
+    <div style="text-align: right; margin-top: 50px;">18</div>
+</div>
+
+
+<!-- PAGE 20: DFD GRAPHS -->
+<div class="page-break">
+    <div style="display: flex; justify-content: space-between; font-size: 10pt; margin-bottom: 20px; border-bottom: 1px solid black; padding-bottom: 5px;">
+        <span>Department of Computer Science</span>
+        <span>MovieMate</span>
+    </div>
+    
+    <h3>CONTEXT LEVEL 0 DFD</h3>
+    <!-- Mermaid DFD diagram matching perfectly with Chefly Level 0 -->
+    <div class="mermaid">
+        graph TD
+        U[USER] -- REQUEST --> F((MOVIEMATE))
+        F -- RESPONSE --> U
+        A[ADMIN] -- REQUEST --> F
+        F -- RESPONSE --> A
+        G[GEMINI AI] -- REQUEST --> F
+        F -- RESPONSE --> G
+        C[GLOBAL CHAT] -- MESSAGE --> F
+        F -- BROADCAST --> C
+        D[DATABASE] -- READ --> F
+        F -- WRITE --> D
+    </div>
+
+    <br><br>
+
+    <h3>LEVEL 1 : USER</h3>
+    <div class="mermaid">
+        graph LR
+        U[USER] --> A((1.0 REGISTER))
+        A --> DB[(users)]
+        U --> B((2.0 LOGIN))
+        B --> DB
+        U --> C((3.0 ADD WISHLIST))
+        C --> W[(wishlist)]
+        U --> D((4.0 SEND DM))
+        D --> M[(messages)]
+        U --> E((5.0 GENERATE AI))
+        E --> N[(notifications)]
+    </div>
+
+    <br><br>
+
+    <h3>LEVEL 1 : ADMIN</h3>
+    <div class="mermaid">
+        graph LR
+        AD[ADMIN] --> A((1.0 VIEW DASHBOARD))
+        A --> DB[(Aggregate Stats)]
+        AD --> B((2.0 MANAGE USERS))
+        B --> U[(users)]
+        AD --> C((3.0 SEND BROADCAST))
+        C --> N[(notifications)]
+        AD --> D((4.0 DELETE ACCOUNT))
+        D --> U[(users)]
+    </div>
+    
+    <div style="text-align: right; margin-top: 50px;">20</div>
+</div>
+
+<!-- PAGE 31: TABLE STRUCTURE -->
+<div class="page-break">
+    <div style="display: flex; justify-content: space-between; font-size: 10pt; margin-bottom: 20px; border-bottom: 1px solid black; padding-bottom: 5px;">
+        <span>Department of Computer Science</span>
+        <span>MovieMate</span>
+    </div>
+    
+    <h3>Table Structure</h3>
+    <p>Table is a collection of complete details about a particular subject. These data are saved in rows and Columns. The data of each Row are different units. Hence, rows are called RECORDS and Columns of each row are called FIELDS.</p>
+
+    <p>Data is stored in tables, which is available in the backend the items and data, which are entered in the input, form id directly stored in this table using linking of database. We can link more than one table to input forms. We can collect the details from the different tables to display on the output.</p>
+
+    <p>There are 6 localized document collections used in this project (adapted from relational equivalents to support the NoSQL schema configuration):</p>
+
+    <ul style="list-style-type: decimal; padding-left: 20px;">
+        <li>Users</li>
+        <li>Movies</li>
+        <li>Reviews</li>
+        <li>FriendConnections</li>
+        <li>Messages</li>
+        <li>Notifications</li>
+    </ul>
+
+    <div style="text-align: right; margin-top: 50px;">31</div>
+</div>
+
+<!-- TABLES 32-34 -->
+<div class="page-break">
+    <div style="display: flex; justify-content: space-between; font-size: 10pt; margin-bottom: 20px; border-bottom: 1px solid black; padding-bottom: 5px;">
+        <span>Department of Computer Science</span>
+        <span>MovieMate</span>
+    </div>
+    
+    <p><strong>1. tbl_users</strong></p>
+    <p><strong>Description:</strong> This collection stores the details of users who register in the MovieMate system.</p>
+    <table>
+        <tr><th>Field</th><th>Data Type</th><th>Description</th></tr>
+        <tr><td>_id</td><td>ObjectID (PK)</td><td>Unique ID for each user</td></tr>
+        <tr><td>username</td><td>String</td><td>Unique pseudo name for each user</td></tr>
+        <tr><td>email</td><td>String</td><td>Email address of the user</td></tr>
+        <tr><td>hashed_password</td><td>String</td><td>Encrypted password for user login</td></tr>
+        <tr><td>is_admin</td><td>Boolean</td><td>Flag classifying if user accesses Admin Dashboard</td></tr>
+        <tr><td>favorites</td><td>Array</td><td>List of saved Movie ID strings</td></tr>
+        <tr><td>created_at</td><td>DateTime</td><td>Date and time when the user registered</td></tr>
+    </table>
+
+    <br>
+    
+    <p><strong>2. tbl_movies</strong></p>
+    <p><strong>Description:</strong> This collection stores details of movies hosted natively on the platform.</p>
+    <table>
+        <tr><th>Field</th><th>Data Type</th><th>Description</th></tr>
+        <tr><td>_id</td><td>ObjectID (PK)</td><td>Unique ID for each movie</td></tr>
+        <tr><td>title</td><td>String</td><td>Name of the movie</td></tr>
+        <tr><td>description</td><td>String</td><td>Plot summary of the cinematic piece</td></tr>
+        <tr><td>genre</td><td>String</td><td>Classification style of the movie</td></tr>
+        <tr><td>poster_url</td><td>String</td><td>Image link pointing to visual banner</td></tr>
+        <tr><td>rating</td><td>Float</td><td>Global average score out of 5.0</td></tr>
+    </table>
+
+    <br>
+
+    <p><strong>3. tbl_messages</strong></p>
+    <p><strong>Description:</strong> This collection captures live WebSocket interaction logs.</p>
+    <table>
+        <tr><th>Field</th><th>Data Type</th><th>Description</th></tr>
+        <tr><td>_id</td><td>ObjectID (PK)</td><td>Unique ID for each message</td></tr>
+        <tr><td>sender_id</td><td>ObjectID (FK)</td><td>Reference to tbl_users sending the message</td></tr>
+        <tr><td>receiver_id</td><td>ObjectID (FK)</td><td>Reference to tbl_users receiving (if DM, else null)</td></tr>
+        <tr><td>content</td><td>String</td><td>Message text body payload</td></tr>
+        <tr><td>is_global</td><td>Boolean</td><td>Flag checking if directed at main lobby</td></tr>
+        <tr><td>timestamp</td><td>DateTime</td><td>Date and time the chat occurred</td></tr>
+    </table>
+    
+    <div style="text-align: right; margin-top: 50px;">32</div>
+</div>
+
+<!-- TABLES 33 -->
+<div class="page-break">
+    <div style="display: flex; justify-content: space-between; font-size: 10pt; margin-bottom: 20px; border-bottom: 1px solid black; padding-bottom: 5px;">
+        <span>Department of Computer Science</span>
+        <span>MovieMate</span>
+    </div>
+    
+    <p><strong>4. tbl_notifications</strong></p>
+    <p><strong>Description:</strong> This collection coordinates system interrupts and administrative broadcasts.</p>
+    <table>
+        <tr><th>Field</th><th>Data Type</th><th>Description</th></tr>
+        <tr><td>_id</td><td>ObjectID (PK)</td><td>Unique ID for each notification</td></tr>
+        <tr><td>user_id</td><td>ObjectID (FK)</td><td>Reference mapping to target tbl_user</td></tr>
+        <tr><td>message</td><td>String</td><td>Text alert payload</td></tr>
+        <tr><td>link</td><td>String</td><td>URL internal redirect address</td></tr>
+        <tr><td>is_read</td><td>Boolean</td><td>Flag determining dropdown dismissal</td></tr>
+        <tr><td>created_at</td><td>DateTime</td><td>Timestamp the alert fired</td></tr>
+    </table>
+    
+    <br>
+    
+    <p><strong>5. tbl_friend_connections</strong></p>
+    <p><strong>Description:</strong> Maps networking relationship bonds between registered individuals.</p>
+    <table>
+        <tr><th>Field</th><th>Data Type</th><th>Description</th></tr>
+        <tr><td>_id</td><td>ObjectID (PK)</td><td>Unique ID</td></tr>
+        <tr><td>user_id_1</td><td>ObjectID (FK)</td><td>Reference to 1st tbl_user</td></tr>
+        <tr><td>user_id_2</td><td>ObjectID (FK)</td><td>Reference to 2nd tbl_user</td></tr>
+        <tr><td>status</td><td>String</td><td>Current state (pending/accepted/blocked)</td></tr>
+        <tr><td>created_at</td><td>DateTime</td><td>Date parameters were invoked</td></tr>
+    </table>
+    
+    <div style="text-align: right; margin-top: 50px;">33</div>
+</div>
+
+<!-- PAGE 45: CONCLUSION -->
+<div class="page-break">
+    <div style="display: flex; justify-content: space-between; font-size: 10pt; margin-bottom: 20px; border-bottom: 1px solid black; padding-bottom: 5px;">
+        <span>Department of Computer Science</span>
+        <span>MovieMate</span>
+    </div>
+    
+    <br><br><br>
+    <h3>CONCLUSION</h3>
+    <br><br>
+    <p>In conclusion, the MovieMate project demonstrates how a digital platform can make movie discovery, interaction, and conversational curation immensely more convenient and efficient for users. The system effortlessly merges traditional browsing mechanics with deep analytical tools driven by state-of-the-art Artificial Intelligence backends, allowing users to explore catalogs, manage personal wishlists, and fetch bespoke analytical assistance without migrating external platforms.</p>
+
+    <p>The system excels by integrating extremely fast, low-latency live WebSockets. Users are automatically tethered through an implicit connection thread ensuring DMs and Global interactions process seamlessly. Furthermore, the intelligent Notification mapping protocols guarantee users never miss server-side executions such as administrative broadcast messages or background task completion from the LLM prompt arrays.</p>
+
+    <p>By enforcing an uncompromised RESTful API and JSON Web Token access flow, we secured the administrative hierarchy, keeping unauthorized operators safely partitioned from administrative modules. Overall, MovieMate signifies a major leap forward from solitary film platforms, encapsulating raw algorithmic data sets into a highly sociable, deeply engaging, and impeccably engineered interactive ecosystem tailored strictly for cinematic brilliance.</p>
+
+    <div style="text-align: right; margin-top: 50px;">45</div>
+</div>
+
+<!-- PAGE 46: SCREENSHOTS -->
+<div class="page-break">
+    <div style="display: flex; justify-content: space-between; font-size: 10pt; margin-bottom: 20px; border-bottom: 1px solid black; padding-bottom: 5px;">
+        <span>Department of Computer Science</span>
+        <span>MovieMate</span>
+    </div>
+    
+    <br><br><br>
+    <h3>SCREENSHOTS</h3>
+    <br><br>
+    
+    <h4>MOVIES DASHBOARD</h4>
+    <img src="file:///C:/Users/user/.gemini/antigravity/brain/c3345af6-0f96-4cd5-9f82-df41f7fbbe59/moviemate_movies_page_1773649509102.png" style="width: 100%; border: 2px solid #ccc; border-radius: 8px;">
+    
+    <br><br><br><br>
+    <a href="file:///C:/Users/user/.gemini/antigravity/brain/c3345af6-0f96-4cd5-9f82-df41f7fbbe59/test_admin_dashboard_1774200006991.webp" style="text-decoration: none;"><h4 style="color: blue">VIDEO: EXPERIMENTAL BROWSER DASHBOARD TEST [Click Here]</h4></a>
+    <br><br><br><br>
+    
+    <h4>GLOBAL LIVE CHAT</h4>
+    <img src="file:///C:/Users/user/.gemini/antigravity/brain/c3345af6-0f96-4cd5-9f82-df41f7fbbe59/global_chat_mentions_1773655019948.webp" style="width: 100%; border: 2px solid #ccc; border-radius: 8px;">
+
+    <br><br><br><br>
+
+    <h4>ADMIN NOTIFICATION BROADCAST</h4>
+    <img src="file:///C:/Users/user/.gemini/antigravity/brain/c3345af6-0f96-4cd5-9f82-df41f7fbbe59/.system_generated/click_feedback/click_feedback_1774201147646.png" style="width: 100%; border: 2px solid #ccc; border-radius: 8px;">
+
+    <div style="text-align: right; margin-top: 50px;">46</div>
+</div>
+
+<!-- PAGE 48: CODE -->
+<div class="page-break" style="margin-bottom: 0; padding-bottom: 0; border-bottom: none;">
+    <div style="display: flex; justify-content: space-between; font-size: 10pt; margin-bottom: 20px; border-bottom: 1px solid black; padding-bottom: 5px;">
+        <span>Department of Computer Science</span>
+        <span>MovieMate</span>
+    </div>
+    
+    <br><br><br>
+    <h3>SOURCE CODE</h3>
+    <br><br>
+    
+    <h4>FRONTEND: MAIN ROUTING (App.jsx)</h4>
+    <pre style="background: #f4f4f4; padding: 15px; border-radius: 5px; font-size: 10pt; overflow-x: auto; white-space: pre-wrap;">
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
+import { AuthProvider, useAuth } from "./context/AuthContext"
+import Login from "./pages/Login"
+import Register from "./pages/Register"
+import Home from "./pages/Home"
+import Movies from "./pages/Movies"
+import Recommendations from "./pages/Recommendations"
+import Dashboard from './pages/admin/Dashboard';
+
+function App() {
+  return (
+    &lt;Router&gt;
+      &lt;AuthProvider&gt;
+        &lt;Routes&gt;
+          &lt;Route path="/login" element={&lt;Login /&gt;} /&gt;
+          &lt;Route path="/register" element={&lt;Register /&gt;} /&gt;
+          &lt;Route path="/" element={&lt;Home /&gt;} /&gt;
+          &lt;Route path="/movies" element={&lt;Movies /&gt;} /&gt;
+          &lt;Route path="/recommendations" element={&lt;ProtectedRoute&gt;&lt;Recommendations /&gt;&lt;/ProtectedRoute&gt;} /&gt;
+          
+          {/* Admin Routes */}
+          &lt;Route path="/admin/dashboard" element={&lt;AdminRoute&gt;&lt;Dashboard /&gt;&lt;/AdminRoute&gt;} /&gt;
+        &lt;/Routes&gt;
+      &lt;/AuthProvider&gt;
+    &lt;/Router&gt;
+  )
+}
+export default App</pre>
+
+    <br><br><br>
+
+    <h4>BACKEND: ADMIN MODULE (admin.py)</h4>
+    <pre style="background: #f4f4f4; padding: 15px; border-radius: 5px; font-size: 10pt; overflow-x: auto; white-space: pre-wrap;">
+from fastapi import APIRouter, Depends, HTTPException, status
+from app.routers.auth import get_current_admin_user
+from app.db.database import db
+
+router = APIRouter(prefix="/admin", tags=["admin"])
+
+@router.get("/stats")
+async def get_dashboard_stats(current_user: dict = Depends(get_current_admin_user)):
+    try:
+        total_users = await db.users.count_documents({})
+        total_movies = await db.movies.count_documents({})
+        total_reviews = await db.reviews.count_documents({})
+        total_messages = await db.messages.count_documents({})
+
+        return {
+            "total_users": total_users,
+            "total_movies": total_movies,
+            "total_reviews": total_reviews,
+            "total_messages": total_messages
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))</pre>
+    
+    <div style="text-align: right; margin-top: 50px;">48</div>
+</div>
+
+</body>
+</html>

@@ -12,12 +12,15 @@ router = APIRouter(prefix="/movies", tags=["Movies"])
 async def get_movies(
     skip: int = 0,
     limit: int = 20,
+    search: Optional[str] = None,
     genre: Optional[str] = None,
     language: Optional[str] = None,
     sort_by: Optional[str] = None,
     order: str = "desc",
 ):
     query = {}
+    if search:
+        query["title"] = {"$regex": search, "$options": "i"}
     if genre:
         query["genre_ids"] = genre
     if language:

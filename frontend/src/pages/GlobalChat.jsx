@@ -31,7 +31,8 @@ export default function GlobalChat() {
     if (!user) return;
 
     // Connect to WebSocket
-    const socket = new WebSocket(`ws://localhost:8000/chat/ws/${user.id}`);
+    const wsUrl = import.meta.env.VITE_WS_URL || "ws://localhost:8000";
+    const socket = new WebSocket(`${wsUrl}/chat/ws/${user.id}`);
     ws.current = socket;
 
     socket.onopen = () => setIsConnected(true);
