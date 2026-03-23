@@ -12,6 +12,10 @@ import Friends from "./pages/Friends"
 import GlobalChat from "./pages/GlobalChat"
 import DirectMessage from "./pages/DirectMessage"
 import Recommendations from "./pages/Recommendations"
+import AdminRoute from './components/AdminRoute';
+import Dashboard from './pages/admin/Dashboard';
+import ManageUsers from './pages/admin/ManageUsers';
+import SendNotification from './pages/admin/SendNotification';
 
 // ProtectedRoute definition...
 const ProtectedRoute = ({ children }) => {
@@ -37,6 +41,11 @@ function App() {
           <Route path="/global-chat" element={<ProtectedRoute><GlobalChat /></ProtectedRoute>} />
           <Route path="/chat/:friendId" element={<ProtectedRoute><DirectMessage /></ProtectedRoute>} />
           <Route path="/recommendations" element={<ProtectedRoute><Recommendations /></ProtectedRoute>} />
+          
+          {/* Admin Routes */}
+          <Route path="/admin/dashboard" element={<AdminRoute><Dashboard /></AdminRoute>} />
+          <Route path="/admin/users" element={<AdminRoute><ManageUsers /></AdminRoute>} />
+          <Route path="/admin/notifications" element={<AdminRoute><SendNotification /></AdminRoute>} />
           <Route path="/movie/:id" element={<MovieDetails />} />
           <Route path="/user/:id" element={<UserProfile />} />
         </Routes>

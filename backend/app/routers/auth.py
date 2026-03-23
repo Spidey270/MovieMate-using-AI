@@ -49,6 +49,11 @@ async def get_current_user_optional(token: str = Depends(oauth2_scheme)):
     user = db.users.find_one({"_id": ObjectId(user_id)})
     return user
 
+async def get_current_admin_user(current_user: dict = Depends(get_current_user)):
+    if not current_user.get("is_admin", False):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not enough privileges")
+    return current_user
+
 @router.post("/register", response_model=UserResponse)
 async def register(user: UserCreate):
     # Check if user exists

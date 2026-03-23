@@ -24,6 +24,7 @@ class UserBase(BaseModel):
     username: str = Field(..., min_length=3, max_length=50)
     favorite_genres: List[str] = []
     favorite_languages: List[str] = []
+    is_admin: bool = False
 
 class UserCreate(UserBase):
     password: str = Field(..., min_length=6)

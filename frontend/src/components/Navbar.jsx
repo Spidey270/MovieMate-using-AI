@@ -102,24 +102,19 @@ export default function Navbar() {
                     <Link to="/" className="text-2xl font-bold text-primary">
                         MovieMate
                     </Link>
-                    <div className="hidden gap-6 md:flex">
-                        <Link to="/" className="text-sm font-medium text-white hover:text-gray-300">
-                            Home
-                        </Link>
-                        <Link to="/movies" className="text-sm font-medium text-gray-300 hover:text-white">
-                            Movies
-                        </Link>
+                    <div className="hidden md:flex items-center space-x-6">
+                        <Link to="/" className="text-gray-300 hover:text-white font-medium transition">Home</Link>
+                        <Link to="/movies" className="text-gray-300 hover:text-white font-medium transition">Movies</Link>
                         {user && (
                             <>
-                                <Link to="/wishlist" className="text-sm font-medium text-gray-300 hover:text-white">
-                                    My List
-                                </Link>
-                                <Link to="/friends" className="text-sm font-medium text-gray-300 hover:text-white">
-                                    Friends
-                                </Link>
-                                <Link to="/global-chat" className="text-sm font-bold text-primary hover:text-white tracking-widest uppercase">
-                                    Global Chat
-                                </Link>
+                                <Link to="/wishlist" className="text-gray-300 hover:text-white font-medium transition">My List</Link>
+                                <Link to="/friends" className="text-gray-300 hover:text-white font-medium transition">Friends</Link>
+                                <Link to="/global-chat" className="text-red-500 font-black tracking-widest hover:text-red-400 transition" style={{ textShadow: '0 0 10px rgba(239,68,68,0.5)' }}>GLOBAL CHAT</Link>
+                                {user?.is_admin && (
+                                    <Link to="/admin/dashboard" className="text-amber-400 font-bold tracking-wide hover:text-amber-300 transition" style={{ textShadow: '0 0 8px rgba(251, 191, 36, 0.5)' }}>
+                                        ADMIN
+                                    </Link>
+                                )}
                             </>
                         )}
                     </div>
