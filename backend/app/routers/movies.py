@@ -7,14 +7,15 @@ from bson import ObjectId
 
 router = APIRouter(prefix="/movies", tags=["Movies"])
 
+
 @router.get("/", response_model=List[MovieResponse])
 async def get_movies(
-    skip: int = 0, 
-    limit: int = 20, 
+    skip: int = 0,
+    limit: int = 20,
     genre: Optional[str] = None,
     language: Optional[str] = None,
     sort_by: Optional[str] = None,
-    order: str = "desc"
+    order: str = "desc",
 ):
     query = {}
     if genre:
@@ -39,16 +40,16 @@ async def get_movies(
 
     movies_cursor = db.movies.find(query).sort(sort_criteria).skip(skip).limit(limit)
     movies = list(movies_cursor)
-    
+
     # Expand genres
     # Optimization: Fetch all needed genres in one query instead of N+1
     all_genre_ids = set()
     for m in movies:
         all_genre_ids.update(m.get("genre_ids", []))
-    
+
     # Convert string IDs to ObjectIds if stored as such, but our model has them as strings.
     # We should ensure consistency. For now, assuming they are stored as strings in movie doc.
-    
+
     genres_map = {}
     if all_genre_ids:
         # Convert str ids back to ObjectId for query if needed, or keeping as is.
@@ -60,7 +61,7 @@ async def get_movies(
                 obj_ids.append(ObjectId(gid))
             except:
                 pass
-        
+
         genres_docs = db.genres.find({"_id": {"$in": obj_ids}})
         for g in genres_docs:
             genres_map[str(g["_id"])] = g
@@ -76,16 +77,19 @@ async def get_movies(
                 m_genres.append(g_data)
         m["genres"] = m_genres
         result_movies.append(m)
-        
+
     return result_movies
 
-@router.post("/", response_model=MovieResponse, dependencies=[Depends(get_current_user)])
+
+@router.post(
+    "/", response_model=MovieResponse, dependencies=[Depends(get_current_user)]
+)
 async def create_movie(movie: MovieCreate):
     movie_dict = movie.dict()
     result = db.movies.insert_one(movie_dict)
     new_movie = db.movies.find_one({"_id": result.inserted_id})
     new_movie["id"] = str(new_movie["_id"])
-    
+
     # Fetch genres for response
     m_genres = []
     for gid in new_movie.get("genre_ids", []):
@@ -97,20 +101,21 @@ async def create_movie(movie: MovieCreate):
         except:
             pass
     new_movie["genres"] = m_genres
-    
+
     return new_movie
+
 
 @router.get("/{movie_id}", response_model=MovieResponse)
 async def get_movie(movie_id: str):
     if not ObjectId.is_valid(movie_id):
         raise HTTPException(status_code=400, detail="Invalid ID format")
-        
+
     movie = db.movies.find_one({"_id": ObjectId(movie_id)})
     if not movie:
         raise HTTPException(status_code=404, detail="Movie not found")
-    
+
     movie["id"] = str(movie["_id"])
-    
+
     m_genres = []
     for gid in movie.get("genre_ids", []):
         try:

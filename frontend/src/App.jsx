@@ -1,30 +1,39 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
-import { AuthProvider, useAuth } from "./context/AuthContext"
-import Login from "./pages/Login"
-import Register from "./pages/Register"
-import Home from "./pages/Home"
-import MovieDetails from "./pages/MovieDetails"
-import Profile from "./pages/Profile"
-import UserProfile from "./pages/UserProfile"
-import Movies from "./pages/Movies"
-import Wishlist from "./pages/Wishlist"
-import Friends from "./pages/Friends"
-import GlobalChat from "./pages/GlobalChat"
-import DirectMessage from "./pages/DirectMessage"
-import Recommendations from "./pages/Recommendations"
-import AdminRoute from './components/AdminRoute';
-import Dashboard from './pages/admin/Dashboard';
-import ManageUsers from './pages/admin/ManageUsers';
-import SendNotification from './pages/admin/SendNotification';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { AuthProvider, useAuth } from "./context/AuthContext";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Home from "./pages/Home";
+import MovieDetails from "./pages/MovieDetails";
+import Profile from "./pages/Profile";
+import UserProfile from "./pages/UserProfile";
+import Movies from "./pages/Movies";
+import Wishlist from "./pages/Wishlist";
+import Friends from "./pages/Friends";
+import GlobalChat from "./pages/GlobalChat";
+import DirectMessage from "./pages/DirectMessage";
+import Recommendations from "./pages/Recommendations";
+import AdminRoute from "./components/AdminRoute";
+import Dashboard from "./pages/admin/Dashboard";
+import ManageUsers from "./pages/admin/ManageUsers";
+import SendNotification from "./pages/admin/SendNotification";
 
 // ProtectedRoute definition...
 const ProtectedRoute = ({ children }) => {
-  const { user, loading } = useAuth()
-  if (loading) return <div className="flex h-screen items-center justify-center">Loading...</div>
-  if (!user) return <Navigate to="/login" />
-  return children
-}
-
+  const { user, loading } = useAuth();
+  if (loading)
+    return (
+      <div className="flex h-screen items-center justify-center">
+        Loading...
+      </div>
+    );
+  if (!user) return <Navigate to="/login" />;
+  return children;
+};
 
 function App() {
   return (
@@ -35,23 +44,86 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/" element={<Home />} />
           <Route path="/movies" element={<Movies />} />
-          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-          <Route path="/wishlist" element={<ProtectedRoute><Wishlist /></ProtectedRoute>} />
-          <Route path="/friends" element={<ProtectedRoute><Friends /></ProtectedRoute>} />
-          <Route path="/global-chat" element={<ProtectedRoute><GlobalChat /></ProtectedRoute>} />
-          <Route path="/chat/:friendId" element={<ProtectedRoute><DirectMessage /></ProtectedRoute>} />
-          <Route path="/recommendations" element={<ProtectedRoute><Recommendations /></ProtectedRoute>} />
-          
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/wishlist"
+            element={
+              <ProtectedRoute>
+                <Wishlist />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/friends"
+            element={
+              <ProtectedRoute>
+                <Friends />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/global-chat"
+            element={
+              <ProtectedRoute>
+                <GlobalChat />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/chat/:friendId"
+            element={
+              <ProtectedRoute>
+                <DirectMessage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/recommendations"
+            element={
+              <ProtectedRoute>
+                <Recommendations />
+              </ProtectedRoute>
+            }
+          />
+
           {/* Admin Routes */}
-          <Route path="/admin/dashboard" element={<AdminRoute><Dashboard /></AdminRoute>} />
-          <Route path="/admin/users" element={<AdminRoute><ManageUsers /></AdminRoute>} />
-          <Route path="/admin/notifications" element={<AdminRoute><SendNotification /></AdminRoute>} />
+          <Route
+            path="/admin/dashboard"
+            element={
+              <AdminRoute>
+                <Dashboard />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/users"
+            element={
+              <AdminRoute>
+                <ManageUsers />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/notifications"
+            element={
+              <AdminRoute>
+                <SendNotification />
+              </AdminRoute>
+            }
+          />
           <Route path="/movie/:id" element={<MovieDetails />} />
           <Route path="/user/:id" element={<UserProfile />} />
         </Routes>
       </AuthProvider>
     </Router>
-  )
+  );
 }
 
-export default App
+export default App;

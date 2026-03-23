@@ -9,6 +9,7 @@ import json
 
 router = APIRouter(prefix="/chat", tags=["Chat"])
 
+
 class ConnectionManager:
     def __init__(self):
         # Map user_id to a list of WebSocket connections
@@ -43,30 +44,44 @@ class ConnectionManager:
                 except Exception:
                     pass
 
+
 manager = ConnectionManager()
+
 
 @router.get("/global", response_model=List[MessageResponse])
 async def get_global_chat_history(current_user: dict = Depends(get_current_user)):
-    messages = list(db.messages.find({"receiver_id": "global"}).sort("timestamp", 1).limit(100))
+    messages = list(
+        db.messages.find({"receiver_id": "global"}).sort("timestamp", 1).limit(100)
+    )
     for m in messages:
         m["id"] = str(m["_id"])
     return messages
 
+
 @router.get("/{friend_id}", response_model=List[MessageResponse])
-async def get_chat_history(friend_id: str, current_user: dict = Depends(get_current_user)):
+async def get_chat_history(
+    friend_id: str, current_user: dict = Depends(get_current_user)
+):
     user_id = str(current_user["_id"])
-    
-    messages = list(db.messages.find({
-        "$or": [
-            {"sender_id": user_id, "receiver_id": friend_id},
-            {"sender_id": friend_id, "receiver_id": user_id}
-        ]
-    }).sort("timestamp", 1).limit(100))
-    
+
+    messages = list(
+        db.messages.find(
+            {
+                "$or": [
+                    {"sender_id": user_id, "receiver_id": friend_id},
+                    {"sender_id": friend_id, "receiver_id": user_id},
+                ]
+            }
+        )
+        .sort("timestamp", 1)
+        .limit(100)
+    )
+
     for m in messages:
         m["id"] = str(m["_id"])
-        
+
     return messages
+
 
 async def websocket_endpoint(websocket: WebSocket, client_id: str):
     # Lookup username
@@ -85,7 +100,7 @@ async def websocket_endpoint(websocket: WebSocket, client_id: str):
                 msg_data = json.loads(data)
                 receiver_id = msg_data.get("to")
                 content = msg_data.get("content")
-                
+
                 if receiver_id and content:
                     # Save to DB
                     msg_doc = {
@@ -94,29 +109,39 @@ async def websocket_endpoint(websocket: WebSocket, client_id: str):
                         "receiver_id": receiver_id,
                         "content": content,
                         "timestamp": datetime.utcnow(),
-                        "is_read": False
+                        "is_read": False,
                     }
                     result = db.messages.insert_one(msg_doc)
-                    
-                    response_payload = json.dumps({
-                        "id": str(result.inserted_id),
-                        "sender_id": client_id,
-                        "sender_username": username,
-                        "receiver_id": receiver_id,
-                        "content": content,
-                        "timestamp": str(datetime.utcnow())
-                    })
-                    
+
+                    response_payload = json.dumps(
+                        {
+                            "id": str(result.inserted_id),
+                            "sender_id": client_id,
+                            "sender_username": username,
+                            "receiver_id": receiver_id,
+                            "content": content,
+                            "timestamp": str(datetime.utcnow()),
+                        }
+                    )
+
                     if receiver_id == "global":
                         await manager.broadcast(response_payload)
                     else:
-                        await manager.send_personal_message(response_payload, receiver_id)
+                        await manager.send_personal_message(
+                            response_payload, receiver_id
+                        )
                         # Create notification for recipient
                         from app.routers.notifications import create_notification
-                        create_notification(receiver_id, f"New message from {username}", "message", link=f"/chat/{client_id}")
-                        
+
+                        create_notification(
+                            receiver_id,
+                            f"New message from {username}",
+                            "message",
+                            link=f"/chat/{client_id}",
+                        )
+
             except Exception as e:
                 print(f"WS Error: {e}")
-                
+
     except WebSocketDisconnect:
         manager.disconnect(websocket, client_id)

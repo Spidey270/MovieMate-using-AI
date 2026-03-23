@@ -1,6 +1,18 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers import auth, movies, genres, reviews, wishlist, friends, chat, notifications, recommendations, users, admin
+from app.routers import (
+    auth,
+    movies,
+    genres,
+    reviews,
+    wishlist,
+    friends,
+    chat,
+    notifications,
+    recommendations,
+    users,
+    admin,
+)
 
 app = FastAPI(title="MovieMate API", version="1.0.0")
 
@@ -28,10 +40,13 @@ app.include_router(admin.router)
 # Register websocket explicitly on app to avoid APIRouter prefix bugs/conflicts
 app.websocket("/chat/ws/{client_id}")(chat.websocket_endpoint)
 
+
 @app.get("/")
 def root():
     return {"status": "MovieMate API is running", "version": "1.0.0"}
 
+
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=True)

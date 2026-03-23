@@ -9,24 +9,30 @@ from bson import ObjectId
 
 router = APIRouter(prefix="/recommendations", tags=["Recommendations"])
 
+
 async def simulate_ai_recommendation(user_id: str):
     # Simulate thinking delay
     await asyncio.sleep(3)
-    
+
     # Notify user that recommendations are ready
     from app.routers.notifications import create_notification
+
     create_notification(
         user_id=user_id,
         message="Your personalized AI movie recommendations are ready to view!",
         type="recommendation",
-        link="/recommendations"
+        link="/recommendations",
     )
 
+
 @router.post("/generate")
-async def generate_recommendations(background_tasks: BackgroundTasks, current_user: dict = Depends(get_current_user)):
+async def generate_recommendations(
+    background_tasks: BackgroundTasks, current_user: dict = Depends(get_current_user)
+):
     user_id = str(current_user["_id"])
     background_tasks.add_task(simulate_ai_recommendation, user_id)
     return {"message": "AI is generating recommendations...", "status": "processing"}
+
 
 @router.get("/", response_model=List[MovieResponse])
 async def get_recommendations(current_user: dict = Depends(get_current_user_optional)):
@@ -55,5 +61,5 @@ async def get_recommendations(current_user: dict = Depends(get_current_user_opti
             except:
                 pass
         m["genres"] = m_genres
-        
+
     return rec_movies

@@ -8,6 +8,7 @@ from app.routers.auth import get_current_user
 
 router = APIRouter(prefix="/notifications", tags=["Notifications"])
 
+
 @router.get("/", response_model=List[NotificationResponse])
 async def get_notifications(current_user: dict = Depends(get_current_user)):
     user_id = str(current_user["_id"])
@@ -16,24 +17,32 @@ async def get_notifications(current_user: dict = Depends(get_current_user)):
         n["id"] = str(n["_id"])
     return notifs
 
+
 @router.put("/{notification_id}/read")
-async def mark_as_read(notification_id: str, current_user: dict = Depends(get_current_user)):
+async def mark_as_read(
+    notification_id: str, current_user: dict = Depends(get_current_user)
+):
     user_id = str(current_user["_id"])
     result = db.notifications.update_one(
         {"_id": ObjectId(notification_id), "user_id": user_id},
-        {"$set": {"is_read": True}}
+        {"$set": {"is_read": True}},
     )
     if result.matched_count == 0:
         raise HTTPException(status_code=404, detail="Notification not found")
     return {"status": "marked as read"}
 
+
 # Internal helper to create notification
-def create_notification(user_id: str, message: str, type: str = "info", link: str = None):
-    db.notifications.insert_one({
-        "user_id": user_id,
-        "message": message,
-        "type": type,
-        "link": link,
-        "is_read": False,
-        "created_at": datetime.utcnow()
-    })
+def create_notification(
+    user_id: str, message: str, type: str = "info", link: str = None
+):
+    db.notifications.insert_one(
+        {
+            "user_id": user_id,
+            "message": message,
+            "type": type,
+            "link": link,
+            "is_read": False,
+            "created_at": datetime.utcnow(),
+        }
+    )

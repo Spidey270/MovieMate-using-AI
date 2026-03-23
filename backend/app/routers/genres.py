@@ -7,6 +7,7 @@ from bson import ObjectId
 
 router = APIRouter(prefix="/genres", tags=["Genres"])
 
+
 @router.get("/", response_model=List[GenreResponse])
 async def get_genres():
     genres = list(db.genres.find())
@@ -14,11 +15,14 @@ async def get_genres():
         g["id"] = str(g["_id"])
     return genres
 
-@router.post("/", response_model=GenreResponse, dependencies=[Depends(get_current_user)])
+
+@router.post(
+    "/", response_model=GenreResponse, dependencies=[Depends(get_current_user)]
+)
 async def create_genre(genre: GenreCreate):
     if db.genres.find_one({"name": genre.name}):
         raise HTTPException(status_code=400, detail="Genre already exists")
-    
+
     result = db.genres.insert_one(genre.dict())
     new_genre = db.genres.find_one({"_id": result.inserted_id})
     new_genre["id"] = str(new_genre["_id"])

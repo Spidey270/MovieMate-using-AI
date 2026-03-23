@@ -2,6 +2,7 @@ from pydantic import BaseModel, EmailStr, Field
 from typing import Optional, List
 from bson import ObjectId
 
+
 class PyObjectId(ObjectId):
     @classmethod
     def __get_validators__(cls):
@@ -19,6 +20,7 @@ class PyObjectId(ObjectId):
         json_schema.update(type="string")
         return json_schema
 
+
 class UserBase(BaseModel):
     email: EmailStr
     username: str = Field(..., min_length=3, max_length=50)
@@ -26,19 +28,23 @@ class UserBase(BaseModel):
     favorite_languages: List[str] = []
     is_admin: bool = False
 
+
 class UserCreate(UserBase):
     password: str = Field(..., min_length=6)
+
 
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
 
+
 class UserInDB(UserBase):
     hashed_password: str
 
+
 class UserResponse(UserBase):
     id: str | None = None
-    
+
     class Config:
         from_attributes = True
         populate_by_name = True
