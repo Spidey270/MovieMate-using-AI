@@ -27,7 +27,8 @@ origins = [
 # Add production URL if provided
 prod_origin = os.getenv("FRONTEND_URL")
 if prod_origin:
-    origins.append(prod_origin)
+    # Aggressively strip trailing slashes to prevent arbitrary CORS mismatches
+    origins.append(prod_origin.rstrip("/"))
 
 app.add_middleware(
     CORSMiddleware,

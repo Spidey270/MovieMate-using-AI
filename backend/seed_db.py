@@ -1,9 +1,11 @@
 import csv
 import os
+from dotenv import load_dotenv
 from pymongo import MongoClient
 from bson import ObjectId
 
 # Database configuration
+load_dotenv()
 MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
 DB_NAME = "moviemate"
 
@@ -21,7 +23,7 @@ def seed():
     import time
     import urllib.parse
 
-    csv_path = r"c:\Users\user\Desktop\Movie\movies.csv"
+    csv_path = r"e:\Movie\movies.csv"
     
     genres_map = {} # name -> id
 
