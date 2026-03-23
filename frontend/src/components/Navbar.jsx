@@ -44,7 +44,7 @@ export default function Navbar() {
     }
   }, [user]);
 
-  const fetchNotifications = async () => {
+  async function fetchNotifications() {
     try {
       const res = await api.get("/notifications/");
       setNotifications(res.data);
