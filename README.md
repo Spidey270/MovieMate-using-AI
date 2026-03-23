@@ -10,7 +10,10 @@ MovieMate is an AI-powered social movie recommendation platform. Connect with fr
 - **Real-Time Global Chat**: Jump into the worldwide lobby and chat with all active MovieMate users instantly via WebSockets.
 - **Direct Messaging (DMs)**: Have private, real-time 1-on-1 conversations with your friends. 
 - **AI Recommendation Engine**: Click a button to generate a bespoke list of movie recommendations tailored exactly to your tastes using Gemini AI.
-- **Interactive Notifications**: Instantly receive live alerts when friends message you or when your AI recommendations finish generating in the background. Click the notification to jump straight to the content!
+- **Admin Dashboard**: Secure administrative portal to view real-time platform metrics (users, movies, reviews, chats).
+- **User Management**: Dedicated interface for administrators to list users and securely delete abusive accounts.
+- **Broadcast System**: Administrators can dispatch custom system notifications to specific users or broadcast securely to the entire platform.
+- **Interactive Notifications**: Instantly receive live alerts when friends message you, when AI recommendations finish generating, or when admins send a broadcast. Click the notification to jump straight to the content!
 
 ## 🚀 Tech Stack
 
