@@ -22,6 +22,8 @@ import os
 origins = [
     "http://localhost:5173",
     "http://localhost:3000",
+    "https://movie-mate-using-ai.vercel.app",
+    "https://movie-mate-using-ai.vercel.app/"
 ]
 
 # Add production URL if provided
