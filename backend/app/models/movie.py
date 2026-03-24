@@ -32,6 +32,7 @@ class MovieBase(BaseModel):
     imdb_rating: Optional[float] = None
     language: str = "English"
     genre_ids: List[str] = []
+    gallery_images: List[dict] = []
 
 
 class MovieCreate(MovieBase):
