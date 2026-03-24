@@ -4,9 +4,9 @@ import { Button } from "./ui/button";
 export default function Hero({ movie }) {
   if (!movie) return null;
 
-  const posterUrl = movie.backdrop_path
-    ? `https://image.tmdb.org/t/p/original${movie.backdrop_path}`
-    : `https://via.placeholder.com/1920x1080?text=${encodeURIComponent(movie.title)}`;
+  const posterUrl = movie.backdrop_url
+    || movie.poster_url
+    || `https://ui-avatars.com/api/?name=${encodeURIComponent(movie.title)}&background=111111&color=fff&size=1920`;
 
   return (
     <div className="relative h-[80vh] w-full">
@@ -15,6 +15,7 @@ export default function Hero({ movie }) {
           src={posterUrl}
           alt={movie.title}
           className="h-full w-full object-cover"
+          onError={(e) => { e.target.src = movie.poster_url || ""; }}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black via-black/50 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-secondary via-transparent to-transparent" />
