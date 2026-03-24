@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { api, useAuth } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
 import { Button } from "../components/ui/button";
