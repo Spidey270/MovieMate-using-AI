@@ -1,53 +1,60 @@
-import { Play, Plus, ThumbsUp } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Play, Star } from "lucide-react";
 
 export default function MovieCard({ movie }) {
-  // Handle poster path gracefully
   const posterUrl = movie.poster_url
     ? movie.poster_url
-    : `https://via.placeholder.com/300x450?text=${encodeURIComponent(movie.title)}`;
+    : `https://ui-avatars.com/api/?name=${encodeURIComponent(movie.title)}&background=18181b&color=fff&size=300`;
 
   return (
-    <Link to={`/movie/${movie.id}`}>
-      <div className="group relative cursor-pointer">
-        {/* Base card — scales up on hover */}
-        <div className="overflow-hidden rounded-lg transition-transform duration-300 ease-out group-hover:scale-105 group-hover:shadow-2xl">
-          <img
-            src={posterUrl}
-            alt={movie.title}
-            className="h-full w-full object-cover aspect-[2/3]"
-          />
+    <Link to={`/movie/${movie.id}`} className="group block">
+      {/* Fixed-aspect-ratio container so the grid never shifts */}
+      <div className="relative overflow-hidden rounded-xl aspect-[2/3] bg-zinc-800 shadow-lg transition-transform duration-300 ease-out group-hover:scale-105 group-hover:shadow-2xl group-hover:z-10">
+        {/* Poster */}
+        <img
+          src={posterUrl}
+          alt={movie.title}
+          className="h-full w-full object-cover"
+          onError={(e) => {
+            e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(movie.title)}&background=18181b&color=fff&size=300`;
+          }}
+        />
+
+        {/* Gradient overlay — always visible at bottom */}
+        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/90 to-transparent" />
+
+        {/* Title always shown at bottom */}
+        <div className="absolute inset-x-0 bottom-0 p-3">
+          <p className="text-sm font-bold text-white leading-tight line-clamp-2">{movie.title}</p>
         </div>
 
-        {/* Hover Info Card — fades in below the poster */}
-        <div className="pointer-events-none absolute left-0 right-0 top-full z-20 translate-y-1 rounded-b-xl bg-zinc-900 px-4 py-3 opacity-0 shadow-2xl ring-1 ring-white/5 transition-all duration-300 ease-out group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100">
-          <h3 className="text-sm font-bold text-white truncate">{movie.title}</h3>
-
-          <div className="mt-1 flex items-center gap-2 text-[11px]">
-            <span className="text-green-400 font-semibold">
-              {Math.round(movie.imdb_rating * 10)}% Match
-            </span>
-            <span className="text-gray-500">{movie.runtime} min</span>
+        {/* Hover overlay — fades in on top of poster, no layout shift */}
+        <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black via-black/80 to-black/30 p-4 opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100">
+          {/* Rating */}
+          <div className="flex items-center gap-1.5 mb-2">
+            <Star className="h-3.5 w-3.5 text-yellow-400 fill-current" />
+            <span className="text-yellow-400 text-xs font-bold">{movie.imdb_rating?.toFixed(1)}</span>
+            <span className="text-gray-400 text-xs ml-auto">{movie.runtime} min</span>
           </div>
 
-          <div className="mt-2 flex flex-wrap gap-1">
-            {movie.genres?.slice(0, 3).map((g) => (
-              <span key={g.id} className="rounded-full bg-zinc-800 px-2 py-0.5 text-[9px] text-gray-400 border border-white/5">
+          {/* Title */}
+          <h3 className="text-sm font-bold text-white leading-tight mb-1.5 line-clamp-2">{movie.title}</h3>
+
+          {/* Genres */}
+          <div className="flex flex-wrap gap-1 mb-3">
+            {movie.genres?.slice(0, 2).map((g) => (
+              <span key={g.id} className="text-[9px] bg-white/10 text-gray-300 px-2 py-0.5 rounded-full">
                 {g.name}
               </span>
             ))}
           </div>
 
-          <div className="mt-3 flex items-center gap-2">
-            <button className="flex h-7 w-7 items-center justify-center rounded-full bg-white text-black hover:bg-gray-200 transition">
-              <Play className="h-3.5 w-3.5 fill-current" />
-            </button>
-            <button className="flex h-7 w-7 items-center justify-center rounded-full border border-gray-600 hover:border-white transition">
-              <Plus className="h-3.5 w-3.5" />
-            </button>
-            <button className="flex h-7 w-7 items-center justify-center rounded-full border border-gray-600 hover:border-white transition">
-              <ThumbsUp className="h-3.5 w-3.5" />
-            </button>
+          {/* CTA */}
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 bg-primary hover:bg-red-700 text-white text-xs font-bold px-3 py-1.5 rounded-full transition-colors">
+              <Play className="h-3 w-3 fill-current" /> Watch
+            </div>
+            <span className="text-[10px] text-gray-400">More Info →</span>
           </div>
         </div>
       </div>
