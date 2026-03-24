@@ -9,49 +9,45 @@ export default function MovieCard({ movie }) {
 
   return (
     <Link to={`/movie/${movie.id}`}>
-      <div className="group relative h-[180px] min-w-[300px] cursor-pointer transition-transform duration-200 hover:scale-105 md:h-[160px] md:min-w-[280px]">
-        <img
-          src={posterUrl}
-          alt={movie.title}
-          className="h-full w-full rounded object-cover"
-        />
-
-        {/* Hover Info Card */}
-        <div className="invisible absolute inset-0 z-10 flex flex-col justify-between rounded bg-zinc-900 p-4 opacity-0 shadow-lg transition-all duration-300 group-hover:visible group-hover:block group-hover:-translate-y-[20%] group-hover:scale-110 group-hover:opacity-100">
+      <div className="group relative cursor-pointer">
+        {/* Base card — scales up on hover */}
+        <div className="overflow-hidden rounded-lg transition-transform duration-300 ease-out group-hover:scale-105 group-hover:shadow-2xl">
           <img
             src={posterUrl}
             alt={movie.title}
-            className="mb-2 h-28 w-full rounded object-cover shadow-md"
+            className="h-full w-full object-cover aspect-[2/3]"
           />
-          <div>
-            <div className="mb-2 flex items-center gap-2">
-              <button className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-black hover:bg-gray-200">
-                <Play className="h-4 w-4 fill-current" />
-              </button>
-              <button className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-gray-500 hover:border-white">
-                <Plus className="h-4 w-4" />
-              </button>
-              <button className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-gray-500 hover:border-white">
-                <ThumbsUp className="h-4 w-4" />
-              </button>
-            </div>
+        </div>
 
-            <h3 className="text-sm font-bold text-white">{movie.title}</h3>
+        {/* Hover Info Card — fades in below the poster */}
+        <div className="pointer-events-none absolute left-0 right-0 top-full z-20 translate-y-1 rounded-b-xl bg-zinc-900 px-4 py-3 opacity-0 shadow-2xl ring-1 ring-white/5 transition-all duration-300 ease-out group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100">
+          <h3 className="text-sm font-bold text-white truncate">{movie.title}</h3>
 
-            <div className="mt-1 flex items-center gap-2 text-[10px] text-gray-400">
-              <span className="text-green-500">
-                {Math.round(movie.imdb_rating * 10)}% Match
+          <div className="mt-1 flex items-center gap-2 text-[11px]">
+            <span className="text-green-400 font-semibold">
+              {Math.round(movie.imdb_rating * 10)}% Match
+            </span>
+            <span className="text-gray-500">{movie.runtime} min</span>
+          </div>
+
+          <div className="mt-2 flex flex-wrap gap-1">
+            {movie.genres?.slice(0, 3).map((g) => (
+              <span key={g.id} className="rounded-full bg-zinc-800 px-2 py-0.5 text-[9px] text-gray-400 border border-white/5">
+                {g.name}
               </span>
-              <span>{movie.runtime} min</span>
-            </div>
+            ))}
+          </div>
 
-            <div className="mt-2 flex flex-wrap gap-1">
-              {movie.genres?.slice(0, 3).map((g) => (
-                <span key={g.id} className="text-[8px] text-gray-300">
-                  {g.name}
-                </span>
-              ))}
-            </div>
+          <div className="mt-3 flex items-center gap-2">
+            <button className="flex h-7 w-7 items-center justify-center rounded-full bg-white text-black hover:bg-gray-200 transition">
+              <Play className="h-3.5 w-3.5 fill-current" />
+            </button>
+            <button className="flex h-7 w-7 items-center justify-center rounded-full border border-gray-600 hover:border-white transition">
+              <Plus className="h-3.5 w-3.5" />
+            </button>
+            <button className="flex h-7 w-7 items-center justify-center rounded-full border border-gray-600 hover:border-white transition">
+              <ThumbsUp className="h-3.5 w-3.5" />
+            </button>
           </div>
         </div>
       </div>
