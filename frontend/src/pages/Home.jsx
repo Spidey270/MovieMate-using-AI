@@ -100,7 +100,9 @@ export default function Home() {
             {recommendations.length > 0 ? (
               <div className="flex gap-4 overflow-x-scroll pb-4 scrollbar-hide">
                 {recommendations.map((movie) => (
-                  <MovieCard key={movie.id} movie={movie} />
+                  <div key={movie.id} className="flex-shrink-0 w-36 md:w-44">
+                    <MovieCard movie={movie} />
+                  </div>
                 ))}
               </div>
             ) : (
@@ -118,7 +120,9 @@ export default function Home() {
           </h2>
           <div className="flex gap-4 overflow-x-scroll pb-4 scrollbar-hide">
             {trending.map((movie) => (
-              <MovieCard key={movie.id} movie={movie} />
+              <div key={movie.id} className="flex-shrink-0 w-36 md:w-44">
+                <MovieCard movie={movie} />
+              </div>
             ))}
           </div>
         </section>
@@ -130,11 +134,12 @@ export default function Home() {
               {genre.name} Movies
             </h2>
             <div className="flex gap-4 overflow-x-scroll pb-4 scrollbar-hide">
-              {/* Filter trending by genre for demo, or fetch specific genre endpoint later */}
               {trending
                 .filter((m) => m.genre_ids.includes(genre.id))
                 .map((movie) => (
-                  <MovieCard key={movie.id} movie={movie} />
+                  <div key={movie.id} className="flex-shrink-0 w-36 md:w-44">
+                    <MovieCard movie={movie} />
+                  </div>
                 ))}
               {/* Fallback if empty */}
               {trending.filter((m) => m.genre_ids.includes(genre.id)).length ===
