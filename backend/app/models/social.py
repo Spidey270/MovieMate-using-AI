@@ -8,7 +8,8 @@ from app.models.user import PyObjectId
 class ReviewBase(BaseModel):
     movie_id: str
     rating: int = Field(..., ge=1, le=5)
-    comment: str = Field(..., min_length=1)
+    comment: Optional[str] = None
+    text: Optional[str] = None
 
 
 class ReviewCreate(ReviewBase):

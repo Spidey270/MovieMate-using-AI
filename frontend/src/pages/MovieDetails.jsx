@@ -252,7 +252,7 @@ export default function MovieDetails() {
                     <span className="ml-1 text-sm">{review.rating}</span>
                   </div>
                 </div>
-                <p className="text-gray-300">{review.comment}</p>
+                <p className="text-gray-300">{review.comment || review.text}</p>
               </div>
             ))}
             {reviews.length === 0 && (

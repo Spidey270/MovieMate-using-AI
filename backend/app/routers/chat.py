@@ -82,7 +82,6 @@ async def get_chat_history(
 
     return messages
 
-
 async def websocket_endpoint(websocket: WebSocket, client_id: str):
     # Lookup username
     try:
