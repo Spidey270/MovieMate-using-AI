@@ -72,7 +72,7 @@ export default function Movies() {
     <div className="min-h-screen bg-secondary pb-20">
       <Navbar />
 
-      <div className="pt-24 mx-auto max-w-7xl px-4">
+      <div className="pt-24 mx-auto max-w-5xl px-4">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 border-b border-gray-800 pb-4">
           <div>
             <h1 className="text-3xl font-bold text-white">All Movies</h1>
