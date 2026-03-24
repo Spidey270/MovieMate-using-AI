@@ -172,8 +172,88 @@ export default function MovieDetails() {
           </div>
         </div>
 
+        {/* ── Trailer Section ───────────────────────────────────── */}
+        {movie.trailer_url && (
+          <div className="mt-14">
+            <h2 className="text-2xl font-bold mb-5 flex items-center gap-3">
+              <span className="inline-block w-1 h-6 bg-primary rounded-full" />
+              Trailer
+            </h2>
+            <div className="relative w-full max-w-4xl rounded-2xl overflow-hidden shadow-2xl bg-zinc-900" style={{ paddingTop: "56.25%" }}>
+              <iframe
+                className="absolute inset-0 w-full h-full"
+                src={(() => {
+                  const url = movie.trailer_url;
+                  // Handle youtu.be short links
+                  const short = url.match(/youtu\.be\/([a-zA-Z0-9_-]+)/);
+                  if (short) return `https://www.youtube.com/embed/${short[1]}?rel=0`;
+                  // Handle youtube.com/watch?v=
+                  const long = url.match(/[?&]v=([a-zA-Z0-9_-]+)/);
+                  if (long) return `https://www.youtube.com/embed/${long[1]}?rel=0`;
+                  // Already an embed URL — return as-is
+                  return url;
+                })()}
+                title={`${movie.title} Trailer`}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+          </div>
+        )}
+
+        {/* ── Gallery Section ───────────────────────────────────── */}
+        {(movie.backdrop_url || movie.poster_url) && (
+          <div className="mt-14">
+            <h2 className="text-2xl font-bold mb-5 flex items-center gap-3">
+              <span className="inline-block w-1 h-6 bg-primary rounded-full" />
+              Gallery
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {/* Backdrop — spans 2 cols */}
+              {movie.backdrop_url && (
+                <a
+                  href={movie.backdrop_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="sm:col-span-2 group relative overflow-hidden rounded-xl bg-zinc-900 block"
+                >
+                  <img
+                    src={movie.backdrop_url}
+                    alt={`${movie.title} backdrop`}
+                    className="w-full h-[250px] object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
+                  <span className="absolute bottom-3 left-3 text-xs text-white/70 bg-black/50 px-2 py-0.5 rounded-full opacity-0 group-hover:opacity-100 transition">
+                    Backdrop
+                  </span>
+                </a>
+              )}
+              {/* Poster */}
+              {movie.poster_url && (
+                <a
+                  href={movie.poster_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative overflow-hidden rounded-xl bg-zinc-900 block"
+                >
+                  <img
+                    src={movie.poster_url}
+                    alt={`${movie.title} poster`}
+                    className="w-full h-[250px] object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
+                  <span className="absolute bottom-3 left-3 text-xs text-white/70 bg-black/50 px-2 py-0.5 rounded-full opacity-0 group-hover:opacity-100 transition">
+                    Poster
+                  </span>
+                </a>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Reviews Section */}
         <div className="mt-16 max-w-4xl">
+
           <h2 className="text-2xl font-bold mb-6">Reviews</h2>
 
           {/* Add Review */}
