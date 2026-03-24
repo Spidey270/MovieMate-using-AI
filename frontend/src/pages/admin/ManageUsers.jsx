@@ -85,11 +85,13 @@ export default function ManageUsers() {
                     key={u.id}
                     className="border-b border-gray-800 hover:bg-zinc-800/50 transition"
                   >
-                    <td className="px-6 py-4 font-medium text-white flex items-center gap-3">
-                      <div className="h-8 w-8 rounded-full bg-zinc-700 flex items-center justify-center font-bold text-xs uppercase">
-                        {u.username[0]}
-                      </div>
-                      {u.username}
+                    <td className="px-6 py-4 font-medium text-white">
+                      <Link to={`/admin/users/${u.id}`} className="flex items-center gap-3 hover:text-amber-400 transition">
+                        <div className="h-8 w-8 rounded-full bg-zinc-700 flex items-center justify-center font-bold text-xs uppercase">
+                          {u.username[0]}
+                        </div>
+                        {u.username}
+                      </Link>
                     </td>
                     <td className="px-6 py-4">{u.email}</td>
                     <td className="px-6 py-4">

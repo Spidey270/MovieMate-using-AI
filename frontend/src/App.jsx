@@ -21,6 +21,9 @@ import AdminRoute from "./components/AdminRoute";
 import Dashboard from "./pages/admin/Dashboard";
 import ManageUsers from "./pages/admin/ManageUsers";
 import SendNotification from "./pages/admin/SendNotification";
+import ManageMovies from "./pages/admin/ManageMovies";
+import ModerateReviews from "./pages/admin/ModerateReviews";
+import UserDetail from "./pages/admin/UserDetail";
 
 // ProtectedRoute definition...
 const ProtectedRoute = ({ children }) => {
@@ -118,7 +121,20 @@ function App() {
               </AdminRoute>
             }
           />
+          <Route
+            path="/admin/movies"
+            element={<AdminRoute><ManageMovies /></AdminRoute>}
+          />
+          <Route
+            path="/admin/reviews"
+            element={<AdminRoute><ModerateReviews /></AdminRoute>}
+          />
+          <Route
+            path="/admin/users/:id"
+            element={<AdminRoute><UserDetail /></AdminRoute>}
+          />
           <Route path="/movie/:id" element={<MovieDetails />} />
+
           <Route path="/user/:id" element={<UserProfile />} />
         </Routes>
       </AuthProvider>
