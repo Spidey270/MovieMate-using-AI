@@ -123,9 +123,11 @@ export default function Movies() {
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 overflow-visible">
               {movies.map((movie) => (
-                <MovieCard key={movie.id} movie={movie} />
+                <div key={movie.id} className="relative">
+                  <MovieCard movie={movie} />
+                </div>
               ))}
               {movies.length === 0 && (
                 <div className="col-span-full py-20 text-center border border-dashed border-gray-800 rounded-xl bg-zinc-900/30">
