@@ -105,29 +105,57 @@ async def get_all_users():
 async def get_user_detail(target_id: str):
     if not ObjectId.is_valid(target_id):
         raise HTTPException(status_code=400, detail="Invalid User ID")
+
     user = db.users.find_one({"_id": ObjectId(target_id)})
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    reviews = list(db.reviews.find({"user_id": target_id}))
-    for r in reviews:
-        r["id"] = str(r["_id"])
-        movie = db.movies.find_one({"_id": ObjectId(r["movie_id"])}, {"title": 1}) if ObjectId.is_valid(r.get("movie_id", "")) else None
-        r["movie_title"] = movie["title"] if movie else "Unknown"
+    # Safely fetch and enrich reviews
+    reviews = []
+    try:
+        raw_reviews = list(db.reviews.find({"user_id": target_id}))
+        for r in raw_reviews:
+            try:
+                mid = r.get("movie_id", "")
+                movie_title = "Unknown"
+                if mid and ObjectId.is_valid(str(mid)):
+                    movie = db.movies.find_one({"_id": ObjectId(str(mid))}, {"title": 1})
+                    if movie:
+                        movie_title = movie["title"]
+                reviews.append({
+                    "id": str(r["_id"]),
+                    "movie_id": str(mid),
+                    "movie_title": movie_title,
+                    "rating": r.get("rating", 0),
+                    "comment": r.get("comment") or r.get("text", ""),
+                    "text": r.get("comment") or r.get("text", ""),
+                    "created_at": str(r.get("created_at", "")),
+                })
+            except Exception:
+                continue
+    except Exception:
+        pass
+
+    # Friend count — check both friends collection formats
+    friend_count = 0
+    try:
+        friend_count = db.friends.count_documents({
+            "status": "accepted",
+            "$or": [{"sender_id": target_id}, {"receiver_id": target_id}],
+        })
+    except Exception:
+        pass
 
     return {
         "id": str(user["_id"]),
-        "username": user["username"],
-        "email": user["email"],
+        "username": user.get("username", ""),
+        "email": user.get("email", ""),
         "is_admin": user.get("is_admin", False),
         "favorite_genres": user.get("favorite_genres", []),
         "reviews": reviews,
         "wishlist_count": db.wishlist.count_documents({"user_id": target_id}),
         "review_count": len(reviews),
-        "friend_count": db.friends.count_documents({
-            "status": "accepted",
-            "$or": [{"sender_id": target_id}, {"receiver_id": target_id}],
-        }),
+        "friend_count": friend_count,
     }
 
 
