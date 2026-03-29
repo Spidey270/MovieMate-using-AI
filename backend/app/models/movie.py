@@ -30,6 +30,7 @@ class MovieBase(BaseModel):
     backdrop_url: Optional[str] = None
     trailer_url: Optional[str] = None
     archive_url: Optional[str] = None  # Internet Archive full movie embed
+    imdb_id: Optional[str] = None  # Primary ID for third-party streaming APIs
     imdb_rating: Optional[float] = None
     language: str = "English"
     genre_ids: List[str] = []

@@ -46,8 +46,8 @@ export default function Watch() {
         setMovie(movieRes.data);
         setLinks(linksRes.data);
 
-        // Default tab: full movie if archive exists, else trailer
-        setActiveTab(movieRes.data.archive_url ? "full" : "trailer");
+        // Default tab: full movie if IMDB ID or archive exists, else trailer
+        setActiveTab(movieRes.data.imdb_id || movieRes.data.archive_url ? "full" : "trailer");
 
         // Log watch
         if (user) {
@@ -91,11 +91,11 @@ export default function Watch() {
   );
 
   const trailerEmbed = getYouTubeEmbedUrl(movie.trailer_url);
-  const hasFullMovie  = !!movie.archive_url;
+  const hasFullMovie  = !!(movie.imdb_id || movie.archive_url);
   const hasTrailer    = !!trailerEmbed;
 
   const embedSrc = activeTab === "full" && hasFullMovie
-    ? movie.archive_url
+    ? (movie.imdb_id ? `https://vidsrc.xyz/embed/movie/${movie.imdb_id}` : movie.archive_url)
     : trailerEmbed;
 
   return (
