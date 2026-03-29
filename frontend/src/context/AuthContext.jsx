@@ -41,6 +41,8 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem("token", access_token);
     api.defaults.headers.common["Authorization"] = `Bearer ${access_token}`;
     await fetchUser();
+    // Silently refresh AI recommendations in background (won't block login)
+    api.post("/recommendations/auto-refresh").catch(() => {});
   };
 
   const register = async (username, email, password) => {

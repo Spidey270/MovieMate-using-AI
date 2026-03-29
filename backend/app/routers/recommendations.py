@@ -1,25 +1,21 @@
 from fastapi import APIRouter, Depends, BackgroundTasks
-import asyncio
 from typing import List
-from app.models.movie import MovieResponse, GenreResponse
+from app.models.movie import MovieResponse
 from app.routers.auth import get_current_user_optional, get_current_user
-from app.services.recommendation import recommend_movies_content_based
+from app.services.recommendation import generate_smart_recommendations, get_cached_recommendations
 from app.db.database import db
 from bson import ObjectId
 
 router = APIRouter(prefix="/recommendations", tags=["Recommendations"])
 
 
-async def simulate_ai_recommendation(user_id: str):
-    # Simulate thinking delay
-    await asyncio.sleep(3)
-
-    # Notify user that recommendations are ready
+async def _run_and_notify(user_id: str):
+    """Background job: regenerate recommendations and notify the user."""
     from app.routers.notifications import create_notification
-
+    await generate_smart_recommendations(user_id)
     create_notification(
         user_id=user_id,
-        message="Your personalized AI movie recommendations are ready to view!",
+        message="✨ Your AI recommendations have been refreshed with new picks!",
         type="recommendation",
         link="/recommendations",
     )
@@ -27,39 +23,51 @@ async def simulate_ai_recommendation(user_id: str):
 
 @router.post("/generate")
 async def generate_recommendations(
-    background_tasks: BackgroundTasks, current_user: dict = Depends(get_current_user)
+    background_tasks: BackgroundTasks,
+    current_user: dict = Depends(get_current_user),
 ):
+    """Manually trigger a fresh Gemini recommendation run (runs in background)."""
     user_id = str(current_user["_id"])
-    background_tasks.add_task(simulate_ai_recommendation, user_id)
-    return {"message": "AI is generating recommendations...", "status": "processing"}
+    background_tasks.add_task(_run_and_notify, user_id)
+    return {"message": "AI is generating your recommendations…", "status": "processing"}
+
+
+@router.post("/auto-refresh")
+async def auto_refresh(
+    background_tasks: BackgroundTasks,
+    current_user: dict = Depends(get_current_user),
+):
+    """Called silently on login — refreshes cache only if stale (>12 h)."""
+    from datetime import datetime, timedelta
+    user_id = str(current_user["_id"])
+    cache = db.user_recommendations.find_one({"user_id": user_id})
+    if cache:
+        age = datetime.utcnow() - cache.get("generated_at", datetime.utcnow())
+        if age < timedelta(hours=12):
+            return {"status": "cache_fresh"}
+    background_tasks.add_task(generate_smart_recommendations, user_id)
+    return {"status": "refreshing"}
 
 
 @router.get("/", response_model=List[MovieResponse])
-async def get_recommendations(current_user: dict = Depends(get_current_user_optional)):
-    if current_user:
-        user_id = str(current_user["_id"])
-        rec_movies = await recommend_movies_content_based(user_id)
-    else:
-        # Guest: Return top rated or random movies as recommendations
-        # For simplicity, just return top 20 movies sorted by rating
-        # Note: In a real app we might cache this or have a 'trending' logic
-        movies_cursor = db.movies.find().sort("imdb_rating", -1).limit(20)
-        rec_movies = list(movies_cursor)
-        for m in rec_movies:
+async def get_recommendations(
+    current_user: dict = Depends(get_current_user_optional),
+):
+    if not current_user:
+        # Guest: top-rated movies
+        movies = list(db.movies.find().sort("imdb_rating", -1).limit(20))
+        for m in movies:
             m["id"] = str(m["_id"])
+            m["genres"] = []
+            for gid in m.get("genre_ids", []):
+                try:
+                    g = db.genres.find_one({"_id": ObjectId(gid)})
+                    if g:
+                        g["id"] = str(g["_id"])
+                        m["genres"].append(g)
+                except Exception:
+                    pass
+        return movies
 
-    # Expand genres for response model
-    # (Reuse logic from movies.py or make a helper - repeating for speed now)
-    for m in rec_movies:
-        m_genres = []
-        for gid in m.get("genre_ids", []):
-            try:
-                g = db.genres.find_one({"_id": ObjectId(gid)})
-                if g:
-                    g["id"] = str(g["_id"])
-                    m_genres.append(g)
-            except:
-                pass
-        m["genres"] = m_genres
-
-    return rec_movies
+    user_id = str(current_user["_id"])
+    return await get_cached_recommendations(user_id)
