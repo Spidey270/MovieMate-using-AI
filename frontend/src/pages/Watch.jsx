@@ -33,8 +33,16 @@ export default function Watch() {
   const [links, setLinks] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("trailer"); // "full" | "trailer"
+  const [activeMirror, setActiveMirror] = useState(0); // 0, 1, 2...
   const [isInWishlist, setIsInWishlist] = useState(false);
   const [relatedMovies, setRelatedMovies] = useState([]);
+
+  const mirrors = [
+    { name: "Super Mirror (XYZ)", url: (id) => `https://vidsrc.xyz/embed/movie/${id}` },
+    { name: "Fast Mirror (ME)", url: (id) => `https://vidsrc.me/embed/movie?imdb=${id}` },
+    { name: "Ultra Mirror (TO)", url: (id) => `https://vidsrc.to/embed/movie/${id}` },
+    { name: "Legacy Mirror (2E)", url: (id) => `https://www.2embed.cc/embed/${id}` },
+  ];
 
   useEffect(() => {
     const fetch = async () => {
@@ -108,10 +116,9 @@ export default function Watch() {
   const hasFullMovie  = !!(movie.imdb_id || movie.archive_url);
   const hasTrailer    = !!trailerEmbed;
 
-  // Final Embed logic using stable vidsrc.to with correct imdb path
-  // If not logged in, we set embedSrc to null so guest sees a "Login to Stream" fallback.
+  // Final Embed logic using multiple mirrors
   const embedSrc = activeTab === "full" && hasFullMovie && user
-    ? (movie.imdb_id ? `https://vidsrc.to/embed/movie/${movie.imdb_id}` : movie.archive_url)
+    ? (movie.imdb_id ? mirrors[activeMirror].url(movie.imdb_id) : movie.archive_url)
     : (activeTab === "trailer" ? trailerEmbed : null);
 
   return (
@@ -176,15 +183,36 @@ export default function Watch() {
                  <button onClick={() => setActiveTab("trailer")} className="mt-4 text-gray-500 hover:text-white text-sm underline underline-offset-4">Or watch the trailer first</button>
                </div>
             ) : embedSrc ? (
-              <iframe
-                key={embedSrc}
-                src={embedSrc}
-                className="absolute inset-0 w-full h-full"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; fullscreen; gyroscope; picture-in-picture"
-                allowFullScreen
-                title={movie.title}
-                frameBorder="0"
-              />
+              <>
+                {activeTab === "full" && (
+                  <div className="absolute top-4 right-4 z-40 flex items-center gap-2 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 shadow-2xl">
+                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest mr-2">Mirror:</span>
+                    {mirrors.map((m, idx) => (
+                      <button
+                        key={m.name}
+                        onClick={() => setActiveMirror(idx)}
+                        className={`text-[10px] font-black px-2 py-1 rounded transition ${
+                          activeMirror === idx
+                            ? "bg-primary text-white"
+                            : "text-gray-500 hover:text-white"
+                        }`}
+                      >
+                        {idx + 1}
+                      </button>
+                    ))}
+                  </div>
+                )}
+                <iframe
+                  key={embedSrc}
+                  src={embedSrc}
+                  className="absolute inset-0 w-full h-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; fullscreen; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  title={movie.title}
+                  frameBorder="0"
+                  referrerPolicy="no-referrer"
+                />
+              </>
             ) : (
               <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 text-gray-600 bg-zinc-950">
                 <Film className="h-16 w-16 opacity-30" />
