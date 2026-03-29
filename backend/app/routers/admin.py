@@ -203,6 +203,17 @@ async def admin_delete_movie(movie_id: str):
     return {"message": "Movie deleted successfully"}
 
 
+@router.patch("/movies/{movie_id}")
+async def admin_edit_movie(movie_id: str, movie: MovieCreateRequest):
+    if not ObjectId.is_valid(movie_id):
+        raise HTTPException(status_code=400, detail="Invalid Movie ID")
+    update_data = {k: v for k, v in movie.dict().items() if v is not None}
+    result = db.movies.update_one({"_id": ObjectId(movie_id)}, {"$set": update_data})
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Movie not found")
+    return {"message": "Movie updated successfully"}
+
+
 # ── Review Moderation ─────────────────────────────────────────────────────────
 
 @router.get("/reviews")
