@@ -217,13 +217,50 @@ async def admin_edit_movie(movie_id: str, movie: MovieCreateRequest):
 # ── Review Moderation ─────────────────────────────────────────────────────────
 
 @router.get("/reviews")
-async def admin_list_reviews(skip: int = 0, limit: int = 50):
-    reviews = list(db.reviews.find({}).sort("created_at", -1).skip(skip).limit(limit))
-    for r in reviews:
-        r["id"] = str(r["_id"])
-        movie = db.movies.find_one({"_id": ObjectId(r["movie_id"])}, {"title": 1}) if ObjectId.is_valid(r.get("movie_id", "")) else None
-        r["movie_title"] = movie["title"] if movie else "Unknown"
-    return reviews
+async def admin_list_reviews(skip: int = 0, limit: int = 100):
+    raw = list(db.reviews.find({}).sort("created_at", -1).skip(skip).limit(limit))
+    results = []
+    for r in raw:
+        try:
+            # Safely get movie title
+            movie_title = "Unknown"
+            mid = r.get("movie_id", "")
+            if mid and ObjectId.is_valid(str(mid)):
+                movie = db.movies.find_one({"_id": ObjectId(str(mid))}, {"title": 1})
+                if movie:
+                    movie_title = movie["title"]
+
+            # Safely get username
+            username = r.get("username", "")
+            if not username:
+                uid = r.get("user_id", "")
+                if uid and ObjectId.is_valid(str(uid)):
+                    user = db.users.find_one({"_id": ObjectId(str(uid))}, {"username": 1})
+                    if user:
+                        username = user.get("username", "Unknown")
+
+            # Safely format created_at
+            created_at = ""
+            if r.get("created_at"):
+                try:
+                    created_at = r["created_at"].isoformat()
+                except Exception:
+                    created_at = str(r["created_at"])
+
+            results.append({
+                "id": str(r["_id"]),
+                "movie_id": str(mid),
+                "movie_title": movie_title,
+                "user_id": str(r.get("user_id", "")),
+                "username": username,
+                "rating": r.get("rating", 0),
+                "comment": r.get("comment") or r.get("text", ""),
+                "text": r.get("comment") or r.get("text", ""),
+                "created_at": created_at,
+            })
+        except Exception:
+            continue
+    return results
 
 
 @router.delete("/reviews/{review_id}")
