@@ -29,6 +29,7 @@ class MovieBase(BaseModel):
     poster_url: Optional[str] = None
     backdrop_url: Optional[str] = None
     trailer_url: Optional[str] = None
+    archive_url: Optional[str] = None  # Internet Archive full movie embed
     imdb_rating: Optional[float] = None
     language: str = "English"
     genre_ids: List[str] = []

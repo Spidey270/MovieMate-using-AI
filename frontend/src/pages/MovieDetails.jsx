@@ -3,12 +3,14 @@ import { useParams, Link } from "react-router-dom";
 import { api, useAuth } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
 import { Button } from "../components/ui/button";
-import { Star, Plus, Clock, Globe, Check } from "lucide-react";
+import { Star, Plus, Clock, Globe, Check, Play } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
 
 export default function MovieDetails() {
   const { id } = useParams();
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [movie, setMovie] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [newReview, setNewReview] = useState("");
@@ -154,6 +156,12 @@ export default function MovieDetails() {
             </p>
 
             <div className="flex gap-4">
+              <button
+                onClick={() => navigate(`/watch/${id}`)}
+                className="flex items-center gap-2 bg-primary hover:bg-red-700 text-white font-bold px-7 py-3 rounded-lg transition shadow-lg shadow-red-900/30 text-base"
+              >
+                <Play className="h-5 w-5 fill-white" /> Watch Now
+              </button>
               <Button
                 onClick={handleWishlistToggle}
                 className={`flex items-center gap-2 ${isInWishlist ? "bg-gray-600 hover:bg-gray-700" : ""}`}

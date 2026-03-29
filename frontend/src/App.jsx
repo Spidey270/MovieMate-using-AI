@@ -24,6 +24,7 @@ import SendNotification from "./pages/admin/SendNotification";
 import ManageMovies from "./pages/admin/ManageMovies";
 import ModerateReviews from "./pages/admin/ModerateReviews";
 import UserDetail from "./pages/admin/UserDetail";
+import Watch from "./pages/Watch";
 
 // ProtectedRoute definition...
 const ProtectedRoute = ({ children }) => {
@@ -134,6 +135,8 @@ function App() {
             element={<AdminRoute><UserDetail /></AdminRoute>}
           />
           <Route path="/movie/:id" element={<MovieDetails />} />
+          <Route path="/watch/:id" element={<Watch />} />
+
 
           <Route path="/user/:id" element={<UserProfile />} />
         </Routes>
