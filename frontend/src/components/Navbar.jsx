@@ -130,6 +130,12 @@ export default function Navbar() {
                   Friends
                 </Link>
                 <Link
+                  to="/recommendations"
+                  className="flex items-center gap-1.5 text-purple-400 hover:text-purple-300 font-medium transition"
+                >
+                  ✨ For You
+                </Link>
+                <Link
                   to="/global-chat"
                   className="text-red-500 font-black tracking-widest hover:text-red-400 transition"
                   style={{ textShadow: "0 0 10px rgba(239,68,68,0.5)" }}
