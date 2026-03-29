@@ -46,8 +46,8 @@ export default function Watch() {
         setMovie(movieRes.data);
         setLinks(linksRes.data);
 
-        // Default tab: full movie if IMDB ID or archive exists, else trailer
-        setActiveTab(movieRes.data.imdb_id || movieRes.data.archive_url ? "full" : "trailer");
+        // Default tab: full movie if IMDB ID or archive exists AND user is logged in
+        setActiveTab((movieRes.data.imdb_id || movieRes.data.archive_url) && user ? "full" : "trailer");
 
         // Log watch
         if (user) {
@@ -94,8 +94,8 @@ export default function Watch() {
   const hasFullMovie  = !!(movie.imdb_id || movie.archive_url);
   const hasTrailer    = !!trailerEmbed;
 
-  const embedSrc = activeTab === "full" && hasFullMovie
-    ? (movie.imdb_id ? `https://vidsrc.xyz/embed/movie/${movie.imdb_id}` : movie.archive_url)
+  const embedSrc = activeTab === "full" && hasFullMovie && user
+    ? (movie.imdb_id ? `https://vidsrc.me/embed/movie?imdb=${movie.imdb_id}` : movie.archive_url)
     : trailerEmbed;
 
   return (
@@ -119,7 +119,7 @@ export default function Watch() {
             <div className="flex gap-1 bg-zinc-900 px-4 pt-3">
               {hasFullMovie && (
                 <button
-                  onClick={() => setActiveTab("full")}
+                  onClick={() => user ? setActiveTab("full") : navigate("/login")}
                   className={`flex items-center gap-2 px-5 py-2.5 rounded-t-lg text-sm font-semibold transition ${
                     activeTab === "full"
                       ? "bg-black text-white"
@@ -128,7 +128,8 @@ export default function Watch() {
                 >
                   <Tv className="h-4 w-4" />
                   Full Movie
-                  <span className="text-[10px] bg-green-500/20 text-green-400 px-1.5 py-0.5 rounded-full border border-green-500/30">FREE</span>
+                  {!user && <span className="text-[10px] bg-red-500/20 text-red-500 px-1.5 py-0.5 rounded-full ml-1">🔒 LOGIN</span>}
+                  {user && <span className="text-[10px] bg-green-500/20 text-green-400 px-1.5 py-0.5 rounded-full border border-green-500/30">FREE</span>}
                 </button>
               )}
               {hasTrailer && (
