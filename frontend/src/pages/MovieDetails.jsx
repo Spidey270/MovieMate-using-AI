@@ -135,8 +135,9 @@ export default function MovieDetails() {
               <span className="flex items-center gap-1">
                 <Globe className="h-4 w-4" /> {movie.language}
               </span>
-              <span className="text-green-500 font-bold">
-                {movie.imdb_rating} IMDb
+              <span className="flex items-center gap-1 text-green-500 font-bold">
+                <Star className="h-4 w-4 fill-current" />
+                {movie.imdb_rating}
               </span>
             </div>
 
@@ -268,17 +269,24 @@ export default function MovieDetails() {
                 <label className="block text-sm text-gray-400 mb-2">
                   Rating
                 </label>
-                <select
-                  value={rating}
-                  onChange={(e) => setRating(e.target.value)}
-                  className="bg-gray-800 rounded p-2 text-white w-full md:w-32"
-                >
-                  {[5, 4, 3, 2, 1].map((r) => (
-                    <option key={r} value={r}>
-                      {r} Stars
-                    </option>
+                <div className="flex gap-1">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      type="button"
+                      onClick={() => setRating(star)}
+                      className="transition-transform hover:scale-110"
+                    >
+                      <Star
+                        className={`h-8 w-8 ${
+                          star <= rating
+                            ? "text-yellow-400 fill-yellow-400"
+                            : "text-gray-600"
+                        }`}
+                      />
+                    </button>
                   ))}
-                </select>
+                </div>
               </div>
               <textarea
                 className="w-full bg-gray-800 rounded p-3 text-white mb-4 h-24"
@@ -328,9 +336,17 @@ export default function MovieDetails() {
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center text-yellow-500">
-                    <Star className="h-4 w-4 fill-current" />
-                    <span className="ml-1 text-sm">{review.rating}</span>
+                  <div className="flex items-center gap-0.5">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <Star
+                        key={star}
+                        className={`h-4 w-4 ${
+                          star <= review.rating
+                            ? "text-yellow-400 fill-yellow-400"
+                            : "text-gray-600"
+                        }`}
+                      />
+                    ))}
                   </div>
                 </div>
                 <p className="text-gray-300">{review.comment || review.text}</p>
