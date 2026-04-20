@@ -128,3 +128,21 @@ async def update_preferences(
     updated_user = db.users.find_one({"_id": user_id})
     updated_user["id"] = str(updated_user["_id"])
     return updated_user
+
+
+@router.put("/profile-picture", response_model=UserResponse)
+async def update_profile_picture(
+    data: dict,  # Expecting {"profile_picture": "url or base64"}
+    current_user: dict = Depends(get_current_user),
+):
+    user_id = current_user["_id"]
+    profile_picture = data.get("profile_picture")
+
+    if not profile_picture:
+        raise HTTPException(status_code=400, detail="No profile picture provided")
+
+    db.users.update_one({"_id": user_id}, {"$set": {"profile_picture": profile_picture}})
+
+    updated_user = db.users.find_one({"_id": user_id})
+    updated_user["id"] = str(updated_user["_id"])
+    return updated_user

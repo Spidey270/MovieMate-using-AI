@@ -315,9 +315,17 @@ export default function Navbar() {
                     onClick={() => setShowProfile(!showProfile)}
                     className="flex items-center gap-2"
                   >
-                    <div className="flex h-8 w-8 items-center justify-center rounded-sm bg-primary font-bold text-white">
-                      {user?.username?.[0]?.toUpperCase()}
-                    </div>
+                    {user?.profile_picture ? (
+                      <img
+                        src={user.profile_picture}
+                        alt={user.username}
+                        className="h-8 w-8 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex h-8 w-8 items-center justify-center rounded-sm bg-primary font-bold text-white">
+                        {user?.username?.[0]?.toUpperCase()}
+                      </div>
+                    )}
                   </button>
 
                   {showProfile && (

@@ -4,12 +4,14 @@ import Navbar from "../components/Navbar";
 import { Button } from "../components/ui/button";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
 import PreferencesModal from "../components/PreferencesModal";
-import { Settings } from "lucide-react";
+import ProfilePictureModal from "../components/ProfilePictureModal";
+import { Settings, Camera } from "lucide-react";
 
 export default function Profile() {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [showPrefs, setShowPrefs] = useState(false);
+  const [showProfilePic, setShowProfilePic] = useState(false);
 
   const handlePrefsSaved = async () => {
     try {
@@ -18,6 +20,11 @@ export default function Profile() {
     } catch (e) {
       window.location.reload();
     }
+  };
+
+  const handleProfilePicSaved = (newPicture) => {
+    user.profile_picture = newPicture;
+    setShowProfilePic(false);
   };
 
   if (loading) return <LoadingSpinner />;
@@ -30,19 +37,41 @@ export default function Profile() {
         {/* Header Profile Section */}
         <div className="bg-zinc-900 rounded-2xl p-8 shadow-xl border border-white/5">
           <div className="flex flex-col md:flex-row items-center gap-8">
-            <div className="h-32 w-32 rounded-full bg-primary flex items-center justify-center text-5xl font-bold shadow-2xl border-4 border-zinc-800">
-              {user?.username?.[0]?.toUpperCase()}
+            <div className="relative group cursor-pointer" onClick={() => setShowProfilePic(true)}>
+              {user?.profile_picture ? (
+                <img
+                  src={user.profile_picture}
+                  alt={user.username}
+                  className="h-32 w-32 rounded-full object-cover shadow-2xl border-4 border-zinc-800"
+                />
+              ) : (
+                <div className="h-32 w-32 rounded-full bg-primary flex items-center justify-center text-5xl font-bold shadow-2xl border-4 border-zinc-800">
+                  {user?.username?.[0]?.toUpperCase()}
+                </div>
+              )}
+              <div className="absolute inset-0 h-32 w-32 rounded-full bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                <Camera className="h-8 w-8 text-white" />
+              </div>
             </div>
             <div className="flex-grow text-center md:text-left">
               <h1 className="text-4xl font-bold mb-2">{user?.username}</h1>
               <p className="text-gray-400 mb-6">{user?.email}</p>
-              <Button
-                onClick={() => setShowPrefs(true)}
-                variant="outline"
-                className="bg-zinc-800 border-zinc-700 hover:bg-zinc-700 h-10 px-6"
-              >
-                <Settings className="mr-2 h-4 w-4" /> Edit Preferences
-              </Button>
+              <div className="flex gap-3 justify-center md:justify-start">
+                <Button
+                  onClick={() => setShowProfilePic(true)}
+                  variant="outline"
+                  className="bg-zinc-800 border-zinc-700 hover:bg-zinc-700 h-10 px-4"
+                >
+                  <Camera className="mr-2 h-4 w-4" /> Change Photo
+                </Button>
+                <Button
+                  onClick={() => setShowPrefs(true)}
+                  variant="outline"
+                  className="bg-zinc-800 border-zinc-700 hover:bg-zinc-700 h-10 px-6"
+                >
+                  <Settings className="mr-2 h-4 w-4" /> Edit Preferences
+                </Button>
+              </div>
             </div>
           </div>
 
@@ -99,6 +128,12 @@ export default function Profile() {
         isOpen={showPrefs}
         onClose={() => setShowPrefs(false)}
         onSave={handlePrefsSaved}
+      />
+
+      <ProfilePictureModal
+        isOpen={showProfilePic}
+        onClose={() => setShowProfilePic(false)}
+        onSave={handleProfilePicSaved}
       />
     </div>
   );

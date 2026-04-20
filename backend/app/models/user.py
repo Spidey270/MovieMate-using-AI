@@ -27,6 +27,7 @@ class UserBase(BaseModel):
     favorite_genres: List[str] = []
     favorite_languages: List[str] = []
     is_admin: bool = False
+    profile_picture: str | None = None
 
 
 class UserCreate(UserBase):
