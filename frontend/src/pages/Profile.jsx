@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { api, useAuth } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
 import { Button } from "../components/ui/button";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
 import PreferencesModal from "../components/PreferencesModal";
 import ProfilePictureModal from "../components/ProfilePictureModal";
-import { Settings, Camera } from "lucide-react";
+import { Settings, Camera, Heart, Users } from "lucide-react";
 
 export default function Profile() {
   const { user } = useAuth();
@@ -34,6 +35,30 @@ export default function Profile() {
       <Navbar />
 
       <div className="pt-24 mx-auto max-w-4xl px-4">
+        {/* Quick Links */}
+        <div className="grid grid-cols-2 gap-4 mb-6">
+          <Link
+            to="/wishlist"
+            className="bg-zinc-900 rounded-xl p-6 shadow-lg border border-white/5 hover:border-primary/50 transition flex items-center gap-4"
+          >
+            <Heart className="h-8 w-8 text-primary" />
+            <div>
+              <h3 className="font-bold text-lg">My List</h3>
+              <p className="text-gray-400 text-sm">Your saved movies</p>
+            </div>
+          </Link>
+          <Link
+            to="/friends"
+            className="bg-zinc-900 rounded-xl p-6 shadow-lg border border-white/5 hover:border-primary/50 transition flex items-center gap-4"
+          >
+            <Users className="h-8 w-8 text-primary" />
+            <div>
+              <h3 className="font-bold text-lg">Friends</h3>
+              <p className="text-gray-400 text-sm">Manage connections</p>
+            </div>
+          </Link>
+        </div>
+
         {/* Header Profile Section */}
         <div className="bg-zinc-900 rounded-2xl p-8 shadow-xl border border-white/5">
           <div className="flex flex-col md:flex-row items-center gap-8">
