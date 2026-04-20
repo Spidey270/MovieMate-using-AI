@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { api } from "../context/AuthContext";
+import { api, useAuth } from "../context/AuthContext";
 import { Button } from "./ui/button";
 import { X } from "lucide-react";
 
 export default function PreferencesModal({ isOpen, onClose, onSave }) {
+  const { user } = useAuth();
   const [genres, setGenres] = useState([]);
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,6 +25,12 @@ export default function PreferencesModal({ isOpen, onClose, onSave }) {
         try {
           const res = await api.get("/genres");
           setGenres(res.data);
+          
+          // Load user's existing preferences
+          if (user) {
+            setSelectedGenres(user.favorite_genres || []);
+            setSelectedLanguages(user.favorite_languages || ["English"]);
+          }
         } catch (error) {
           console.error("Failed to fetch genres");
         } finally {
@@ -32,7 +39,7 @@ export default function PreferencesModal({ isOpen, onClose, onSave }) {
       };
       fetchGenres();
     }
-  }, [isOpen]);
+  }, [isOpen, user]);
 
   const toggleGenre = (id) => {
     setSelectedGenres((prev) =>
