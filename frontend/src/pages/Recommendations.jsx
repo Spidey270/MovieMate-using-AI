@@ -1,31 +1,31 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { api, useAuth } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
 import MovieCard from "../components/MovieCard";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
-import { Sparkles, RefreshCw, Brain, Users, Star, Heart } from "lucide-react";
+import { Sparkles, RefreshCw, Brain, Users, Star, Heart, Clock } from "lucide-react";
+
+const AUTO_REFRESH_INTERVAL = 5 * 60 * 1000; // 5 minutes
 
 export default function Recommendations() {
   const { user } = useAuth();
   const [recommendations, setRecommendations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [lastRefreshed, setLastRefreshed] = useState(null);
+  const intervalRef = useRef(null);
 
   const fetchRecs = useCallback(async () => {
     try {
       const res = await api.get("/recommendations");
       setRecommendations(res.data);
+      setLastRefreshed(new Date());
     } catch (err) {
       console.error("Failed to fetch recommendations", err);
     } finally {
       setLoading(false);
     }
   }, []);
-
-  useEffect(() => {
-    if (user) fetchRecs();
-    else setLoading(false);
-  }, [user, fetchRecs]);
 
   const handleRefresh = async () => {
     setRefreshing(true);
@@ -40,6 +40,31 @@ export default function Recommendations() {
       console.error(err);
       setRefreshing(false);
     }
+  };
+
+  useEffect(() => {
+    if (user) fetchRecs();
+    else setLoading(false);
+  }, [user, fetchRecs]);
+
+  // Auto-refresh every 5 minutes
+  useEffect(() => {
+    if (user && recommendations.length > 0) {
+      intervalRef.current = setInterval(() => {
+        handleRefresh();
+      }, AUTO_REFRESH_INTERVAL);
+    }
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [user, recommendations.length]);
+
+  const formatLastRefreshed = () => {
+    if (!lastRefreshed) return "Never";
+    const diff = Math.floor((new Date() - lastRefreshed) / 1000);
+    if (diff < 60) return "Just now";
+    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+    return `${Math.floor(diff / 3600)}h ago`;
   };
 
   if (loading) return <LoadingSpinner />;
@@ -73,14 +98,20 @@ export default function Recommendations() {
               Gemini analyses your taste, reviews, wishlist &amp; friends to pick these for you.
             </p>
           </div>
-          <button
-            onClick={handleRefresh}
-            disabled={refreshing}
-            className="flex items-center gap-2 bg-primary/10 border border-primary/30 hover:bg-primary/20 text-primary px-5 py-2.5 rounded-full text-sm font-semibold transition disabled:opacity-50"
-          >
-            <RefreshCw className={`h-4 w-4 ${refreshing ? "animate-spin" : ""}`} />
-            {refreshing ? "AI is thinking…" : "Refresh Picks"}
-          </button>
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5 text-xs text-gray-500 bg-zinc-800 px-3 py-1.5 rounded-full">
+              <Clock className="h-3.5 w-3.5" />
+              Updated {formatLastRefreshed()}
+            </div>
+            <button
+              onClick={handleRefresh}
+              disabled={refreshing}
+              className="flex items-center gap-2 bg-primary/10 border border-primary/30 hover:bg-primary/20 text-primary px-5 py-2.5 rounded-full text-sm font-semibold transition disabled:opacity-50"
+            >
+              <RefreshCw className={`h-4 w-4 ${refreshing ? "animate-spin" : ""}`} />
+              {refreshing ? "AI is thinking…" : "Refresh Picks"}
+            </button>
+          </div>
         </div>
 
         {/* Signals legend */}
