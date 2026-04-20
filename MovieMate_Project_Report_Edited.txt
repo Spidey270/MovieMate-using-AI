@@ -1,0 +1,951 @@
+INTRODUCTION
+
+MovieMate is a web-based, AI-powered social movie recommendation and streaming platform designed to provide a structured, highly engaging digital space for cinephiles. The system aims to simplify movie discovery, social interaction, and content streaming through an integrated and user-friendly interface. By combining essential social media functionalities, high-speed media streaming, and advanced Artificial Intelligence within a single platform, MovieMate dramatically enhances the movie-watching experience for users globally.
+
+In many modern streaming environments, discovering the perfect movie can be challenging, especially when ratings, recommendations, and the actual video content are scattered across various competing platforms. MovieMate addresses this issue by offering a centralized system where users can access a comprehensive movie catalog, save favorites to their personal wishlist, and smoothly transition directly into watching the film via an integrated cinema-mode player. The platform further bridges the gap between isolation and community by enabling users to interact socially through a Live Global Chat and Real-Time Direct Messaging via WebSockets.
+
+A flagship feature of MovieMate is its deep integration with Gemini AI for dynamic, bespoke movie recommendations. Rather than relying on simple tags, the AI synthesizes multiple user signals—such as watch history, taste profiles, wishlist data, and even friends' reviews—to generate highly tailored suggestions. Furthermore, the platform incorporates a dedicated Administrator Dashboard, enabling system administrators to monitor platform statistics, manage the movie catalog, securely moderate users and reviews, and dispatch live broadcast notifications to the entire user base.
+
+Overall, MovieMate serves as a comprehensive, technology-driven solution for modern cinematic entertainment. By integrating AI exploration, real-time communication, high-fidelity streaming, and instantaneous notification assistance, the system contributes to a highly organized and user-centered entertainment hub.
+
+
+SYSTEM ANALYSIS
+
+System analysis is the process of breaking a problem into manageable components for detailed study. For the MovieMate Platform, system analysis focuses on understanding the operations required to address challenges in movie curation, social connectivity, media streaming, and AI integration. It defines system boundaries and determines the technical requirements needed to develop a user-friendly and highly scalable solution.
+
+Objectives of the Analysis
+The primary objective of system analysis is to determine the feasibility and effectiveness of the proposed system. The system should:
+* Deliver optimal performance with minimal cost and development time via a Single Page Application (SPA) architecture.
+* Fulfill its core objective of providing an efficient and reliable cinematic social and streaming experience.
+* Be implemented using modern and sustainable technologies within budget constraints.
+* Offer a significantly improved user experience compared to strictly siloed rating platforms or traditional streaming sites.
+
+Key Elements of the System Analysis for MovieMate 
+
+Feasibility Study: A feasibility study determines whether the MovieMate project is economically, technologically, and operationally viable.                                                                                                                                    
+* Economic Feasibility: Assessing the cost of development against the benefits, highlighting the use of scalable free-tier NoSQL databases, open-source streaming API mirrors, and efficient API usage to maintain a low-cost, high-value academic project.  
+* Technological Feasibility: Ensuring that the proposed features—including WebSocket live chat, MongoDB document structures, streaming iframe integration, and Gemini AI endpoints—can be effectively implemented using the chosen modern stack: FastAPI, React.js, Tailwind CSS, and a NoSQL database system.
+* Operational Feasibility: Confirming that the system meets the needs of end-users (managing watch history and conversations), contributors (submitting reviews and chatting globally), and administrators (curating the movie database and pushing live broadcasts).
+
+
+USER EXPERIENCE ANALYSIS
+
+Understanding how users interact with the MovieMate platform is paramount. This assessment includes:
+* Users’ expectations for a smooth, lag-free, and intuitive web-based streaming and browsing experience.
+* Essential functionalities such as watching full movies, managing wishlists, and real-time chatting with friends.
+* A clean, visually striking glassmorphic interface for users to receive personalized AI recommendations and for administrators to manage content efficiently via modals.
+
+Analysis Process
+1. Study of the Existing System: Identify limitations in current movie platforms, such as the lack of centralized live chat, the disconnect between finding a movie and actually streaming it, and non-intuitive, disjointed social networks.
+2. Design of the New System: Propose an integrated platform—MovieMate—that enables users to interact globally, stream full movies legally via API mirrors, track film progress, message peers synchronously, and prompt advanced Large Language Models for automated curation.
+3. Cost-Benefit Analysis: Compare the development costs with potential benefits, such as viewer convenience, social organization, enhanced app engagement, and the project’s academic value.
+4. Detailed Examination: View the system holistically by identifying inputs (e.g., chat messages, AI signals, streaming requests) and outputs (video rendering, verified notifications, WebSocket push streams) and tracing them through the workflow.
+
+
+EXISTING SYSTEM
+
+Traditionally, the process of finding movies, watching them, and discussing them with fellow cinephiles is handled through fragmented platforms. Users must browse IMDb or Letterboxd for ratings, traverse to Reddit or Discord for chatting, and jump to a paid streaming platform like Netflix hoping the film is available. Many existing solutions are limited in functionality, making it difficult for users to efficiently organize their interests and maintain a connected social network in one centralized place.
+
+Key Characteristics & Limitations of Existing Systems
+
+* Fragmented Workflow: Most current solutions focus only on storing reviews, only on forum tracking, or only on streaming content. The absence of a centralized digital system forces users to depend on scattered sources, making movie management time-consuming and unstructured.
+* Absence of Generative AI Curation: Users rely on outdated, generic algorithm matrices rather than a natively hooked Large Language Model capable of synthesizing vast, multi-variable movie databases into natural-language recommendations.
+* Limited User Connectivity: Separated communication domains discourage users from sharing live, synchronous opinions. Existing platforms often restrict dynamic live-messaging entirely.
+* No Structured Broadcast Monitoring: Users often lack real-time push tracking of system events, leading to a disconnect between platform administrators and end-users.
+* Device Compatibility Issues: Many existing applications run on legacy codebases that are not fully responsive or optimized across devices, significantly reducing accessibility.
+
+
+PROPOSED SYSTEM
+
+The proposed system, MovieMate, is a fully functional, web-based Entertainment and Social Recommendation Hub designed to address the limitations of existing fragmented solutions. It enables users to browse catalogs, manage wishlists, and stream full-length movies through a custom cinema-mode player equipped with multi-provider API mirrors. Concurrently, it allows registered users to submit live chat payloads directly to the global community or via encrypted direct messages. 
+
+The system is developed using an elite, modern technology stack: Python and FastAPI for backend core development, raw WebSockets for low-latency live streaming, React (JS/JSX) orchestrated by Vite with Tailwind CSS for the front-end interface, and a highly flexible MongoDB document database. 
+
+Key Features of the Proposed System
+
+* Multi-Device Responsive Design: MovieMate utilizes Tailwind CSS to ensure a flawless, mobile-first responsive design. Users can stream movies and manage social activities flawlessly across desktops, tablets, and smartphones.
+* Dynamic and User-Centric Interface: The platform features a premium, interactive dark-mode aesthetic with micro-animations that simplifies movie browsing, friend management, and chat submission.
+* User & Streaming Module: Registered users can browse the digital library, stream full movies via robust third-party API mirrors, track their watch history progress, create watchlists, and trigger bespoke Gemini AI generations. Users receive asynchronous real-time bell notifications regarding platform activity.
+* Global Contributor Module: Users can submit live messages to the worldwide platform, which are simultaneously tracked to local state management, encouraging massive community participation.
+* Admin Dashboard: Administrators seamlessly manage the platform by reviewing database aggregates, creating/editing movie metadata via interactive modals, moderating reviews, terminating flagged accounts, and dispatching custom systemic WebSocket broadcasts.
+
+
+SOFTWARE REQUIREMENT SPECIFICATION
+
+ABOUT THE FRONT-END: REACT & TAILWIND
+
+The front-end of the MovieMate system is developed using modern web technologies, specifically React.js (leveraging functional JSX logic) and Tailwind CSS. Acting as the presentation layer, the front-end allows users to interact with the platform in a lightning-fast Single Page Application (SPA) environment. 
+
+React is used to construct the structural foundation of the interactive components, mounting streaming iframes, chat interfaces, button states, and navigational contexts dynamically without reloading the document. Tailwind CSS dramatically enhances the visual aesthetics by instantly applying utility classes for sleek dark-mode colors, glassmorphic overlays, flexbox constraints, and responsive breakpoints. 
+
+In MovieMate, the front-end is carefully orchestrated to provide an awe-inspiring user experience. Users can effortlessly scroll horizontally through movie carousels, switch between streaming API mirrors on the fly, dispatch live socket connections, and trigger complex backend AI jobs instantly. Clear navigation logic strictly protects data by blocking non-authorized users via custom wrapper layouts (e.g., ProtectedRoute, AdminRoute). Iconography via lucide-react enhances accessibility and modern aesthetic delivery. The front-end is engineered to minimize DOM-paint errors and parse high-frequency JSON from the backend with zero perceived latency.
+
+
+ABOUT THE BACK-END: ARCHITECTURE & DATA MANAGEMENT
+
+The backend architecture of MovieMate is engineered to be highly scalable, completely asynchronous, and capable of managing complex data streams. It leverages a powerful combination of Python (via the FastAPI framework) and MongoDB for robust NoSQL data storage.
+
+* Application Logic: Python and FastAPI: Python serves as the foundational programming language, selected for its high performance and unparalleled ecosystem for artificial intelligence integration—a critical requirement for the Gemini AI multi-signal engine. FastAPI operates on the Asynchronous Server Gateway Interface (ASGI) standard. By utilizing non-blocking async/await operations, FastAPI efficiently manages concurrent movie queries, time-intensive AI payload generation tasks, and the continuous, low-latency WebSocket connections required for real-time messaging, all without bottlenecking the server architecture.
+
+* Data Management: MongoDB: Managing the diverse and high-frequency data generated by MovieMate requires a highly flexible database solution. MovieMate employs MongoDB, a document-oriented NoSQL database, storing data in flexible BSON structures. This schema-less architecture allows the system to efficiently store complex, nested data—such as watch history progress, dynamic AI-generated recommendation arrays, varied user profiles, and real-time chat histories—within a highly scalable cloud environment.
+
+* System Integration and Data Flow: The integration of FastAPI and MongoDB creates a seamless, secure backend pipeline. Intercepted React requests (such as fetching a streaming IMDb ID or dispatching a chat) are routed to FastAPI, which utilizes Pydantic validation models to strictly sanitize incoming payloads. Once validated, optimized PyMongo driver queries execute to retrieve or update documents. This cohesive, modern architecture ensures that data is rapidly processed and securely stored, allowing MovieMate to deliver a premium, real-time cinematic experience.
+
+
+SYSTEM DESIGN
+
+A system design is the conceptual model that defines the structure, behavior, and different views of a system. It acts as a blueprint that describes how the system’s components interact with each other to achieve the desired functionality. The system architecture is a formal description that organizes the system into components, defines their properties, and specifies the relationships among them.
+
+System architecture conveys the informational content of the system elements, the relationships among those elements, and the rules that govern them. The architectural design may consist of hardware, software, documentation, facilities, or roles played by organizations and users. In the case of the MovieMate Recommendation System, the architecture focuses on software design, user interaction, data streaming, and database management.
+
+By reducing complexity and dividing responsibilities into layers, the design facilitates easier implementation, future scalability, and maintenance. The three-tier architecture is chosen as the foundation for MovieMate, ensuring modularity and separation of concerns.
+
+
+Three-Tier Architecture of MovieMate
+
+1. Presentation Layer (User Interface)
+
+This is the top layer, responsible for interaction between users and the system.
+It consists of web pages designed as a Single Page Application (SPA) using React.js (JSX logic) and Tailwind CSS, providing an intuitive, lightning-fast, and responsive glassmorphic interface.
+Features include the homepage, cinema-mode streaming pages, advanced AI search functionality, wishlists, real-time notifications, user profiling, global community chat, and the interactive admin dashboard.
+This layer strictly validates user inputs on the client side—such as login credentials, reviews, and socket payloads—before dispatching requests to the backend.
+
+
+2. Business Logic Layer (Application Layer)
+
+This is the middle layer, where all core application-specific logic, data parsing, and processing take place.
+Implemented using Python and the FastAPI framework (ASGI standard), this layer handles tasks such as JWT authentication, multi-signal Gemini AI recommendation logic, robust streaming API mirror selection, encrypted data fetching, rating/review processing, and WebSocket notification handling.
+For administrators, it includes exclusive business logic for modifying movie structures, managing users, terminating sessions, and dispatching live systemic alerts.
+It acts as a secure intermediary, validating all JSON payloads via Pydantic formal models before interacting with the database, ensuring maximum system integrity.
+
+
+3. Data Layer (Database Layer)
+
+This bottom layer securely stores, indexes, and retrieves application data.
+The MongoDB database (Document-Oriented NoSQL) manages flexible collections for movies, users, genres, reviews, wishlists, asynchronous notifications, watch history, and community chat node states.
+It uses dynamic BSON structures, providing powerful retrieval mechanisms without the latency of complex SQL joins, ensuring incredibly fast and reliable access to nested data.
+Only the FastAPI business logic layer interacts directly with this layer via optimized PyMongo queries, completely isolating and protecting the database from direct external access.
+
+
+Importance of the Design
+
+Modularity: Each layer (React UI, FastAPI Backend, MongoDB Database) can be developed, tested, and updated independently without cascading breakages.
+Security: Strict separation of the presentation and data layers ensures that users and external actors cannot directly access or manipulate the core database.
+Scalability: Future features, such as new machine learning algorithms, mobile application porting, or additional high-speed streaming mirrors, can be integrated seamlessly without major changes to the underlying architecture.
+Maintainability: Code and logic errors can be isolated and fixed natively at the respective layer, preserving overall systemic stability.
+
+
+MODULE DESIGN
+
+Modular programming emphasizes breaking down a system into smaller, independent modules that handle specific functionalities. In the MovieMate Recommendation System, the system is strictly partitioned into four primary functional components — the User Module, Admin Module, AI Engine Module, and Streaming Integration Module — which collectively manage the entire application while enforcing security barriers.
+
+
+1. User Module
+
+The User Module is designed for the primary consumers of the platform. Guests have restricted access to browse the public movie catalog and view trailers, but interactive, personalized, and AI-driven features are exclusively locked behind registered user authentication.
+
+Features:
+* User Authentication: Secure login, registration, and session handling driven by JWT (JSON Web Tokens) verification.
+* Profile Management: Users can view and edit their personal details, including setting favorite genres and languages to feed into the recommendation engine.
+* Movie Discovery & Search: Features a high-performance search and filter interface to browse movies by title or genre effortlessly.
+* Wishlist & Watch History: Users can add movies to a digital wishlist for future viewing. The system also tracks watch history and resumes progress for active streams.
+* Ratings & Reviews: Users can submit a star-based rating and written review per movie. The platform aggregates these to influence global movie scores and AI generation paths.
+* Social & Community Node: Participate in a Live Global Chat connected via WebSockets for raw, real-time community messaging, alongside a Direct Messaging system to network with peers privately.
+* Notification System: Receive personalized, real-time push alerts (bell notifications) regarding background AI generation completions or incoming friend requests.
+
+
+2. Admin Module
+
+The Admin Module provides top-level oversight and administrative control over the dataset, user base, and platform integrity. Admins log in with verified super credentials to access a secondary layout isolated from the standard consumer layer.
+
+Features:
+* Dashboard Overview: Displays aggregate key performance indicators (KPIs) and systemic statistical graphs evaluating total active movies, users, reviews, and network activity.
+* Master Movie Editor: Utilize advanced interactive frontend modals to add, seamlessly patch (edit), or safely delete movies. Modifiable fields include title, description, API IDs (IMDb/TMDb), release year, high-res posters, and trailer URLs.
+* User Account Management: A centralized view accessing all registered accounts across the platform. Admins hold the authority to audit specific user details or permanently terminate accounts violating platform guidelines.
+* Review Moderation: A dedicated moderation panel to browse, filter, or delete user-submitted reviews to maintain a safe, spam-free ecosystem.
+* Systemic Broadcasts: Possess the capability to deploy manual, platform-wide WebSocket notifications to immediately alert all connected users of major updates, server maintenance, or new movie recommendations.
+
+
+3. AI Recommendation Engine Module
+
+The AI Module acts as the intellectual core of the MovieMate platform, bridging the gap between raw user data and natural-language movie curation. This module operates largely as a background asynchronous process decoupled from the main thread.
+
+Features:
+* Signal Aggregation: The system algorithmically compiles a complex "Taste Profile" payload by scraping a user's recent watch history, rated movies, and wishlist preferences.
+* Gemini API Invocation: This payload is securely transmitted to Google's Gemini Large Language Model (LLM) using customized zero-shot prompts to enforce strict JSON array responses.
+* Data Sanitization: Background processes parse the LLM's response, verifying that the returned movie titles securely map to valid records existing within the internal MongoDB database.
+* Asynchronous Caching: Validated recommendations are securely cached in a dedicated database collection to prevent redundant API calls, and the front-end is instantly notified of the completed generation via WebSockets.
+
+
+4. Streaming Integration Module
+
+The Streaming Module transforms MovieMate from a simple recommendation forum into a comprehensive media consumption hub. This module securely hooks into external third-party streaming resources to legally embed video content on-site.
+
+Features:
+* Cinema-Mode Player: A dedicated interface that dynamically transitions off the main application state to load a dark-mode, distraction-free movie theater UI.
+* Dynamic IMDb Resolution: For every incoming streaming request, the core backend cross-references the internal Movie ID with the OMDB API to resolve the exact, globally recognized IMDb ID needed to fetch the highest-quality stream.
+* Multi-Mirror Fallbacks: To guarantee operational uptime and circumvent regional tracker blocking, the player is equipped with a switchable array of API mirrors (e.g., vidsrc.xyz, vidsrc.me, 2embed) allowing users to manually swap providers if a video feed is disrupted.
+* Watch History Logging: Actively logs the timestamps of user interactions within the player, writing progress to the database to support "Recently Watched" and "Continue Watching" features across sessions.
+
+
+By separating the system into these four dedicated modules, MovieMate structurally enforces a clear boundary between consumer-level recreation, artificial intelligence computation, media delivery, and administrative governance. This highly-modular blueprint radically enhances code maintainability, hardens security against unauthorized endpoint access, and allows developers to scale features for any module independently without risking systemic failure.
+
+
+INPUT DESIGN
+
+Input design plays a critical role in the development of the MovieMate Recommendation System, ensuring smooth, secure interaction between the user and the application data streams. The purpose of input design is to capture data from users accurately on the front-end, sanitize it, transform it into system-readable JSON payloads, and provide a low-latency interface that minimizes errors.
+
+Key Features of the Input Design for MovieMate
+
+* User Interface Design:
+The platform features a modern, glassmorphic dark-mode graphical interface customized via Tailwind CSS, ensuring consistency and ease of use. Input fields, chat boxes, streaming mirror selectors, and modals are designed to be intuitive and highly responsive across devices.
+
+* Structured Input Methods:
+Users interact with the system through structured React-based forms such as JWT-secured login/registration, dynamic profile updates, comprehensive search bars, and wishlist toggles. Specialized input fields include the WebSocket message box for real-time global chat, and a custom text area used to feed prompts directly to the Gemini AI API.
+
+* Real-Time Error Validation:
+Input fields are aggressively validated on the client side before communicating with the FastAPI backend. For example:
+  - Registration requires valid email structures and strong, hashed passwords.
+  - Reviews mandate both a numeric star rating and a written comment to prevent null exceptions.
+  - The Admin Master Editor modal strictly validates data conformity, such as numeric IMDb IDs, valid poster URLs, and structured syntax for metadata.
+  - Chat inputs block empty message payloads to mitigate WebSocket spam.
+
+* Interactive Elements:
+Dynamic dropdown menus for filtering genres, hovering micro-animations on movie cards, interactive toggle switches for database states, and instantly loading autocomplete features drastically reduce user typing effort and improve JSON structure accuracy.
+
+
+Steps in Input Design for MovieMate
+
+1. Review Input Requirements:
+Identify structurally critical BSON requirements for MongoDB, including user credentials, raw chat string payloads, movie metadata IDs (IMDb/TMDb), and array-based AI prompts.
+
+2. Input Data Flow Modeling:
+Establish the exact pipeline of how data moves from a state-managed React input form, gets serialized into JSON, is safely passed via an Axios API fetch request (or WebSocket connection), and is finally stored by PyMongo.
+
+3. Source Document Collection:
+Collect all input events via dedicated system screens: JWT authentication gates, profile dashboards, Live Global Chat inputs, the custom Gemini AI Prompt box, and the comprehensive Admin Movie Editor modal.
+
+4. Prototype Input Screens:
+Iterative design mock-ups developed via Tailwind utility classes to prototype high-use screens, ensuring that the "Play Streaming" button, wishlist toggles, and chat inputs remain perfectly visible over standard viewports.
+
+5. Finalize Input Screens:
+Refining the front-end components to ensure strict accessibility, fluid mobile responsiveness, and perfect integration with Python Pydantic models for absolute back-end validation.
+
+Importance of Input Design in MovieMate
+
+* Data Integrity: Pydantic back-end validations aligned with strict React forms ensure only accurate, sanitized data enters the database, preventing NoSQL injection and improving AI precision.
+* Efficiency & Speed: Asynchronous handling of input forms via Single Page Application (SPA) logic ensures the user interface never freezes, making interactions like submitting chat messages or toggling wishlists instantaneous.
+* User Interaction: Engaging premium UI elements, glass overlays, active state buttons, and immediate bell-notification feedback loops create an immersive, theater-like entertainment experience.
+
+
+DATABASE DESIGN (MONGODB COLLECTIONS)
+
+Unlike traditional SQL databases that use rigid tables and rows, MovieMate utilizes a highly scalable NoSQL architecture via MongoDB. Data is stored in flexible, JSON-formatted BSON documents grouped into logical "Collections."
+
+The following core Collections are actively utilized in the MovieMate system:
+
+1. users
+Stores verified account credentials, hashed passwords, access roles (e.g., standard vs. admin protocols), and personalized profile tastes like favorite genres and system display preferences.
+
+2. movies
+The master catalog collection containing comprehensive film metadata. Fields include Title, Description, exact TMDb/IMDb IDs (crucial for API streaming resolution), Release Year, High-Res Poster URLs, and Trailer links.
+
+3. wishlist
+Tracks specialized document arrays associating a specific unique `user_id` with an array of `movie_ids` the user intends to watch later, ensuring seamless cross-device synchronization.
+
+4. reviews
+Stores user-generated star ratings and written text reviews, strictly mapping the author's `user_id` to the associated `movie_id`, which directly influences global rating algorithms.
+
+5. notifications
+Manages the asynchronous queue of real-time alerts (e.g., background AI generations finishing, friend requests, system-wide broadcast messages), independently tracking the read/unread boolean state for each user.
+
+6. chat_messages
+Maintains the raw conversational payload, author metadata, and precise timestamps of the WebSocket streams for the Live Global Chat, ensuring chat history persists consistently even after users disconnect.
+
+7. watch_history
+Actively tracks a user's media streaming progress within the cinema-mode player. By storing video timestamps and completion logic linked to specific `movie_ids`, it seamlessly powers the dynamic "Continue Watching" layouts.
+
+
+COLLECTION DOCUMENT SCHEMAS (DATA DICTIONARY)
+
+The following tables outline the exact BSON document schemas mapped via Python Pydantic models in the FastAPI backend:
+
+1. users Collection
+| Field Name | Data Type | Description |
+|---|---|---|
+| _id | ObjectId | Primary Key, Auto-generated |
+| email | String | User's email address |
+| username | String | Unique display name |
+| hashed_password | String | Bcrypt hashed password |
+| favorite_genres | Array[String] | Selected taste profile genres |
+| favorite_languages | Array[String] | Selected taste profile languages |
+| is_admin | Boolean | Administrator privilege flag |
+
+2. movies Collection
+| Field Name | Data Type | Description |
+|---|---|---|
+| _id | ObjectId | Primary Key |
+| title | String | Full title of the movie |
+| overview | String | Synopsis or plot description |
+| release_date | String | YYYY-MM-DD release date |
+| runtime | Integer | Total runtime in minutes |
+| poster_url | String | URL to the movie poster |
+| backdrop_url | String | URL to the background art |
+| trailer_url | String | YouTube or embed trailer link |
+| archive_url | String | Legacy streaming embed link |
+| imdb_id | String | Global IMDb reference ID |
+| imdb_rating | Float | Rating aggregate |
+| language | String | Spoken language |
+| genre_ids | Array[String] | Linked genre identifiers |
+| gallery_images | Array[Object] | Cast & scene images |
+
+3. wishlist Collection
+| Field Name | Data Type | Description |
+|---|---|---|
+| _id | ObjectId | Primary Key |
+| user_id | String | Foreign key reference to Users |
+| movie_id | String | Foreign key reference to Movies |
+| movie_title | String | Denormalized title for fast render |
+| added_at | Datetime | Timestamp of insertion |
+
+4. reviews Collection
+| Field Name | Data Type | Description |
+|---|---|---|
+| _id | ObjectId | Primary Key |
+| movie_id | String | Foreign key reference to Movies |
+| user_id | String | Foreign key reference to Users |
+| username | String | Denormalized author display name |
+| rating | Integer | Value 1 through 5 |
+| comment | String | Written review text |
+| created_at | Datetime | Timestamp of submission |
+
+5. notifications Collection
+| Field Name | Data Type | Description |
+|---|---|---|
+| _id | ObjectId | Primary Key |
+| user_id | String | Target user to receive the alert |
+| message | String | Core notification text |
+| type | String | Categorization (e.g., info, recommendation) |
+| link | String | Optional deep-link to redirect user |
+| is_read | Boolean | Unread status toggle (True/False) |
+| created_at | Datetime | Timestamp of dispatch |
+
+6. chat_messages Collection
+| Field Name | Data Type | Description |
+|---|---|---|
+| _id | ObjectId | Primary Key |
+| sender_id | String | Foreign key to author |
+| sender_username | String | Denormalized author name |
+| receiver_id | String | Target recipient or 'global' |
+| content | String | The raw chat payload text |
+| is_read | Boolean | True if DM is opened |
+| timestamp | Datetime | Real-time payload timestamp |
+
+7. watch_history Collection
+| Field Name | Data Type | Description |
+|---|---|---|
+| _id | ObjectId | Primary Key |
+| user_id | String | Foreign key reference to Users |
+| movie_id | String | Foreign key reference to Movies |
+| started_at | Datetime | Initial play timestamp |
+| last_watched_at | Datetime | Last update timestamp |
+| progress_seconds | Integer | Progress length tracked |
+
+
+OUTPUT DESIGN
+
+Output design is a crucial aspect of any computerized system, as it determines how processed information is presented to the user. Without reliable and user-friendly outputs, users may find the system ineffective or difficult to use. In MovieMate, outputs are carefully designed to be clear, accurate, and easily interpretable on the fly due to the Single Page Application (SPA) architecture, enabling both users and administrators to make real-time decisions without browser reloads.
+
+The goal of output design is to provide data in a structured, accessible, and visually appealing manner using Tailwind CSS utility components. This includes glassmorphic interfaces, interactive dashboards, and on-screen streaming iframes that deliver immersive entertainment instantaneously.
+
+Forms of Outputs in MovieMate
+
+1. User-Facing Outputs
+- Homepage Display: A dynamic, horizontally scrolling carousel of movies displaying high-resolution posters, titles, genres, and release years.
+- Active Streaming Cinema-Mode: Embedded iframe players displaying actual third-party video streams hooked via multi-mirror fallback APIs, presenting the user with full-screen entertainment output.
+- Gemini AI Generation Output: Fully bespoke, natural-language movie recommendations printed directly to the screen following background compilation.
+- Ratings & Reviews: Real-time output of user-submitted star ratings alongside individual review comments, actively factoring into global movie scores.
+- Asynchronous Notifications: Instantaneous WebSocket-driven screen alerts (bell notifications) displaying friend requests, system broadcasts, or completed AI curation jobs.
+- WebSocket Live Community Chat: Real-time text streams natively rendered via React state updates to display global community messaging.
+
+2. Admin-Facing Outputs
+- Statistical Dashboard: Dynamic widgets and line graphs aggregating critical BSON data, outputting total users, verified movies, active reviews, and streaming metrics.
+- Master Management Grids: Display arrays of users and movies, cleanly rendering complex nested information (like UUIDs, timestamps, permissions) allowing admins to manipulate platform data instantly.
+- Deployment Terminals: Visual feedback detailing the success/failure state of live systemic broadcasts or targeted account termination protocols.
+
+Importance of Output Design
+
+- Visual Clarity: Tailwind CSS ensures that potentially overwhelming data—such as hundreds of reviews or chat messages—is structured clearly through glass overlays and flexbox layouts.
+- Accuracy: React states directly bound to PyMongo database queries guarantee outputs reflect precise real-time database conditions.
+- Delivery Speed: Because the entire output presentation layer lies on the client (React JS), and data is fetched via asynchronous Python JSON responses, users navigate with zero latency.
+
+
+SYSTEM TESTING
+
+Testing is one of the most crucial phases in the software development life cycle (SDLC). It ensures that the developed system operates correctly and provides a reliable user experience under high load. For MovieMate, the testing phase was carried out systematically to eliminate breaking bugs across the React Front-End, FastAPI Back-End, and the MongoDB NoSQL Cloud Layer.
+
+Types of Testing Conducted
+
+1. System & Integration Testing
+Tested to validate that the complete Single Page Application (SPA) functionality worked seamlessly. Scenarios included:
+- Verifying that React Axios requests successfully reached the FastAPI back-end across correctly configured CORS boundaries.
+- Validating that multi-variable AI Taste Profiles correctly dispatched to the Google Gemini API, and backend nodes safely stored the JSON output into the NoSQL pipeline without freezing the main ASGI server thread.
+- Guaranteeing complete WebSocket persistence so that Live Global Chat messages broadcast equally across multiple simultaneous connected clients without dropout.
+
+2. Unit Testing & API Validation
+Each programmatic endpoint was tested independently:
+- Testing Pydantic validation models: Asserting that user inputs containing null strings or misformatted emails throw proper HTTP 422 standard exception errors instead of crashing the server.
+- Testing the Mirror Switcher: Guaranteeing the UI correctly swaps between `vidsrc.xyz`, `vidsrc.me`, and `2embed` streaming nodes based on client clicks without clearing the DOM.
+- Testing authentication routes to ensure JSON Web Tokens (JWT) successfully gate off restricted endpoints, immediately booting unauthorized guests from protected pages.
+
+3. User Acceptance Testing (UAT) & Performance Testing
+Once stabilized, the application was deployed to live staging environments (e.g., Vercel/Render) and manually tested:
+- Testing movie searching, scrolling through carousels, and opening the cinema-mode viewer via desktop vs. mobile browsers.
+- Observing performance metrics ensuring the Tailwind dark-theme loads quickly and the movie posters render without cumulative layout shifts (CLS).
+
+
+SYSTEM IMPLEMENTATION
+
+System implementation involved transitioning the codebase from a local development environment into a universally accessible cloud architecture.
+
+Implementation Stages:
+
+1. Foundation & Environment Setup
+- Initialized a robust Virtual Environment (VENV) containing Python's FastAPI, PyMongo, Pydantic, and Uvicorn frameworks.
+- Scaffolded a modern React application utilizing Vite (Node.js) for instantaneous Hot Module Replacement (HMR).
+- Connected the secure cloud MongoDB Atlas cluster string directly into local `.env` variables, isolating primary database access.
+
+2. Component Development & Integration
+- Deployed the Python Pydantic data schemas mirroring the MongoDB collections.
+- Wrote asynchronous Python CRUD operations targeting user registries, streaming histories, and movie payloads.
+- Designed the React context layouts featuring persistent dark-theme color tokens, dynamic rendering hooks, and protected routing wrappers.
+- Executed third-party module linking, deeply configuring the Google Gemini LLM API keys and WebSocket pathways.
+
+3. Live Deployment
+- Uploaded the structural code-base via Git/GitHub Version Control.
+- Configured frontend hosting via Vercel, utilizing custom `vercel.json` rewrite logic to support SPA fallback routing natively.
+- Configured backend Python hosting supporting live asynchronous WebSocket upgrades.
+- Converted environment variables to encrypted production secrets.
+
+
+SYSTEM MAINTENANCE
+
+Software maintenance ensures MovieMate operates securely post-deployment. Activities include:
+
+- Corrective Maintenance: Resolving unanticipated bugs such as CSS flexbox overflow on extremely small mobile viewports, or resolving WebSocket timeout disconnections.
+- Adaptive Maintenance: Updating core NPM packages (`react-router-dom`) or Python packages (`fastapi`, `pymongo`), and actively maintaining streaming mirror URL parameters as third-party APIs deprecate legacy paths.
+- Perfective Maintenance: Refining Google Gemini zero-shot prompt instructions based on user feedback to secure even more precise programmatic cinematic recommendations.
+- Preventive Maintenance: Indexing MongoDB collection queries to drastically reduce document read time, subsequently protecting the server against high-latency query failures as datasets scale into millions of rows.
+
+
+FUTURE ENHANCEMENTS
+
+MovieMate's highly modular technology stack natively supports rapid iteration and scalability. Planned future upgrades include:
+
+1. Advanced Analytics Dashboard
+Providing administrators deep AI-driven analytics evaluating user trending genres, watch history duration spikes, and regional system engagement times.
+
+2. Progressive Web Application (PWA)
+Expanding the React interface into a downloadable PWA, utilizing Service Workers to cache movie posters globally, allowing mobile users a true app ecosystem experience without App Store deployment.
+
+3. Expanded AI Modality
+Implementing multimodal AI features, such as parsing voice commands into text strings to allow hands-free smart-device filtering and recommendations.
+
+4. Loyalty & Gamification Logic
+Developing an integrated "Points" or "XP" calculation inside the user PyMongo schema, distributing cosmetic badges based on total reviews posted, friends added, or movies completed.
+
+
+APPENDIX: CORE SYSTEM CODE EXCERPTS
+
+1. Home Page UI & Data Hydration (React.js / Frontend)
+The following snippet from the `Home.jsx` page demonstrates modern React hooks (`useEffect`, `useState`) actively querying the backend for recommendations while rendering the premium Tailwind CSS layouts transparently.
+
+```javascript
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [recsRes, trendRes, genresRes] = await Promise.all([
+          api.get("/recommendations"),
+          api.get("/movies"),
+          api.get("/genres"),
+        ]);
+
+        setRecommendations(recsRes.data);
+        setTrending(trendRes.data);
+        setGenres(genresRes.data);
+
+        // Pick random featured movie from trending
+        if (trendRes.data.length > 0) {
+          const random = Math.floor(Math.random() * trendRes.data.length);
+          setFeaturedMovie(trendRes.data[random]);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [user]);
+
+  if (loading) return <LoadingSpinner />;
+
+  return (
+    <div className="min-h-screen bg-secondary pb-20">
+      <Navbar />
+      <Hero movie={featuredMovie} />
+      <div className="relative z-20 -mt-32 space-y-8 pl-4 md:pl-12">
+        <section>
+          <h2 className="mb-4 text-xl font-semibold text-white md:text-2xl">
+            Trending Now
+          </h2>
+          <div className="flex gap-4 overflow-x-scroll pb-4 scrollbar-hide">
+            {trending.map((movie) => (
+              <div key={movie.id} className="flex-shrink-0 w-36 md:w-44">
+                <MovieCard movie={movie} />
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
+    </div>
+  );
+```
+
+2. Front-End Media Player Application Architecture (Watch.jsx)
+The `Watch.jsx` component is the largest and most computationally complex React script in the MovieMate application. Spanning hundreds of lines, it independently manages real-time API polling, multi-mirror iframe source injection, user authentication security walls, asynchronous wishlist toggling, and global DOM layout algorithms to achieve the Single Page Application theater experience.
+
+```javascript
+import { useState, useEffect, useCallback } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { api, useAuth } from "../context/AuthContext";
+import { Play, Film, Star, Clock, Globe, Plus, Check,
+         Tv, ChevronRight, ArrowLeft, Lock } from "lucide-react";
+import LoadingSpinner from "../components/ui/LoadingSpinner";
+
+// Platform brand colors
+const PLATFORM_STYLES = {
+  Netflix:   "bg-[#E50914]",
+  Prime:     "bg-[#00A8E0]",
+  "Disney+": "bg-[#0063E5]",
+  "Apple TV+":"bg-zinc-600",
+  "HBO Max":  "bg-[#5822B4]",
+};
+
+function getYouTubeEmbedUrl(url) {
+  if (!url) return null;
+  const short = url.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/);
+  if (short) return `https://www.youtube.com/embed/${short[1]}?autoplay=1&rel=0`;
+  const long = url.match(/[?&]v=([a-zA-Z0-9_-]{11})/);
+  if (long) return `https://www.youtube.com/embed/${long[1]}?autoplay=1&rel=0`;
+  if (url.includes("youtube.com/embed/")) return url + "?autoplay=1&rel=0";
+  return null;
+}
+
+export default function Watch() {
+  const { id } = useParams();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const [movie, setMovie] = useState(null);
+  const [links, setLinks] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState("trailer"); // "full" | "trailer"
+  const [activeMirror, setActiveMirror] = useState(0); // 0, 1, 2...
+  const [isInWishlist, setIsInWishlist] = useState(false);
+  const [relatedMovies, setRelatedMovies] = useState([]);
+
+  const mirrors = [
+    { name: "Super Mirror (XYZ)", url: (id) => `https://vidsrc.xyz/embed/movie/${id}` },
+    { name: "Fast Mirror (ME)", url: (id) => `https://vidsrc.me/embed/movie?imdb=${id}` },
+    { name: "Ultra Mirror (TO)", url: (id) => `https://vidsrc.to/embed/movie/${id}` },
+    { name: "Legacy Mirror (2E)", url: (id) => `https://www.2embed.cc/embed/${id}` },
+  ];
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        const [movieRes, linksRes] = await Promise.all([
+          api.get(`/movies/${id}`),
+          api.get(`/streaming/links/${id}`),
+        ]);
+        const mData = movieRes.data;
+        setMovie(mData);
+        setLinks(linksRes.data);
+
+        // Exclusive to users: if guest, default to trailer, don't auto-switch to full.
+        // If logged in, preferred tab is "full" if available.
+        if (user && (mData.imdb_id || mData.archive_url)) {
+          setActiveTab("full");
+        } else {
+          setActiveTab("trailer");
+        }
+
+        // Log watch
+        if (user) {
+          api.post(`/streaming/watch/${id}`).catch(() => {});
+        }
+
+        // Check wishlist
+        if (user) {
+          const wRes = await api.get("/wishlist/");
+          setIsInWishlist(wRes.data.some((w) => w.movie_id === id));
+        }
+
+        // Related movies (top rated, excluding this one)
+        const movRes = await api.get("/movies/?limit=8");
+        setRelatedMovies(movRes.data.filter((m) => m.id !== id).slice(0, 5));
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetch();
+  }, [id, user]);
+
+  const handleWishlist = async () => {
+    if (!user) { navigate("/login"); return; }
+    if (isInWishlist) {
+      try {
+        await api.delete(`/wishlist/${id}`);
+        setIsInWishlist(false);
+      } catch (e) {
+        console.error(e);
+      }
+    } else {
+      try {
+        await api.post("/wishlist/", { movie_id: id });
+        setIsInWishlist(true);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  };
+
+  if (loading) return <LoadingSpinner />;
+  if (!movie) return (
+    <div className="min-h-screen bg-black flex items-center justify-center text-white">
+      Movie not found. <Link to="/movies" className="ml-2 text-primary underline">Browse movies</Link>
+    </div>
+  );
+
+  const trailerEmbed = getYouTubeEmbedUrl(movie.trailer_url);
+  const hasFullMovie  = !!(movie.imdb_id || movie.archive_url);
+  const hasTrailer    = !!trailerEmbed;
+
+  // Final Embed logic using multiple mirrors
+  const embedSrc = activeTab === "full" && hasFullMovie && user
+    ? (movie.imdb_id ? mirrors[activeMirror].url(movie.imdb_id) : movie.archive_url)
+    : (activeTab === "trailer" ? trailerEmbed : null);
+
+  return (
+    <div className="min-h-screen bg-black text-white flex flex-col">
+      {/* ─── Top bar ─── */}
+      <div className="flex items-center gap-4 px-6 py-4 bg-black/80 backdrop-blur-sm z-10 border-b border-white/5">
+        <button onClick={() => navigate(-1)} className="text-gray-400 hover:text-white transition">
+          <ArrowLeft className="h-5 w-5" />
+        </button>
+        <Link to="/" className="text-xl font-black text-primary tracking-tight">MovieMate</Link>
+        <span className="text-gray-600">|</span>
+        <span className="text-sm text-gray-300 truncate">{movie.title} ({movie.release_date?.slice(0, 4)})</span>
+      </div>
+
+      <div className="flex flex-col lg:flex-row flex-1 overflow-hidden">
+
+        {/* ─── PLAYER ─── */}
+        <div className="flex-1 flex flex-col">
+          {/* Tab switcher */}
+          <div className="flex gap-1 bg-zinc-900 px-4 pt-3 flex-shrink-0">
+            {hasFullMovie && (
+              <button
+                onClick={() => user ? setActiveTab("full") : navigate("/login")}
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-t-lg text-sm font-semibold transition ${
+                  activeTab === "full"
+                    ? "bg-black text-white"
+                    : "text-gray-500 hover:text-gray-300"
+                }`}
+              >
+                <Tv className="h-4 w-4" />
+                Full Movie
+                {!user ? (
+                   <span className="text-[10px] bg-red-500/20 text-red-500 px-1.5 py-0.5 rounded-full ml-1 font-bold">🔒 LOGIN REQUIRE</span>
+                ) : (
+                   <span className="text-[10px] bg-green-500/20 text-green-400 px-1.5 py-0.5 rounded-full border border-green-500/30 font-bold">FREE</span>
+                )}
+              </button>
+            )}
+            {hasTrailer && (
+              <button
+                onClick={() => setActiveTab("trailer")}
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-t-lg text-sm font-semibold transition ${
+                  activeTab === "trailer"
+                    ? "bg-black text-white"
+                    : "text-gray-500 hover:text-gray-300"
+                }`}
+              >
+                <Play className="h-4 w-4" />
+                Trailer
+              </button>
+            )}
+          </div>
+
+          {/* Video Player or Login Wall */}
+          <div className="relative bg-black flex-1 min-h-[400px]" style={{ aspectRatio: "16/9" }}>
+            {activeTab === "full" && !user ? (
+               <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center bg-gradient-to-b from-zinc-900 to-black">
+                 <Lock className="h-16 w-16 text-primary mb-6" />
+                 <h2 className="text-3xl font-bold mb-3">Streaming is for Members</h2>
+                 <p className="text-gray-400 mb-8 max-w-sm">Join MovieMate premium community to unlock full movies, 4K streaming and social watches.</p>
+                 <Link to="/login" className="bg-primary hover:bg-red-700 text-white font-bold px-10 py-3 rounded-full transition text-lg shadow-xl">Login Now</Link>
+                 <button onClick={() => setActiveTab("trailer")} className="mt-4 text-gray-500 hover:text-white text-sm underline underline-offset-4">Or watch the trailer first</button>
+               </div>
+            ) : embedSrc ? (
+              <>
+                {activeTab === "full" && (
+                  <div className="absolute top-4 right-4 z-40 flex items-center gap-2 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 shadow-2xl">
+                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest mr-2">Mirror:</span>
+                    {mirrors.map((m, idx) => (
+                      <button
+                        key={m.name}
+                        onClick={() => setActiveMirror(idx)}
+                        className={`text-[10px] font-black px-2 py-1 rounded transition ${
+                          activeMirror === idx
+                            ? "bg-primary text-white"
+                            : "text-gray-500 hover:text-white"
+                        }`}
+                      >
+                        {idx + 1}
+                      </button>
+                    ))}
+                  </div>
+                )}
+                <iframe
+                  key={embedSrc}
+                  src={embedSrc}
+                  className="absolute inset-0 w-full h-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; fullscreen; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  title={movie.title}
+                  frameBorder="0"
+                  referrerPolicy="no-referrer"
+                />
+              </>
+            ) : (
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 text-gray-600 bg-zinc-950">
+                <Film className="h-16 w-16 opacity-30" />
+                <p className="text-sm">Video content not available in your region</p>
+                {activeTab === "full" && <p className="text-xs text-amber-500">Wait... checking for high-speed mirrors...</p>}
+              </div>
+            )}
+          </div>
+
+          {/* Movie Info (below player) */}
+          <div className="bg-zinc-950 px-6 py-5 border-t border-white/5 overflow-y-auto">
+            <div className="flex flex-col md:flex-row md:items-start gap-6 max-w-5xl">
+              <div className="flex-1">
+                <h1 className="text-3xl font-bold mb-2 tracking-tight">{movie.title}</h1>
+                <div className="flex flex-wrap items-center gap-4 text-sm text-gray-400 mb-4 bg-white/5 py-2 px-3 rounded-lg w-fit">
+                  {movie.release_date && <span className="font-semibold text-gray-300">{movie.release_date.slice(0, 4)}</span>}
+                  {movie.runtime && <span className="flex items-center gap-1.5 border-l border-white/10 pl-4"><Clock className="h-4 w-4" />{movie.runtime} min</span>}
+                  {movie.language && <span className="flex items-center gap-1.5 border-l border-white/10 pl-4"><Globe className="h-4 w-4" />{movie.language}</span>}
+                  {movie.imdb_rating && (
+                    <span className="flex items-center gap-1.5 border-l border-white/10 pl-4 text-amber-400 font-bold">
+                      <Star className="h-4 w-4 fill-current" /> {movie.imdb_rating} IMDb
+                    </span>
+                  )}
+                </div>
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {movie.genres?.map((g) => (
+                    <span key={g.id} className="bg-white/5 hover:bg-white/10 text-gray-300 text-[11px] font-bold px-3 py-1.5 rounded-full border border-white/5 uppercase tracking-wide cursor-default active:scale-95 transition">{g.name}</span>
+                  ))}
+                </div>
+                <p className="text-gray-400 text-sm leading-relaxed max-w-3xl border-l-2 border-primary/40 pl-4 italic">{movie.overview}</p>
+              </div>
+
+              {/* Actions */}
+              <div className="flex md:flex-col gap-3 flex-shrink-0">
+                <button
+                  onClick={handleWishlist}
+                  className={`flex items-center gap-3 px-6 py-3 rounded-xl text-sm font-bold transition shadow-lg ${
+                    isInWishlist
+                      ? "bg-zinc-800 text-gray-400 hover:bg-zinc-700 border border-white/10"
+                      : "bg-primary hover:bg-red-700 text-white shadow-primary/20"
+                  }`}
+                >
+                  {isInWishlist ? <><Check className="h-4 w-4" /> Already in Wishlist</> : <><Plus className="h-4 w-4" /> Quick Add Wishlist</>}
+                </button>
+                <Link
+                  to={`/movie/${id}`}
+                  className="flex items-center justify-center gap-3 px-6 py-3 rounded-xl text-sm font-bold bg-white/10 hover:bg-white/20 text-white border border-white/10 transition"
+                >
+                  <Film className="h-4 w-4" /> See More Gallery
+                </Link>
+              </div>
+            </div>
+
+            {/* ─── Streaming Platform Links ─── */}
+            {links?.platforms?.length > 0 && (
+              <div className="mt-8 pt-8 border-t border-white/5">
+                <p className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] mb-4">Official Platform Search (Search & Watch)</p>
+                <div className="flex flex-wrap gap-3">
+                  {links.platforms.map((p) => (
+                    <a
+                      key={p.name}
+                      href={p.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`flex items-center gap-3 px-5 py-2.5 rounded-xl text-xs font-black text-white transition hover:opacity-100 hover:scale-110 active:scale-95 shadow-md shadow-black/30 group ${PLATFORM_STYLES[p.name] || "bg-zinc-800"}`}
+                    >
+                      <span className="text-lg opacity-80 group-hover:opacity-100 group-hover:scale-125 transition duration-300">{p.logo}</span>
+                      <span className="tracking-wide">{p.name}</span>
+                      <ChevronRight className="h-3.5 w-3.5 opacity-40 ml-1 group-hover:translate-x-1 transition" />
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* ─── SIDEBAR: Up Next ─── */}
+        <div className="lg:w-80 xl:w-96 bg-zinc-950 border-l border-white/5 overflow-y-auto flex-shrink-0">
+          <div className="p-5 border-b border-white/5 flex items-center justify-between">
+            <h3 className="font-black text-[10px] text-gray-600 uppercase tracking-widest">More Recommendations</h3>
+            <span className="h-1 w-8 bg-primary rounded-full" />
+          </div>
+          <div className="divide-y divide-white/5">
+            {relatedMovies.length > 0 ? relatedMovies.map((m) => (
+              <Link
+                key={m.id}
+                to={`/watch/${m.id}`}
+                className="flex gap-4 p-5 hover:bg-white/5 transition group relative overflow-hidden"
+              >
+                <div className="relative flex-shrink-0">
+                  <img
+                    src={m.poster_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(m.title)}&background=27272a&color=fff`}
+                    alt={m.title}
+                    className="w-20 h-28 object-cover rounded-xl bg-zinc-800 shadow-md group-hover:scale-105 transition duration-500"
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/40 rounded-xl transition duration-500">
+                    <div className="bg-primary/90 rounded-full p-2.5 shadow-lg shadow-black/40">
+                      <Play className="h-5 w-5 fill-white text-white translate-x-0.5" />
+                    </div>
+                  </div>
+                </div>
+                <div className="flex-1 min-w-0 flex flex-col justify-center">
+                  <p className="text-xs font-black text-white truncate mb-1 group-hover:text-primary transition uppercase tracking-tight">{m.title}</p>
+                  <p className="text-[10px] text-gray-500 font-bold mb-2">⭐ {m.imdb_rating || 'N/A'} · {m.release_date?.slice(0, 4)}</p>
+                  <p className="text-[10px] text-gray-600 line-clamp-2 leading-relaxed">{m.overview}</p>
+                </div>
+              </Link>
+            )) : (
+              <div className="p-10 text-center opacity-20">
+                <Film className="h-12 w-12 mx-auto mb-2" />
+                <p className="text-xs">No similar titles</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+```
+
+
+3. Real-Time WebSocket Global Chat (React.js / Frontend)
+The `GlobalChat.jsx` component connects users to the Python FastAPI backend via raw WebSockets. It intercepts incoming JSON payloads and dynamically updates the interface's local state, creating a seamless real-time messaging experience.
+
+```javascript
+  useEffect(() => {
+    if (!user) return;
+
+    // Connect to WebSocket node
+    const wsUrl = import.meta.env.VITE_WS_URL || "ws://localhost:8000";
+    const socket = new WebSocket(`${wsUrl}/chat/ws/${user.id}`);
+    ws.current = socket;
+
+    socket.onopen = () => setIsConnected(true);
+    socket.onclose = () => setIsConnected(false);
+
+    // Reactively intercept incoming messages
+    socket.onmessage = (event) => {
+      const newMsg = JSON.parse(event.data);
+      if (newMsg.receiver_id === "global") {
+        setMessages((prev) => [...prev, newMsg]);
+      }
+    };
+
+    return () => {
+      socket.close(); // Clean up on component unmount
+    };
+  }, [user]);
+
+  const sendMessage = (e) => {
+    e.preventDefault();
+    if (input.trim() && ws.current && isConnected) {
+      const messagePayload = {
+        to: "global",
+        content: input,
+      };
+      // Transmit directly via raw socket
+      ws.current.send(JSON.stringify(messagePayload));
+      setInput("");
+    }
+  };
+```
+
+4. Application Theming (Tailwind CSS Configuration)
+MovieMate completely avoids traditional bloated CSS files by relying on Tailwind CSS's utility functions. The primary color palette (mimicking a premium dark-mode cinema experience) is injected globally via `tailwind.config.js` and `index.css`.
+
+`tailwind.config.js`
+```javascript
+/** @type {import('tailwindcss').Config} */
+export default {
+    content: [
+        "./index.html",
+        "./src/**/*.{js,ts,jsx,tsx}",
+    ],
+    theme: {
+        extend: {
+            colors: {
+                primary: "#E50914", // Netflix Red-ish Accent
+                secondary: "#141414", // Deep Dark Background
+                accent: "#46d369", // Success Green
+            }
+        },
+    },
+    plugins: [],
+}
+```
+
+`index.css`
+```css
+@import "tailwindcss";
+
+@layer base {
+  body {
+    @apply bg-secondary text-white font-sans antialiased;
+  }
+}
+
+/* Hide scrollbar structurally for Horizontal Carousels */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+```
+
+
+CONCLUSION
+
+The MovieMate Recommendation System exemplifies how modern decoupled web technologies can utterly transform digital curation. It actively replaces the archaic nature of siloed rating forums and disjointed streaming sites by offering a centralized, lightning-fast platform engineered to be visually spectacular and deeply social.
+
+By utilizing Python's FastAPI framework for backend resilience, MongoDB for robust and inherently scalable NoSQL data structures, and the Google Gemini API for highly bespoke algorithmic curation, MovieMate possesses immense computational strength. Furthermore, by projecting that power through a beautiful, glassmorphic React interface decorated vividly with Tailwind CSS, MovieMate masks complex data operations beneath a seamless, universally compatible UI. 
+
+With robust multi-mirror streaming embedded natively and immediate global WebSocket chatter, MovieMate transcends typical academic projects to stand forth as a promising, professional-grade platform ready to revolutionize movie recommendations and real-time cinematic entertainment.

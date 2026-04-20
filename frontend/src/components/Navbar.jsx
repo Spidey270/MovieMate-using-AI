@@ -23,6 +23,10 @@ export default function Navbar() {
   const [unreadCount, setUnreadCount] = useState(0);
   const notifRef = useRef(null);
 
+  // Profile Dropdown State
+  const [showProfile, setShowProfile] = useState(false);
+  const profileRef = useRef(null);
+
   // Close dropdowns on click outside
   useEffect(() => {
     function handleClickOutside(event) {
@@ -31,6 +35,9 @@ export default function Navbar() {
       }
       if (notifRef.current && !notifRef.current.contains(event.target)) {
         setShowNotifs(false);
+      }
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
+        setShowProfile(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -303,29 +310,42 @@ export default function Navbar() {
                   )}
                 </div>
 
-                <div className="group relative">
-                  <Link to="/profile">
-                    <button className="flex items-center gap-2">
-                      <div className="flex h-8 w-8 items-center justify-center rounded-sm bg-primary font-bold text-white">
-                        {user?.username?.[0]?.toUpperCase()}
-                      </div>
-                    </button>
-                  </Link>
-
-                  <div className="absolute right-0 mt-2 hidden w-48 rounded bg-black/90 p-2 shadow-xl ring-1 ring-white/20 group-hover:block">
-                    <div className="px-4 py-2 text-sm text-gray-300">
-                      Logged in as{" "}
-                      <span className="text-white">{user?.username}</span>
+                <div ref={profileRef} className="relative">
+                  <button
+                    onClick={() => setShowProfile(!showProfile)}
+                    className="flex items-center gap-2"
+                  >
+                    <div className="flex h-8 w-8 items-center justify-center rounded-sm bg-primary font-bold text-white">
+                      {user?.username?.[0]?.toUpperCase()}
                     </div>
-                    <hr className="my-1 border-gray-700" />
-                    <button
-                      onClick={logout}
-                      className="flex w-full items-center gap-2 rounded px-4 py-2 text-sm text-red-500 hover:bg-gray-800"
-                    >
-                      <LogOut className="h-4 w-4" />
-                      Sign out
-                    </button>
-                  </div>
+                  </button>
+
+                  {showProfile && (
+                    <div className="absolute right-0 mt-2 w-48 rounded bg-black/90 p-2 shadow-xl ring-1 ring-white/20">
+                      <div className="px-4 py-2 text-sm text-gray-300">
+                        Logged in as{" "}
+                        <span className="text-white">{user?.username}</span>
+                      </div>
+                      <hr className="my-1 border-gray-700" />
+                      <Link
+                        to="/profile"
+                        className="flex w-full items-center gap-2 rounded px-4 py-2 text-sm text-gray-300 hover:bg-gray-800"
+                        onClick={() => setShowProfile(false)}
+                      >
+                        My Profile
+                      </Link>
+                      <button
+                        onClick={() => {
+                          logout();
+                          setShowProfile(false);
+                        }}
+                        className="flex w-full items-center gap-2 rounded px-4 py-2 text-sm text-red-500 hover:bg-gray-800"
+                      >
+                        <LogOut className="h-4 w-4" />
+                        Sign out
+                      </button>
+                    </div>
+                  )}
                 </div>
               </>
             ) : (
