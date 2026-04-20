@@ -146,3 +146,49 @@ async def update_profile_picture(
     updated_user = db.users.find_one({"_id": user_id})
     updated_user["id"] = str(updated_user["_id"])
     return updated_user
+
+
+@router.put("/update-profile", response_model=UserResponse)
+async def update_profile(
+    data: dict,  # Expecting {"username": ?, "email": ?, "current_password": ?, "new_password": ?}
+    current_user: dict = Depends(get_current_user),
+):
+    user_id = current_user["_id"]
+    update_data = {}
+    
+    username = data.get("username")
+    email = data.get("email")
+    current_password = data.get("current_password")
+    new_password = data.get("new_password")
+    
+    # Verify current password if changing email or password
+    if email or new_password:
+        if not current_password:
+            raise HTTPException(status_code=400, detail="Current password required to change email or password")
+        if not security.verify_password(current_password, current_user.get("hashed_password", "")):
+            raise HTTPException(status_code=400, detail="Current password is incorrect")
+    
+    # Check username availability
+    if username and username != current_user.get("username"):
+        if db.users.find_one({"username": username}):
+            raise HTTPException(status_code=400, detail="Username already taken")
+        update_data["username"] = username
+    
+    # Check email availability
+    if email and email != current_user.get("email"):
+        if db.users.find_one({"email": email}):
+            raise HTTPException(status_code=400, detail="Email already registered")
+        update_data["email"] = email
+    
+    # Update password
+    if new_password:
+        update_data["hashed_password"] = security.get_password_hash(new_password)
+    
+    if not update_data:
+        raise HTTPException(status_code=400, detail="No changes provided")
+    
+    db.users.update_one({"_id": user_id}, {"$set": update_data})
+
+    updated_user = db.users.find_one({"_id": user_id})
+    updated_user["id"] = str(updated_user["_id"])
+    return updated_user

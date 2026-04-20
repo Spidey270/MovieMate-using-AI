@@ -6,13 +6,15 @@ import { Button } from "../components/ui/button";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
 import PreferencesModal from "../components/PreferencesModal";
 import ProfilePictureModal from "../components/ProfilePictureModal";
-import { Settings, Camera, Heart, Users } from "lucide-react";
+import EditProfileModal from "../components/EditProfileModal";
+import { Settings, Camera, Heart, Users, User } from "lucide-react";
 
 export default function Profile() {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [showPrefs, setShowPrefs] = useState(false);
   const [showProfilePic, setShowProfilePic] = useState(false);
+  const [showEditProfile, setShowEditProfile] = useState(false);
 
   const handlePrefsSaved = async () => {
     try {
@@ -26,6 +28,10 @@ export default function Profile() {
   const handleProfilePicSaved = (newPicture) => {
     user.profile_picture = newPicture;
     setShowProfilePic(false);
+  };
+
+  const handleEditProfileSaved = () => {
+    window.location.reload();
   };
 
   if (loading) return <LoadingSpinner />;
@@ -83,6 +89,13 @@ export default function Profile() {
               <p className="text-gray-400 mb-6">{user?.email}</p>
               <div className="flex gap-3 justify-center md:justify-start">
                 <Button
+                  onClick={() => setShowEditProfile(true)}
+                  variant="outline"
+                  className="bg-zinc-800 border-zinc-700 hover:bg-zinc-700 h-10 px-4"
+                >
+                  <User className="mr-2 h-4 w-4" /> Edit Profile
+                </Button>
+                <Button
                   onClick={() => setShowProfilePic(true)}
                   variant="outline"
                   className="bg-zinc-800 border-zinc-700 hover:bg-zinc-700 h-10 px-4"
@@ -94,7 +107,7 @@ export default function Profile() {
                   variant="outline"
                   className="bg-zinc-800 border-zinc-700 hover:bg-zinc-700 h-10 px-6"
                 >
-                  <Settings className="mr-2 h-4 w-4" /> Edit Preferences
+                  <Settings className="mr-2 h-4 w-4" /> Preferences
                 </Button>
               </div>
             </div>
@@ -159,6 +172,12 @@ export default function Profile() {
         isOpen={showProfilePic}
         onClose={() => setShowProfilePic(false)}
         onSave={handleProfilePicSaved}
+      />
+
+      <EditProfileModal
+        isOpen={showEditProfile}
+        onClose={() => setShowEditProfile(false)}
+        onSave={handleEditProfileSaved}
       />
     </div>
   );
