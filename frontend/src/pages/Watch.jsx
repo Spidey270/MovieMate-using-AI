@@ -38,10 +38,11 @@ export default function Watch() {
   const [relatedMovies, setRelatedMovies] = useState([]);
 
   const mirrors = [
-    { name: "Super Mirror (XYZ)", url: (id) => `https://vidsrc.xyz/embed/movie/${id}` },
-    { name: "Fast Mirror (ME)", url: (id) => `https://vidsrc.me/embed/movie?imdb=${id}` },
-    { name: "Ultra Mirror (TO)", url: (id) => `https://vidsrc.to/embed/movie/${id}` },
-    { name: "Legacy Mirror (2E)", url: (id) => `https://www.2embed.cc/embed/${id}` },
+    { name: "StreamFlix", url: (id) => `https://vidsrc.to/embed/movie/${id}` },
+    { name: "MovieHub", url: (id) => `https://vidsrc.xyz/embed/movie/${id}` },
+    { name: "CinemaStream", url: (id) => `https://player.vidsrc.nl/embed/${id}` },
+    { name: "FilmFlix", url: (id) => `https://v2.vidsrc.ml/embed/${id}` },
+    { name: "VidPlay", url: (id) => `https://www.2embed.cc/embed/${id}` },
   ];
 
   useEffect(() => {

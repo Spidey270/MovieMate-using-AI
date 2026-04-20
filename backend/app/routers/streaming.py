@@ -95,5 +95,13 @@ async def get_streaming_links(movie_id: str):
             {"name": "Disney+",   "url": f"https://www.disneyplus.com/en-gb/search?q={encoded}",                  "color": "#0063E5", "logo": "D+"},
             {"name": "Apple TV+", "url": f"https://tv.apple.com/search?term={encoded}",                           "color": "#555555", "logo": "🍎"},
             {"name": "HBO Max",   "url": f"https://play.max.com/search?q={encoded}",                              "color": "#5822B4", "logo": "M"},
+            {"name": "Hulu",     "url": f"https://www.hulu.com/search?q={encoded}",                              "color": "#1CE783", "logo": "H"},
+            {"name": "Peacock",   "url": f"https://www.peacocktv.com/search?q={encoded}",                        "color": "#000000", "logo": "P"},
+        ],
+        "mirrors": [
+            {"name": "StreamFlix", "url": f"https://vidsrc.to/embed/movie/{movie.get('imdb_id', '')}"},
+            {"name": "MovieHub", "url": f"https://vidsrc.xyz/embed/movie/{movie.get('imdb_id', '')}"},
+            {"name": "CinemaStream", "url": f"https://player.vidsrc.nl/embed/{movie.get('imdb_id', '')}"},
+            {"name": "FilmFlix", "url": f"https://v2.vidsrc.ml/embed/{movie.get('imdb_id', '')}"},
         ],
     }
