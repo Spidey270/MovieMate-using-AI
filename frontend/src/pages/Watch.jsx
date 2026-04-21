@@ -1,17 +1,19 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { api, useAuth } from "../context/AuthContext";
-import { Play, Film, Star, Clock, Globe, Plus, Check,
-         Tv, ChevronRight, ArrowLeft, Lock, MessageCircle, Send, User, CornerDownRight, X } from "lucide-react";
+import {
+  Play, Film, Star, Clock, Globe, Plus, Check,
+  Tv, ChevronRight, ArrowLeft, Lock, MessageCircle, Send, User, CornerDownRight, X
+} from "lucide-react";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
 
 // Platform brand colors
 const PLATFORM_STYLES = {
-  Netflix:   "bg-[#E50914]",
-  Prime:     "bg-[#00A8E0]",
+  Netflix: "bg-[#E50914]",
+  Prime: "bg-[#00A8E0]",
   "Disney+": "bg-[#0063E5]",
-  "Apple TV+":"bg-zinc-600",
-  "HBO Max":  "bg-[#5822B4]",
+  "Apple TV+": "bg-zinc-600",
+  "HBO Max": "bg-[#5822B4]",
 };
 
 function getYouTubeEmbedUrl(url) {
@@ -67,7 +69,7 @@ function CommentItem({ comment, onReply, user }) {
               Reply
             </button>
           )}
-          
+
           {/* Reply Form */}
           {showReplyForm && (
             <form onSubmit={handleSubmitReply} className="mt-3 flex gap-2">
@@ -166,7 +168,7 @@ export default function Watch() {
         }
 
         if (user) {
-          api.post(`/streaming/watch/${id}`).catch(() => {});
+          api.post(`/streaming/watch/${id}`).catch(() => { });
         }
 
         if (user) {
@@ -258,8 +260,8 @@ export default function Watch() {
   );
 
   const trailerEmbed = getYouTubeEmbedUrl(movie.trailer_url);
-  const hasFullMovie  = !!(movie.imdb_id || movie.archive_url);
-  const hasTrailer    = !!trailerEmbed;
+  const hasFullMovie = !!(movie.imdb_id || movie.archive_url);
+  const hasTrailer = !!trailerEmbed;
 
   // Final Embed logic using multiple mirrors
   const embedSrc = activeTab === "full" && hasFullMovie && user
@@ -287,29 +289,27 @@ export default function Watch() {
             {hasFullMovie && (
               <button
                 onClick={() => user ? setActiveTab("full") : navigate("/login")}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-t-lg text-sm font-semibold transition ${
-                  activeTab === "full"
-                    ? "bg-black text-white"
-                    : "text-gray-500 hover:text-gray-300"
-                }`}
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-t-lg text-sm font-semibold transition ${activeTab === "full"
+                  ? "bg-black text-white"
+                  : "text-gray-500 hover:text-gray-300"
+                  }`}
               >
                 <Tv className="h-4 w-4" />
                 Full Movie
                 {!user ? (
-                   <span className="text-[10px] bg-red-500/20 text-red-500 px-1.5 py-0.5 rounded-full ml-1 font-bold">🔒 LOGIN REQUIRE</span>
+                  <span className="text-[10px] bg-red-500/20 text-red-500 px-1.5 py-0.5 rounded-full ml-1 font-bold">🔒 LOGIN REQUIRE</span>
                 ) : (
-                   <span className="text-[10px] bg-green-500/20 text-green-400 px-1.5 py-0.5 rounded-full border border-green-500/30 font-bold">FREE</span>
+                  <span className="text-[10px] bg-green-500/20 text-green-400 px-1.5 py-0.5 rounded-full border border-green-500/30 font-bold">FREE</span>
                 )}
               </button>
             )}
             {hasTrailer && (
               <button
                 onClick={() => setActiveTab("trailer")}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-t-lg text-sm font-semibold transition ${
-                  activeTab === "trailer"
-                    ? "bg-black text-white"
-                    : "text-gray-500 hover:text-gray-300"
-                }`}
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-t-lg text-sm font-semibold transition ${activeTab === "trailer"
+                  ? "bg-black text-white"
+                  : "text-gray-500 hover:text-gray-300"
+                  }`}
               >
                 <Play className="h-4 w-4" />
                 Trailer
@@ -320,13 +320,13 @@ export default function Watch() {
           {/* Video Player or Login Wall */}
           <div className="relative bg-black flex-1 min-h-[400px]" style={{ aspectRatio: "16/9" }}>
             {activeTab === "full" && !user ? (
-               <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center bg-gradient-to-b from-zinc-900 to-black">
-                 <Lock className="h-16 w-16 text-primary mb-6" />
-                 <h2 className="text-3xl font-bold mb-3">Streaming is for Members</h2>
-                 <p className="text-gray-400 mb-8 max-w-sm">Join MovieMate premium community to unlock full movies, 4K streaming and social watches.</p>
-                 <Link to="/login" className="bg-primary hover:bg-red-700 text-white font-bold px-10 py-3 rounded-full transition text-lg shadow-xl">Login Now</Link>
-                 <button onClick={() => setActiveTab("trailer")} className="mt-4 text-gray-500 hover:text-white text-sm underline underline-offset-4">Or watch the trailer first</button>
-               </div>
+              <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center bg-gradient-to-b from-zinc-900 to-black">
+                <Lock className="h-16 w-16 text-primary mb-6" />
+                <h2 className="text-3xl font-bold mb-3">Streaming is for Members</h2>
+                <p className="text-gray-400 mb-8 max-w-sm">Join MovieMate premium community to unlock full movies, 4K streaming and social watches.</p>
+                <Link to="/login" className="bg-primary hover:bg-red-700 text-white font-bold px-10 py-3 rounded-full transition text-lg shadow-xl">Login Now</Link>
+                <button onClick={() => setActiveTab("trailer")} className="mt-4 text-gray-500 hover:text-white text-sm underline underline-offset-4">Or watch the trailer first</button>
+              </div>
             ) : embedSrc ? (
               <>
                 {activeTab === "full" && (
@@ -336,11 +336,10 @@ export default function Watch() {
                       <button
                         key={m.name}
                         onClick={() => setActiveMirror(idx)}
-                        className={`text-[10px] font-black px-2 py-1 rounded transition ${
-                          activeMirror === idx
-                            ? "bg-primary text-white"
-                            : "text-gray-500 hover:text-white"
-                        }`}
+                        className={`text-[10px] font-black px-2 py-1 rounded transition ${activeMirror === idx
+                          ? "bg-primary text-white"
+                          : "text-gray-500 hover:text-white"
+                          }`}
                       >
                         {idx + 1}
                       </button>
@@ -394,11 +393,10 @@ export default function Watch() {
               <div className="flex md:flex-col gap-3 flex-shrink-0">
                 <button
                   onClick={handleWishlist}
-                  className={`flex items-center gap-3 px-6 py-3 rounded-xl text-sm font-bold transition shadow-lg ${
-                    isInWishlist
-                      ? "bg-zinc-800 text-gray-400 hover:bg-zinc-700 border border-white/10"
-                      : "bg-primary hover:bg-red-700 text-white shadow-primary/20"
-                  }`}
+                  className={`flex items-center gap-3 px-6 py-3 rounded-xl text-sm font-bold transition shadow-lg ${isInWishlist
+                    ? "bg-zinc-800 text-gray-400 hover:bg-zinc-700 border border-white/10"
+                    : "bg-primary hover:bg-red-700 text-white shadow-primary/20"
+                    }`}
                 >
                   {isInWishlist ? <><Check className="h-4 w-4" /> Already in Wishlist</> : <><Plus className="h-4 w-4" /> Quick Add Wishlist</>}
                 </button>
@@ -499,7 +497,7 @@ export default function Watch() {
         {/* ─── SIDEBAR: Up Next ─── */}
         <div className="lg:w-80 xl:w-96 bg-zinc-950 border-l border-white/5 overflow-y-auto flex-shrink-0">
           <div className="p-5 border-b border-white/5 flex items-center justify-between">
-            <h3 className="font-black text-[10px] text-gray-600 uppercase tracking-widest">More Recommendations</h3>
+            <h3 className="font-black text-[10px] text-gray-600 uppercase tracking-widest">MORE LIKE THIS</h3>
             <span className="h-1 w-8 bg-primary rounded-full" />
           </div>
           <div className="divide-y divide-white/5">

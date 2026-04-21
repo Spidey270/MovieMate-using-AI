@@ -27,6 +27,7 @@ import ManageMovies from "./pages/admin/ManageMovies";
 import ModerateReviews from "./pages/admin/ModerateReviews";
 import UserDetail from "./pages/admin/UserDetail";
 import Watch from "./pages/Watch";
+import Footer from "./components/Footer";
 
 // ProtectedRoute definition...
 const ProtectedRoute = ({ children }) => {
@@ -45,7 +46,9 @@ function App() {
   return (
     <Router>
       <AuthProvider>
-        <Routes>
+        <div className="flex flex-col min-h-screen">
+          <main className="flex-grow flex flex-col">
+            <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/" element={<Home />} />
@@ -157,7 +160,10 @@ function App() {
 
 
           <Route path="/user/:id" element={<UserProfile />} />
-        </Routes>
+            </Routes>
+          </main>
+          <Footer />
+        </div>
       </AuthProvider>
     </Router>
   );
