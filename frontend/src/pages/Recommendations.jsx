@@ -18,10 +18,11 @@ export default function Recommendations() {
   const fetchRecs = useCallback(async () => {
     try {
       const res = await api.get("/recommendations");
-      setRecommendations(res.data);
+      setRecommendations(res.data || []);
       setLastRefreshed(new Date());
     } catch (err) {
       console.error("Failed to fetch recommendations", err);
+      setRecommendations([]);
     } finally {
       setLoading(false);
     }

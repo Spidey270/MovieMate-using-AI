@@ -193,6 +193,42 @@ Respond ONLY with valid JSON in this exact format — no markdown, no explanatio
 
 # ─── Main entry point ─────────────────────────────────────────────────────────
 
+def rank_without_gemini(profile: dict, candidates: list, limit: int = 15) -> list:
+    """Fallback ranking when Gemini is unavailable."""
+    from collections import Counter
+    
+    loved = Counter(profile.get("loved_genres", []))
+    wishlist = Counter(profile.get("wishlist_genres", []))
+    disliked = set(profile.get("disliked_genres", []))
+    
+    scores = []
+    for m in candidates:
+        score = 0
+        movie_genres = set(m.get("genres", []))
+        
+        # Positive genres
+        for g in movie_genres:
+            score += loved.get(g, 0) * 3
+            score += wishlist.get(g, 0) * 2
+        
+        # Penalize disliked genres
+        if movie_genres & disliked:
+            score -= 5
+        
+        # Rating bonus
+        score += (m.get("rating") or 0) * 0.5
+        
+        scores.append((score, -candidates.index(m), m))
+    
+    scores.sort(reverse=True)
+    top = scores[:limit]
+    
+    return [
+        {"id": m["id"], "reason": f"Recommended for you based on your preferences"}
+        for _, _, m in top
+    ]
+
+
 async def generate_smart_recommendations(user_id: str, limit: int = 15):
     """Full pipeline: profile → candidates → Gemini → cache → return."""
     profile = build_user_profile(user_id)
@@ -205,8 +241,10 @@ async def generate_smart_recommendations(user_id: str, limit: int = 15):
     if not candidates:
         return []
 
-    # Try Gemini ranking
+    # Try Gemini ranking, fallback to basic scoring
     picks = rank_with_gemini(profile, candidates, limit=limit)
+    if not picks:
+        picks = rank_without_gemini(profile, candidates, limit=limit)
 
     # Map picks back to full movie docs
     pick_map = {c["id"]: c for c in candidates}
