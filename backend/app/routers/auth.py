@@ -5,10 +5,6 @@ from app.db.database import db
 from app.models.user import UserCreate, UserResponse, UserLogin
 from app.core import security, config
 from bson import ObjectId
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-import os
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
@@ -196,73 +192,3 @@ async def update_profile(
     updated_user = db.users.find_one({"_id": user_id})
     updated_user["id"] = str(updated_user["_id"])
     return updated_user
-
-
-def send_verification_email(to_email: str, token: str):
-    """Send verification email"""
-    verify_url = f"{config.settings.FRONTEND_URL}/verify-email?token={token}"
-    
-    html_body = f"""
-    <html>
-    <body style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <div style="background: linear-gradient(135deg, #e50914, #b20710); padding: 30px; text-align: center;">
-            <h1 style="color: white; margin: 0;">MovieMate</h1>
-        </div>
-        <div style="padding: 30px; background: #f5f5f5;">
-            <h2>Verify Your Email</h2>
-            <p>Welcome to MovieMate! Please verify your email address to get started.</p>
-            <a href="{verify_url}" style="display: inline-block; background: #e50914; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; margin: 20px 0;">
-                Verify Email
-            </a>
-            <p style="color: #666; font-size: 14px;">Or copy this link: {verify_url}</p>
-        </div>
-    </body>
-    </html>
-    """
-    
-    if os.getenv("SMTP_USER") and os.getenv("SMTP_PASSWORD"):
-        try:
-            msg = MIMEMultipart()
-            msg["From"] = config.settings.FROM_EMAIL
-            msg["To"] = to_email
-            msg["Subject"] = "Verify your MovieMate account"
-            msg.attach(MIMEText(html_body, "html"))
-            
-            with smtplib.SMTP(config.settings.SMTP_HOST, config.settings.SMTP_PORT) as server:
-                server.starttls()
-                server.login(config.settings.SMTP_USER, config.settings.SMTP_PASSWORD)
-                server.sendmail(config.settings.FROM_EMAIL, to_email, msg.as_string())
-        except Exception as e:
-            print(f"Email send failed: {e}")
-    else:
-        print(f"[DEV] Verification link: {verify_url}")
-
-
-@router.post("/resend-verification")
-async def resend_verification_email(current_user: dict = Depends(get_current_user)):
-    """Resend verification email"""
-    if current_user.get("is_verified", False):
-        return {"message": "Email already verified"}
-    
-    email = current_user.get("email")
-    token = security.create_email_verification_token(email)
-    send_verification_email(email, token)
-    return {"message": "Verification email sent"}
-
-
-@router.post("/verify-email")
-async def verify_email_endpoint(token: str):
-    """Verify email with token"""
-    email = security.verify_email_token(token)
-    if not email:
-        raise HTTPException(status_code=400, detail="Invalid or expired token")
-    
-    result = db.users.update_one(
-        {"email": email}, 
-        {"$set": {"is_verified": True}}
-    )
-    
-    if result.modified_count == 0:
-        raise HTTPException(status_code=400, detail="User not found or already verified")
-    
-    return {"message": "Email verified successfully!"}

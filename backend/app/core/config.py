@@ -9,14 +9,6 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     MONGO_URI: str = "mongodb://localhost:27017"
     DB_NAME: str = "moviemate"
-    
-    # Email settings
-    SMTP_HOST: str = "smtp.gmail.com"
-    SMTP_PORT: int = 587
-    SMTP_USER: str = ""
-    SMTP_PASSWORD: str = ""
-    FROM_EMAIL: str = "noreply@moviemate.com"
-    FRONTEND_URL: str = "http://localhost:5173"
 
     class Config:
         env_file = ".env"

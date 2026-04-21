@@ -28,7 +28,6 @@ class UserBase(BaseModel):
     favorite_languages: List[str] = []
     is_admin: bool = False
     profile_picture: str | None = None
-    is_verified: bool = False
 
 
 class UserCreate(UserBase):
