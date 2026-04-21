@@ -1,13 +1,14 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Play, Star } from "lucide-react";
 
 export default function MovieCard({ movie }) {
+  const navigate = useNavigate();
   const posterUrl = movie.poster_url
     ? movie.poster_url
     : `https://ui-avatars.com/api/?name=${encodeURIComponent(movie.title)}&background=18181b&color=fff&size=300`;
 
   return (
-    <Link to={`/movie/${movie.id}`} className="group block w-full">
+    <div onClick={() => navigate(`/movie/${movie.id}`)} className="group block w-full cursor-pointer relative">
       {/* Outer: uniform aspect ratio, handles the hover scale — NO overflow-hidden so scale isn't clipped */}
       <div className="relative w-full aspect-[2/3] rounded-xl bg-zinc-800 shadow-lg transition-transform duration-300 ease-out group-hover:scale-105 group-hover:shadow-2xl group-hover:z-10">
 
@@ -50,14 +51,21 @@ export default function MovieCard({ movie }) {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="flex items-center gap-1.5 bg-primary text-white text-xs font-bold px-3 py-1.5 rounded-full">
+            <button 
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                navigate(`/watch/${movie.id}`);
+              }}
+              className="flex items-center gap-1.5 bg-primary text-white text-xs font-bold px-3 py-1.5 rounded-full hover:bg-primary/90 transition-colors pointer-events-auto"
+            >
               <Play className="h-3 w-3 fill-current" /> Watch
-            </span>
+            </button>
             <span className="text-[10px] text-gray-400">More Info →</span>
           </div>
         </div>
 
       </div>
-    </Link>
+    </div>
   );
 }
