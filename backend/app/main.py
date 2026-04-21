@@ -13,6 +13,7 @@ from app.routers import (
     users,
     admin,
     streaming,
+    comments,
 )
 
 app = FastAPI(title="MovieMate API", version="1.0.0")
@@ -53,6 +54,7 @@ app.include_router(recommendations.router)
 app.include_router(users.router)
 app.include_router(admin.router)
 app.include_router(streaming.router)
+app.include_router(comments.router)
 
 # Register websocket explicitly on app to avoid APIRouter prefix bugs/conflicts
 app.websocket("/chat/ws/{client_id}")(chat.websocket_endpoint)
