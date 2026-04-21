@@ -9,45 +9,17 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 function MovieRow({ title, movies, showGenerate = false, onGenerate = null }) {
   const containerRef = useRef(null);
-  const [showLeft, setShowLeft] = useState(false);
-  const [showRight, setShowRight] = useState(true);
-  const scrollTimeoutRef = useRef(null);
-
-  const checkScroll = () => {
-    if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
-    scrollTimeoutRef.current = setTimeout(() => {
-      if (containerRef.current) {
-        const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
-        setShowLeft(scrollLeft > 5);
-        setShowRight(scrollLeft < scrollWidth - clientWidth - 15);
-      }
-    }, 50);
-  };
 
   const scroll = (direction) => {
     if (containerRef.current) {
-      const scrollAmount = containerRef.current.clientWidth * 0.7;
-      containerRef.current.scrollBy({
+      const container = containerRef.current;
+      const scrollAmount = container.clientWidth * 0.6;
+      container.scrollBy({
         left: direction === "left" ? -scrollAmount : scrollAmount,
         behavior: "smooth",
       });
-      setTimeout(checkScroll, 350);
     }
   };
-
-  useEffect(() => {
-    setTimeout(checkScroll, 100);
-    const container = containerRef.current;
-    if (container) {
-      container.addEventListener("scroll", checkScroll, { passive: true });
-      window.addEventListener("resize", checkScroll);
-      return () => {
-        container.removeEventListener("scroll", checkScroll);
-        window.removeEventListener("resize", checkScroll);
-        if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
-      };
-    }
-  }, []);
 
   return (
     <section>
@@ -82,14 +54,12 @@ function MovieRow({ title, movies, showGenerate = false, onGenerate = null }) {
       </div>
       <div className="relative group">
         {/* Scroll Left */}
-        {showLeft && (
-          <button
-            onClick={() => scroll("left")}
-            className="absolute left-0 top-0 bottom-4 z-10 w-8 bg-black/60 hover:bg-black/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
-          >
-            <ChevronLeft className="h-6 w-6 text-white" />
-          </button>
-        )}
+        <button
+          onClick={() => scroll("left")}
+          className="absolute left-0 top-0 bottom-4 z-10 w-8 bg-black/60 hover:bg-black/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
+        >
+          <ChevronLeft className="h-6 w-6 text-white" />
+        </button>
         
         {/* Movies Container */}
         <div
@@ -104,14 +74,12 @@ function MovieRow({ title, movies, showGenerate = false, onGenerate = null }) {
         </div>
 
         {/* Scroll Right */}
-        {showRight && (
-          <button
-            onClick={() => scroll("right")}
-            className="absolute right-0 top-0 bottom-4 z-10 w-8 bg-black/60 hover:bg-black/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
-          >
-            <ChevronRight className="h-6 w-6 text-white" />
-          </button>
-        )}
+        <button
+          onClick={() => scroll("right")}
+          className="absolute right-0 top-0 bottom-4 z-10 w-8 bg-black/60 hover:bg-black/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
+        >
+          <ChevronRight className="h-6 w-6 text-white" />
+        </button>
       </div>
     </section>
   );
