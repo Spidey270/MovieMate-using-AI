@@ -1,9 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { api, useAuth } from "../context/AuthContext";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { X, User, Mail, Lock, Film } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 
 export default function AuthModal({ isOpen, onClose, initialView = "login" }) {
   const [view, setView] = useState(initialView); // "login" | "register"
@@ -12,8 +11,19 @@ export default function AuthModal({ isOpen, onClose, initialView = "login" }) {
   const [username, setUsername] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
   const { login } = useAuth();
-  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isOpen) {
+      setIsVisible(true);
+      setIsAnimating(true);
+    } else {
+      setIsAnimating(false);
+      setTimeout(() => setIsVisible(false), 300);
+    }
+  }, [isOpen]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -45,11 +55,16 @@ export default function AuthModal({ isOpen, onClose, initialView = "login" }) {
     }
   };
 
-  if (!isOpen) return null;
+  if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
-      <div className="relative w-full max-w-md mx-4 rounded-2xl bg-gradient-to-b from-zinc-900 to-black border border-zinc-800 shadow-2xl overflow-hidden">
+    <div 
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm transition-opacity duration-300 ${isOpen ? "opacity-100" : "opacity-0"}`}
+      onClick={(e) => e.target === e.currentTarget && onClose()}
+    >
+      <div className={`relative w-full max-w-md mx-4 rounded-2xl bg-gradient-to-b from-zinc-900 to-black border border-zinc-800 shadow-2xl overflow-hidden transition-all duration-300 ${isOpen ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 translate-y-4"}`}
+        style={{ transform: isOpen ? "scale(1)" : "scale(0.95)", transformOrigin: "center" }}
+      >
         {/* Background Effect */}
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1574267432553-4b4628081c31?w=800')] bg-cover bg-center opacity-20" />
         
