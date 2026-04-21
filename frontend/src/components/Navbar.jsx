@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth, api } from "../context/AuthContext";
 import { Search, Bell, LogOut, X, Menu, Home, Film, Heart, Users, Sparkles, MessageCircle, Crown, ChevronLeft } from "lucide-react";
 import { Button } from "./ui/button";
+import AuthModal from "./AuthModal";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -26,6 +27,10 @@ export default function Navbar() {
   // Profile Dropdown State
   const [showProfile, setShowProfile] = useState(false);
   const profileRef = useRef(null);
+
+  // Auth Modal State
+  const [showAuth, setShowAuth] = useState(false);
+  const [authView, setAuthView] = useState("login");
 
   // Close dropdowns on click outside
   useEffect(() => {
@@ -358,24 +363,29 @@ export default function Navbar() {
               </>
             ) : (
               <div className="flex gap-4">
-                <Link to="/login">
-                  <Button
-                    variant="ghost"
-                    className="text-white hover:text-gray-300"
-                  >
-                    Login
-                  </Button>
-                </Link>
-                <Link to="/register">
-                  <Button className="bg-primary hover:bg-red-700 text-white">
-                    Sign Up
-                  </Button>
-                </Link>
+                <button
+                  onClick={() => { setAuthView("login"); setShowAuth(true); }}
+                  className="text-white hover:text-gray-300 text-sm font-medium px-3 py-2"
+                >
+                  Login
+                </button>
+                <button
+                  onClick={() => { setAuthView("register"); setShowAuth(true); }}
+                  className="bg-primary hover:bg-red-700 text-white text-sm font-medium px-4 py-2 rounded"
+                >
+                  Sign Up
+                </button>
               </div>
             )}
           </div>
         </div>
       </nav>
+
+      <AuthModal
+        isOpen={showAuth}
+        onClose={() => setShowAuth(false)}
+        initialView={authView}
+      />
     </>
   );
 }
