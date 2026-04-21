@@ -32,6 +32,29 @@ async def mark_as_read(
     return {"status": "marked as read"}
 
 
+@router.put("/read-all")
+async def mark_all_as_read(current_user: dict = Depends(get_current_user)):
+    user_id = str(current_user["_id"])
+    db.notifications.update_many(
+        {"user_id": user_id, "is_read": False},
+        {"$set": {"is_read": True}},
+    )
+    return {"status": "all marked as read"}
+
+
+@router.delete("/{notification_id}")
+async def delete_notification(
+    notification_id: str, current_user: dict = Depends(get_current_user)
+):
+    user_id = str(current_user["_id"])
+    result = db.notifications.delete_one(
+        {"_id": ObjectId(notification_id), "user_id": user_id}
+    )
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Notification not found")
+    return {"status": "deleted"}
+
+
 # Internal helper to create notification
 def create_notification(
     user_id: str, message: str, type: str = "info", link: str = None

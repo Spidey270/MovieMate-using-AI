@@ -17,6 +17,7 @@ import Friends from "./pages/Friends";
 import GlobalChat from "./pages/GlobalChat";
 import DirectMessage from "./pages/DirectMessage";
 import Messages from "./pages/Messages";
+import Notifications from "./pages/Notifications";
 import Recommendations from "./pages/Recommendations";
 import AdminRoute from "./components/AdminRoute";
 import Dashboard from "./pages/admin/Dashboard";
@@ -102,6 +103,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Recommendations />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/notifications"
+            element={
+              <ProtectedRoute>
+                <Notifications />
               </ProtectedRoute>
             }
           />

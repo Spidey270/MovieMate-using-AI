@@ -81,6 +81,16 @@ export default function Navbar() {
     }
   };
 
+  const markAllAsRead = async () => {
+    try {
+      await api.put("/notifications/read-all");
+      setNotifications((prev) => prev.map((n) => ({ ...n, is_read: true })));
+      setUnreadCount(0);
+    } catch (error) {
+      console.error("Failed to mark all as read");
+    }
+  };
+
   // Handle Search
   useEffect(() => {
     const handleSearch = async () => {
@@ -117,6 +127,7 @@ export default function Navbar() {
           { to: "/wishlist", label: "My List", icon: Heart },
           { to: "/friends", label: "Friends", icon: Users },
           { to: "/messages", label: "Messages", icon: MessageSquare },
+          { to: "/notifications", label: "Notifications", icon: Bell },
           { to: "/recommendations", label: "For You", icon: Sparkles, highlight: true },
           { to: "/global-chat", label: "Global Chat", icon: MessageCircle, red: true },
           ...(user?.is_admin ? [{ to: "/admin/dashboard", label: "Admin", icon: Crown, admin: true }] : []),
@@ -285,32 +296,51 @@ export default function Navbar() {
 
                   {showNotifs && (
                     <div className="absolute right-0 mt-2 w-80 rounded bg-black/95 p-2 shadow-2xl ring-1 ring-white/20 max-h-96 overflow-y-auto">
-                      <div className="p-2 border-b border-gray-800 font-bold mb-2">
-                        Notifications
+                      <div className="flex items-center justify-between p-2 border-b border-gray-800 mb-2">
+                        <span className="font-bold">Notifications</span>
+                        {unreadCount > 0 && (
+                          <button
+                            onClick={markAllAsRead}
+                            className="text-xs text-primary hover:text-red-400"
+                          >
+                            Mark all read
+                          </button>
+                        )}
                       </div>
                       {notifications.length === 0 ? (
                         <div className="p-4 text-center text-sm text-gray-500">
                           No notifications
                         </div>
                       ) : (
-                        notifications.map((n) => (
-                          <div
-                            key={n.id}
-                            className={`p-3 border-b border-gray-800 text-sm hover:bg-gray-900 cursor-pointer transition ${n.is_read ? "opacity-50" : "opacity-100"}`}
-                            onClick={() => {
-                              markAsRead(n.id);
-                              if (n.link) {
-                                navigate(n.link);
-                                setShowNotifs(false);
-                              }
-                            }}
-                          >
-                            <p className="text-gray-200">{n.message}</p>
-                            <span className="text-xs text-gray-500">
-                              {new Date(n.created_at).toLocaleDateString()}
-                            </span>
-                          </div>
-                        ))
+                        <>
+                          {notifications.slice(0, 5).map((n) => (
+                            <div
+                              key={n.id}
+                              className={`p-3 border-b border-gray-800 text-sm hover:bg-gray-900 cursor-pointer transition ${n.is_read ? "opacity-50" : "opacity-100"}`}
+                              onClick={() => {
+                                markAsRead(n.id);
+                                if (n.link) {
+                                  navigate(n.link);
+                                  setShowNotifs(false);
+                                }
+                              }}
+                            >
+                              <p className="text-gray-200">{n.message}</p>
+                              <span className="text-xs text-gray-500">
+                                {new Date(n.created_at).toLocaleDateString()}
+                              </span>
+                            </div>
+                          ))}
+                          {notifications.length > 5 && (
+                            <Link
+                              to="/notifications"
+                              onClick={() => setShowNotifs(false)}
+                              className="block p-3 text-center text-sm text-primary hover:text-red-400 border-t border-gray-800"
+                            >
+                              View all notifications
+                            </Link>
+                          )}
+                        </>
                       )}
                     </div>
                   )}
@@ -347,6 +377,14 @@ export default function Navbar() {
                         onClick={() => setShowProfile(false)}
                       >
                         My Profile
+                      </Link>
+                      <Link
+                        to="/notifications"
+                        className="flex w-full items-center gap-2 rounded px-4 py-2 text-sm text-gray-300 hover:bg-gray-800"
+                        onClick={() => setShowProfile(false)}
+                      >
+                        <Bell className="h-4 w-4" />
+                        Notifications
                       </Link>
                       <button
                         onClick={() => {
