@@ -1,7 +1,9 @@
 import { Play, Info } from "lucide-react";
 import { Button } from "./ui/button";
+import { useNavigate } from "react-router-dom";
 
 export default function Hero({ movie }) {
+  const navigate = useNavigate();
   if (!movie) return null;
 
   const posterUrl = movie.backdrop_url
@@ -30,13 +32,17 @@ export default function Hero({ movie }) {
         </p>
 
         <div className="flex gap-4">
-          <Button className="flex items-center gap-2 bg-white px-8 py-6 text-xl font-bold text-black hover:bg-gray-200">
+          <Button 
+            onClick={() => navigate(`/watch/${movie.id}`)}
+            className="flex items-center gap-2 bg-white px-8 py-6 text-xl font-bold text-black hover:bg-gray-200 cursor-pointer"
+          >
             <Play className="h-6 w-6 fill-black" />
             Play
           </Button>
           <Button
+            onClick={() => navigate(`/movie/${movie.id}`)}
             variant="secondary"
-            className="flex items-center gap-2 bg-gray-500/70 px-8 py-6 text-xl font-bold text-white hover:bg-gray-500/50"
+            className="flex items-center gap-2 bg-gray-500/70 px-8 py-6 text-xl font-bold text-white hover:bg-gray-500/50 cursor-pointer"
           >
             <Info className="h-6 w-6" />
             More Info
