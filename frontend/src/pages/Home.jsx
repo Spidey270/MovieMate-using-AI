@@ -8,17 +8,20 @@ import PreferencesModal from "../components/PreferencesModal";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 function MovieRow({ title, movies, showGenerate = false, onGenerate = null }) {
-  const scrollRef = useRef(null);
   const containerRef = useRef(null);
   const [showLeft, setShowLeft] = useState(false);
   const [showRight, setShowRight] = useState(true);
+  const scrollTimeoutRef = useRef(null);
 
   const checkScroll = () => {
-    if (containerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
-      setShowLeft(scrollLeft > 0);
-      setShowRight(scrollLeft < scrollWidth - clientWidth - 10);
-    }
+    if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+    scrollTimeoutRef.current = setTimeout(() => {
+      if (containerRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
+        setShowLeft(scrollLeft > 5);
+        setShowRight(scrollLeft < scrollWidth - clientWidth - 15);
+      }
+    }, 50);
   };
 
   const scroll = (direction) => {
@@ -28,21 +31,23 @@ function MovieRow({ title, movies, showGenerate = false, onGenerate = null }) {
         left: direction === "left" ? -scrollAmount : scrollAmount,
         behavior: "smooth",
       });
+      setTimeout(checkScroll, 350);
     }
   };
 
   useEffect(() => {
-    checkScroll();
+    setTimeout(checkScroll, 100);
     const container = containerRef.current;
     if (container) {
-      container.addEventListener("scroll", checkScroll);
+      container.addEventListener("scroll", checkScroll, { passive: true });
       window.addEventListener("resize", checkScroll);
       return () => {
         container.removeEventListener("scroll", checkScroll);
         window.removeEventListener("resize", checkScroll);
+        if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
       };
     }
-  }, [movies]);
+  }, []);
 
   return (
     <section>
