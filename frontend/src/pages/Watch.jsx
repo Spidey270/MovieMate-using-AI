@@ -1,8 +1,8 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { api, useAuth } from "../context/AuthContext";
 import { Play, Film, Star, Clock, Globe, Plus, Check,
-         Tv, ChevronRight, ArrowLeft, Lock } from "lucide-react";
+         Tv, ChevronRight, ArrowLeft, Lock, MessageCircle, Send, User } from "lucide-react";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
 
 // Platform brand colors
@@ -36,6 +36,11 @@ export default function Watch() {
   const [activeMirror, setActiveMirror] = useState(0); // 0, 1, 2...
   const [isInWishlist, setIsInWishlist] = useState(false);
   const [relatedMovies, setRelatedMovies] = useState([]);
+  const [reviews, setReviews] = useState([]);
+  const [newReview, setNewReview] = useState("");
+  const [reviewRating, setReviewRating] = useState(5);
+  const [submittingReview, setSubmittingReview] = useState(false);
+  const commentsEndRef = useRef(null);
 
   const mirrors = [
     { name: "StreamFlix", url: (id) => `https://vidsrc.to/embed/movie/${id}` },
@@ -78,6 +83,10 @@ export default function Watch() {
         // Related movies (top rated, excluding this one)
         const movRes = await api.get("/movies/?limit=8");
         setRelatedMovies(movRes.data.filter((m) => m.id !== id).slice(0, 5));
+
+        // Fetch reviews
+        const reviewsRes = await api.get(`/reviews/movie/${id}`);
+        setReviews(reviewsRes.data);
       } catch (err) {
         console.error(err);
       } finally {
@@ -86,6 +95,28 @@ export default function Watch() {
     };
     fetch();
   }, [id, user]);
+
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+    if (!newReview.trim()) return;
+    setSubmittingReview(true);
+    try {
+      await api.post("/reviews/", {
+        movie_id: id,
+        content: newReview,
+        rating: reviewRating,
+      });
+      setNewReview("");
+      setReviewRating(5);
+      // Refresh reviews
+      const reviewsRes = await api.get(`/reviews/movie/${id}`);
+      setReviews(reviewsRes.data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setSubmittingReview(false);
+    }
+  };
 
   const handleWishlist = async () => {
     if (!user) { navigate("/login"); return; }
@@ -288,6 +319,93 @@ export default function Watch() {
                 </div>
               </div>
             )}
+
+            {/* ─── Comments Section ─── */}
+            <div className="mt-8 pt-8 border-t border-white/5">
+              <div className="flex items-center gap-2 mb-4">
+                <MessageCircle className="h-5 w-5 text-gray-400" />
+                <h3 className="text-sm font-bold text-gray-300">Comments ({reviews.length})</h3>
+              </div>
+
+              {/* Add Comment Form */}
+              {user ? (
+                <form onSubmit={handleSubmitReview} className="mb-6">
+                  <div className="flex items-start gap-3">
+                    <div className="h-10 w-10 rounded-full bg-primary flex items-center justify-center text-sm font-bold flex-shrink-0">
+                      {user.username?.[0]?.toUpperCase()}
+                    </div>
+                    <div className="flex-grow">
+                      <div className="flex items-center gap-2 mb-2">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <button
+                            key={star}
+                            type="button"
+                            onClick={() => setReviewRating(star)}
+                            className="focus:outline-none"
+                          >
+                            <Star
+                              className={`h-4 w-4 ${star <= reviewRating ? "fill-amber-400 text-amber-400" : "text-gray-600"}`}
+                            />
+                          </button>
+                        ))}
+                        <span className="text-xs text-gray-500 ml-1">{reviewRating}/5</span>
+                      </div>
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          value={newReview}
+                          onChange={(e) => setNewReview(e.target.value)}
+                          placeholder="Share your thoughts..."
+                          className="flex-grow bg-zinc-800 border border-zinc-700 rounded-full px-4 py-2 text-sm text-white focus:outline-none focus:border-primary"
+                        />
+                        <button
+                          type="submit"
+                          disabled={!newReview.trim() || submittingReview}
+                          className="bg-primary hover:bg-red-700 text-white p-2 rounded-full transition disabled:opacity-50"
+                        >
+                          <Send className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              ) : (
+                <p className="text-sm text-gray-500 mb-6">
+                  <Link to="/login" className="text-primary hover:underline">Login</Link> to leave a comment
+                </p>
+              )}
+
+              {/* Comments List */}
+              <div className="space-y-4 max-h-96 overflow-y-auto">
+                {reviews.length > 0 ? reviews.map((review) => (
+                  <div key={review.id} className="flex items-start gap-3 p-3 bg-zinc-800/50 rounded-xl">
+                    <div className="h-8 w-8 rounded-full bg-zinc-700 flex items-center justify-center text-xs font-bold flex-shrink-0">
+                      {review.user_id?.slice(-2).toUpperCase() || "U"}
+                    </div>
+                    <div className="flex-grow">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-sm font-medium text-white">{review.username || "Anonymous"}</span>
+                        <div className="flex">
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <Star
+                              key={star}
+                              className={`h-3 w-3 ${star <= review.rating ? "fill-amber-400 text-amber-400" : "text-gray-600"}`}
+                            />
+                          ))}
+                        </div>
+                        <span className="text-xs text-gray-500">
+                          {new Date(review.created_at).toLocaleDateString()}
+                        </span>
+                      </div>
+                      <p className="text-sm text-gray-300">{review.content}</p>
+                    </div>
+                  </div>
+                )) : (
+                  <p className="text-sm text-gray-500 text-center py-4">No comments yet. Be the first to comment!</p>
+                )}
+                <div ref={commentsEndRef} />
+              </div>
+            </div>
           </div>
         </div>
 
