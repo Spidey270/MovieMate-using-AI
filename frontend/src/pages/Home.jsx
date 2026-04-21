@@ -8,11 +8,11 @@ import PreferencesModal from "../components/PreferencesModal";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 function MovieRow({ title, movies, showGenerate = false, onGenerate = null }) {
-  const containerRef = useRef(null);
+  const [isHovered, setIsHovered] = useState(false);
 
   const scroll = (direction) => {
-    if (containerRef.current) {
-      const container = containerRef.current;
+    const container = document.getElementById(`scroll-${title.replace(/\s+/g, '-')}`);
+    if (container) {
       const scrollAmount = container.clientWidth * 0.6;
       container.scrollBy({
         left: direction === "left" ? -scrollAmount : scrollAmount,
@@ -22,7 +22,10 @@ function MovieRow({ title, movies, showGenerate = false, onGenerate = null }) {
   };
 
   return (
-    <section>
+    <section
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <div className="flex items-center justify-between mb-4 pr-8">
         <h2 className="text-xl font-semibold text-white md:text-2xl">{title}</h2>
         {showGenerate && onGenerate && (
@@ -52,11 +55,11 @@ function MovieRow({ title, movies, showGenerate = false, onGenerate = null }) {
           </button>
         )}
       </div>
-      <div className="relative group">
+      <div className="relative">
         {/* Movies Container */}
         <div
-          ref={containerRef}
-          className="flex gap-4 overflow-x-scroll pb-4 scrollbar-hide group"
+          id={`scroll-${title.replace(/\s+/g, '-')}`}
+          className="flex gap-4 overflow-x-scroll pb-4 scrollbar-hide"
         >
           {movies.map((movie) => (
             <div key={movie.id} className="flex-shrink-0 w-36 md:w-44">
@@ -65,23 +68,21 @@ function MovieRow({ title, movies, showGenerate = false, onGenerate = null }) {
           ))}
         </div>
 
-        {/* Scroll Buttons - show when container is hovered */}
-        <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-black/80 to-transparent flex items-center justify-start opacity-0 group-hover:opacity-100 transition pointer-events-none">
-          <button
-            onClick={() => scroll("left")}
-            className="pointer-events-auto p-2 bg-black/60 hover:bg-red-600 rounded-full transition"
-          >
-            <ChevronLeft className="h-5 w-5 text-white" />
-          </button>
-        </div>
-        <div className="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-black/80 to-transparent flex items-center justify-end opacity-0 group-hover:opacity-100 transition pointer-events-none">
-          <button
-            onClick={() => scroll("right")}
-            className="pointer-events-auto p-2 bg-black/60 hover:bg-red-600 rounded-full transition"
-          >
-            <ChevronRight className="h-5 w-5 text-white" />
-          </button>
-        </div>
+        {/* Scroll Buttons */}
+        <button
+          onClick={() => scroll("left")}
+          className={`absolute left-0 top-0 bottom-4 z-10 flex items-center justify-center w-10 h-full transition-opacity duration-200 ${isHovered ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+          style={{ background: "linear-gradient(to right, rgba(0,0,0,0.8), transparent)" }}
+        >
+          <ChevronLeft className="h-6 w-6 text-white" />
+        </button>
+        <button
+          onClick={() => scroll("right")}
+          className={`absolute right-0 top-0 bottom-4 z-10 flex items-center justify-center w-10 h-full transition-opacity duration-200 ${isHovered ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+          style={{ background: "linear-gradient(to left, rgba(0,0,0,0.8), transparent)" }}
+        >
+          <ChevronRight className="h-6 w-6 text-white" />
+        </button>
       </div>
     </section>
   );
