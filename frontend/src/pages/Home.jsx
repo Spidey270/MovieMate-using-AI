@@ -53,18 +53,10 @@ function MovieRow({ title, movies, showGenerate = false, onGenerate = null }) {
         )}
       </div>
       <div className="relative group">
-        {/* Scroll Left */}
-        <button
-          onClick={() => scroll("left")}
-          className="absolute left-0 top-0 bottom-4 z-10 w-8 bg-black/60 hover:bg-black/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
-        >
-          <ChevronLeft className="h-6 w-6 text-white" />
-        </button>
-        
         {/* Movies Container */}
         <div
           ref={containerRef}
-          className="flex gap-4 overflow-x-scroll pb-4 scrollbar-hide"
+          className="flex gap-4 overflow-x-scroll pb-4 scrollbar-hide group"
         >
           {movies.map((movie) => (
             <div key={movie.id} className="flex-shrink-0 w-36 md:w-44">
@@ -73,13 +65,23 @@ function MovieRow({ title, movies, showGenerate = false, onGenerate = null }) {
           ))}
         </div>
 
-        {/* Scroll Right */}
-        <button
-          onClick={() => scroll("right")}
-          className="absolute right-0 top-0 bottom-4 z-10 w-8 bg-black/60 hover:bg-black/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
-        >
-          <ChevronRight className="h-6 w-6 text-white" />
-        </button>
+        {/* Scroll Buttons - show when container is hovered */}
+        <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-black/80 to-transparent flex items-center justify-start opacity-0 group-hover:opacity-100 transition pointer-events-none">
+          <button
+            onClick={() => scroll("left")}
+            className="pointer-events-auto p-2 bg-black/60 hover:bg-red-600 rounded-full transition"
+          >
+            <ChevronLeft className="h-5 w-5 text-white" />
+          </button>
+        </div>
+        <div className="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-black/80 to-transparent flex items-center justify-end opacity-0 group-hover:opacity-100 transition pointer-events-none">
+          <button
+            onClick={() => scroll("right")}
+            className="pointer-events-auto p-2 bg-black/60 hover:bg-red-600 rounded-full transition"
+          >
+            <ChevronRight className="h-5 w-5 text-white" />
+          </button>
+        </div>
       </div>
     </section>
   );
