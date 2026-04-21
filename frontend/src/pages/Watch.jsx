@@ -137,6 +137,7 @@ export default function Watch() {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [submittingComment, setSubmittingComment] = useState(false);
+  const [commentError, setCommentError] = useState("");
   const commentsEndRef = useRef(null);
 
   const mirrors = [
@@ -199,7 +200,12 @@ export default function Watch() {
 
   const handleSubmitComment = async (e) => {
     e.preventDefault();
+    setCommentError("");
     if (!newComment.trim()) return;
+    if (!user) {
+      setCommentError("Please login to comment");
+      return;
+    }
     setSubmittingComment(true);
     try {
       await api.post("/comments/", {
@@ -210,6 +216,7 @@ export default function Watch() {
       fetchComments();
     } catch (err) {
       console.error(err);
+      setCommentError(err.response?.data?.detail || "Failed to post comment");
     } finally {
       setSubmittingComment(false);
     }
@@ -436,6 +443,11 @@ export default function Watch() {
               {/* Add Comment Form */}
               {user ? (
                 <form onSubmit={handleSubmitComment} className="mb-6">
+                  {commentError && (
+                    <div className="mb-3 p-2 bg-red-500/20 border border-red-500/50 rounded-lg text-red-400 text-sm">
+                      {commentError}
+                    </div>
+                  )}
                   <div className="flex items-start gap-3">
                     <div className="h-10 w-10 rounded-full bg-primary flex items-center justify-center text-sm font-bold flex-shrink-0">
                       {user.username?.[0]?.toUpperCase()}
@@ -445,7 +457,10 @@ export default function Watch() {
                         <input
                           type="text"
                           value={newComment}
-                          onChange={(e) => setNewComment(e.target.value)}
+                          onChange={(e) => {
+                            setNewComment(e.target.value);
+                            setCommentError("");
+                          }}
                           placeholder="Write a comment..."
                           className="flex-grow bg-zinc-800 border border-zinc-700 rounded-full px-4 py-2 text-sm text-white focus:outline-none focus:border-primary"
                         />
