@@ -1,10 +1,116 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { api, useAuth } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import MovieCard from "../components/MovieCard";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
 import PreferencesModal from "../components/PreferencesModal";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+function MovieRow({ title, movies, showGenerate = false, onGenerate = null }) {
+  const scrollRef = useRef(null);
+  const containerRef = useRef(null);
+  const [showLeft, setShowLeft] = useState(false);
+  const [showRight, setShowRight] = useState(true);
+
+  const checkScroll = () => {
+    if (containerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
+      setShowLeft(scrollLeft > 0);
+      setShowRight(scrollLeft < scrollWidth - clientWidth - 10);
+    }
+  };
+
+  const scroll = (direction) => {
+    if (containerRef.current) {
+      const scrollAmount = containerRef.current.clientWidth * 0.7;
+      containerRef.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  useEffect(() => {
+    checkScroll();
+    const container = containerRef.current;
+    if (container) {
+      container.addEventListener("scroll", checkScroll);
+      window.addEventListener("resize", checkScroll);
+      return () => {
+        container.removeEventListener("scroll", checkScroll);
+        window.removeEventListener("resize", checkScroll);
+      };
+    }
+  }, [movies]);
+
+  return (
+    <section>
+      <div className="flex items-center justify-between mb-4 pr-8">
+        <h2 className="text-xl font-semibold text-white md:text-2xl">{title}</h2>
+        {showGenerate && onGenerate && (
+          <button
+            onClick={onGenerate}
+            className="bg-primary/20 text-primary hover:bg-primary/30 px-4 py-1.5 rounded-full text-sm font-medium transition flex items-center gap-2 border border-primary/30"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="lucide lucide-sparkles"
+            >
+              <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+              <path d="M5 3v4" />
+              <path d="M19 17v4" />
+              <path d="M3 5h4" />
+              <path d="M17 19h4" />
+            </svg>
+            Generate AI Recommendations
+          </button>
+        )}
+      </div>
+      <div className="relative group">
+        {/* Scroll Left */}
+        {showLeft && (
+          <button
+            onClick={() => scroll("left")}
+            className="absolute left-0 top-0 bottom-4 z-10 w-8 bg-black/60 hover:bg-black/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
+          >
+            <ChevronLeft className="h-6 w-6 text-white" />
+          </button>
+        )}
+        
+        {/* Movies Container */}
+        <div
+          ref={containerRef}
+          className="flex gap-4 overflow-x-scroll pb-4 scrollbar-hide"
+        >
+          {movies.map((movie) => (
+            <div key={movie.id} className="flex-shrink-0 w-36 md:w-44">
+              <MovieCard movie={movie} />
+            </div>
+          ))}
+        </div>
+
+        {/* Scroll Right */}
+        {showRight && (
+          <button
+            onClick={() => scroll("right")}
+            className="absolute right-0 top-0 bottom-4 z-10 w-8 bg-black/60 hover:bg-black/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
+          >
+            <ChevronRight className="h-6 w-6 text-white" />
+          </button>
+        )}
+      </div>
+    </section>
+  );
+}
 
 export default function Home() {
   const { user } = useAuth();
@@ -58,99 +164,38 @@ export default function Home() {
       <div className="relative z-20 -mt-32 space-y-8 pl-4 md:pl-12">
         {/* Recommendations Row */}
         {user && (
-          <section>
-            <div className="flex items-center justify-between mb-4 pr-8">
-              <h2 className="text-xl font-semibold text-white md:text-2xl">
-                Recommended For You
-              </h2>
-              <button
-                onClick={async () => {
-                  try {
-                    await api.post("/recommendations/generate");
-                    alert(
-                      "AI is analyzing your profile! You will receive a notification when it's done.",
-                    );
-                  } catch (err) {
-                    console.error(err);
-                  }
-                }}
-                className="bg-primary/20 text-primary hover:bg-primary/30 px-4 py-1.5 rounded-full text-sm font-medium transition flex items-center gap-2 border border-primary/30"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="lucide lucide-sparkles"
-                >
-                  <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
-                  <path d="M5 3v4" />
-                  <path d="M19 17v4" />
-                  <path d="M3 5h4" />
-                  <path d="M17 19h4" />
-                </svg>
-                Generate AI Recommendations
-              </button>
-            </div>
-            {recommendations.length > 0 ? (
-              <div className="flex gap-4 overflow-x-scroll pb-4 scrollbar-hide">
-                {recommendations.map((movie) => (
-                  <div key={movie.id} className="flex-shrink-0 w-36 md:w-44">
-                    <MovieCard movie={movie} />
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-gray-500 text-sm">
-                No recommendations yet. Click generate to get started!
-              </div>
-            )}
-          </section>
+          <MovieRow
+            title="Recommended For You"
+            movies={recommendations}
+            showGenerate={true}
+            onGenerate={async () => {
+              try {
+                await api.post("/recommendations/generate");
+                alert(
+                  "AI is analyzing your profile! You will receive a notification when it's done.",
+                );
+              } catch (err) {
+                console.error(err);
+              }
+            }}
+          />
         )}
 
         {/* Trending Row */}
-        <section>
-          <h2 className="mb-4 text-xl font-semibold text-white md:text-2xl">
-            Trending Now
-          </h2>
-          <div className="flex gap-4 overflow-x-scroll pb-4 scrollbar-hide">
-            {trending.map((movie) => (
-              <div key={movie.id} className="flex-shrink-0 w-36 md:w-44">
-                <MovieCard movie={movie} />
-              </div>
-            ))}
-          </div>
-        </section>
+        <MovieRow title="Trending Now" movies={trending} />
 
-        {/* Just placeholder rows for genres for now */}
-        {genres.slice(0, 3).map((genre) => (
-          <section key={genre.id}>
-            <h2 className="mb-4 text-xl font-semibold text-white md:text-2xl">
-              {genre.name} Movies
-            </h2>
-            <div className="flex gap-4 overflow-x-scroll pb-4 scrollbar-hide">
-              {trending
-                .filter((m) => m.genre_ids.includes(genre.id))
-                .map((movie) => (
-                  <div key={movie.id} className="flex-shrink-0 w-36 md:w-44">
-                    <MovieCard movie={movie} />
-                  </div>
-                ))}
-              {/* Fallback if empty */}
-              {trending.filter((m) => m.genre_ids.includes(genre.id)).length ===
-                0 && (
-                <p className="text-sm text-gray-500">
-                  No movies in this genre yet.
-                </p>
-              )}
-            </div>
-          </section>
-        ))}
+        {/* Genre Rows */}
+        {genres.slice(0, 3).map((genre) => {
+          const genreMovies = trending.filter((m) => m.genre_ids.includes(genre.id));
+          if (genreMovies.length === 0) return null;
+          return (
+            <MovieRow
+              key={genre.id}
+              title={`${genre.name} Movies`}
+              movies={genreMovies}
+            />
+          );
+        })}
       </div>
 
       <PreferencesModal
