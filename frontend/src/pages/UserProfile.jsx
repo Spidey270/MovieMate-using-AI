@@ -96,7 +96,7 @@ export default function UserProfile() {
                     <Button
                       variant="outline"
                       className="border-gray-700 hover:bg-gray-800"
-                      onClick={() => navigate("/global-chat")}
+                      onClick={() => navigate(`/chat/${id}`)}
                     >
                       <MessageSquare className="mr-2 h-4 w-4" /> Message
                     </Button>
