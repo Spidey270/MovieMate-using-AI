@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth, api } from "../context/AuthContext";
-import { Search, Bell, LogOut, X, Menu, Home, Film, Heart, Users, Sparkles, MessageCircle, Crown, ChevronLeft } from "lucide-react";
+import { Search, Bell, LogOut, X, Menu, Home, Film, Heart, Users, Sparkles, MessageCircle, Crown, ChevronLeft, MessageSquare } from "lucide-react";
 import { Button } from "./ui/button";
 import AuthModal from "./AuthModal";
 
@@ -116,6 +116,7 @@ export default function Navbar() {
       ? [
           { to: "/wishlist", label: "My List", icon: Heart },
           { to: "/friends", label: "Friends", icon: Users },
+          { to: "/messages", label: "Messages", icon: MessageSquare },
           { to: "/recommendations", label: "For You", icon: Sparkles, highlight: true },
           { to: "/global-chat", label: "Global Chat", icon: MessageCircle, red: true },
           ...(user?.is_admin ? [{ to: "/admin/dashboard", label: "Admin", icon: Crown, admin: true }] : []),

@@ -16,6 +16,7 @@ import Wishlist from "./pages/Wishlist";
 import Friends from "./pages/Friends";
 import GlobalChat from "./pages/GlobalChat";
 import DirectMessage from "./pages/DirectMessage";
+import Messages from "./pages/Messages";
 import Recommendations from "./pages/Recommendations";
 import AdminRoute from "./components/AdminRoute";
 import Dashboard from "./pages/admin/Dashboard";
@@ -77,6 +78,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <GlobalChat />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/messages"
+            element={
+              <ProtectedRoute>
+                <Messages />
               </ProtectedRoute>
             }
           />
