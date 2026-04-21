@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { api, useAuth } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
@@ -9,6 +9,7 @@ import { UserPlus, Check, MessageSquare } from "lucide-react";
 export default function UserProfile() {
   const { id } = useParams();
   const { user: currentUser } = useAuth();
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [friendStatus, setFriendStatus] = useState(null); // null, 'pending', 'accepted'
@@ -95,6 +96,7 @@ export default function UserProfile() {
                     <Button
                       variant="outline"
                       className="border-gray-700 hover:bg-gray-800"
+                      onClick={() => navigate("/global-chat")}
                     >
                       <MessageSquare className="mr-2 h-4 w-4" /> Message
                     </Button>
