@@ -10,7 +10,7 @@ class CommentBase(BaseModel):
 
 
 class CommentCreate(CommentBase):
-    pass
+    movie_id: str
 
 
 class CommentResponse(CommentBase):

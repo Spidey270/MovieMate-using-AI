@@ -143,11 +143,11 @@ export default function Watch() {
   const commentsEndRef = useRef(null);
 
   const mirrors = [
-    { name: "StreamFlix", url: (id) => `https://vidsrc.to/embed/movie/${id}` },
-    { name: "MovieHub", url: (id) => `https://vidsrc.xyz/embed/movie/${id}` },
-    { name: "CinemaStream", url: (id) => `https://player.vidsrc.nl/embed/${id}` },
-    { name: "FilmFlix", url: (id) => `https://v2.vidsrc.ml/embed/${id}` },
-    { name: "VidPlay", url: (id) => `https://www.2embed.cc/embed/${id}` },
+    { name: "StreamFlix", url: (id) => `https://vidsrc.me/embed/movie?imdb=${id}` },
+    { name: "MovieHub", url: (id) => `https://vidsrc.net/embed/movie?imdb=${id}` },
+    { name: "CinemaStream", url: (id) => `https://embed.su/embed/movie/${id}` },
+    { name: "FilmFlix", url: (id) => `https://vidsrc.in/embed/movie?imdb=${id}` },
+    { name: "VidPlay", url: (id) => `https://autoembed.to/movie/imdb/${id}` },
   ];
 
   useEffect(() => {
