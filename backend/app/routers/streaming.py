@@ -76,19 +76,30 @@ async def get_watch_history(current_user: dict = Depends(get_current_user)):
 # ── Get streaming availability info for a movie ───────────────────────────────
 
 @router.get("/links/{movie_id}")
-async def get_streaming_links(movie_id: str):
+async def get_streaming_links(movie_id: str, current_user: dict = Depends(get_current_user_optional)):
     if not ObjectId.is_valid(movie_id):
         return {}
-    movie = db.movies.find_one({"_id": ObjectId(movie_id)}, {"title": 1, "archive_url": 1})
+    movie = db.movies.find_one({"_id": ObjectId(movie_id)}, {"title": 1, "archive_url": 1, "imdb_id": 1})
     if not movie:
         return {}
 
     title = movie.get("title", "")
     encoded = title.replace(" ", "%20")
     encoded_plus = title.replace(" ", "+")
+    imdb_id = movie.get("imdb_id", "")
+
+    # Get user's progress if authenticated
+    progress = 0
+    if current_user:
+        user_id = str(current_user["_id"])
+        history_entry = db.watch_history.find_one({"user_id": user_id, "movie_id": movie_id})
+        if history_entry:
+            progress = history_entry.get("progress_seconds", 0)
 
     return {
         "archive_url": movie.get("archive_url"),
+        "imdb_id": imdb_id,
+        "progress_seconds": progress,
         "platforms": [
             {"name": "Netflix",   "url": f"https://www.netflix.com/search?q={encoded}",                           "color": "#E50914", "logo": "N"},
             {"name": "Prime",     "url": f"https://www.amazon.com/s?k={encoded_plus}&i=instant-video",            "color": "#00A8E0", "logo": "P"},
@@ -99,9 +110,10 @@ async def get_streaming_links(movie_id: str):
             {"name": "Peacock",   "url": f"https://www.peacocktv.com/search?q={encoded}",                        "color": "#000000", "logo": "P"},
         ],
         "mirrors": [
-            {"name": "StreamFlix", "url": f"https://vidsrc.to/embed/movie/{movie.get('imdb_id', '')}"},
-            {"name": "MovieHub", "url": f"https://vidsrc.xyz/embed/movie/{movie.get('imdb_id', '')}"},
-            {"name": "CinemaStream", "url": f"https://player.vidsrc.nl/embed/{movie.get('imdb_id', '')}"},
-            {"name": "FilmFlix", "url": f"https://v2.vidsrc.ml/embed/{movie.get('imdb_id', '')}"},
+            {"name": "StreamFlix", "url": f"https://vidsrc.me/embed/movie?imdb={imdb_id}"},
+            {"name": "MovieHub", "url": f"https://vidsrc.net/embed/movie?imdb={imdb_id}"},
+            {"name": "CinemaStream", "url": f"https://embed.su/embed/movie/{imdb_id}"},
+            {"name": "FilmFlix", "url": f"https://vidsrc.in/embed/movie?imdb={imdb_id}"},
+            {"name": "VidPlay", "url": f"https://autoembed.to/movie/imdb/{imdb_id}"},
         ],
     }

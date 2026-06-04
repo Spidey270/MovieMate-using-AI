@@ -322,3 +322,99 @@ async def get_cached_recommendations(user_id: str):
 
     # Cache miss or stale — generate fresh
     return await generate_smart_recommendations(user_id)
+
+
+# ─── Mood-based recommendations ───────────────────────────────────────────────
+
+MOOD_GENRE_MAP = {
+    "happy": ["Comedy", "Romance", "Animation", "Family"],
+    "sad": ["Drama", "Romance"],
+    "exciting": ["Action", "Adventure", "Thriller", "Sci-Fi"],
+    "relaxing": ["Drama", "Documentary", "Romance"],
+    "scary": ["Horror", "Thriller"],
+}
+
+
+async def get_mood_recommendations(user_id: str, mood: str, limit: int = 15):
+    """Get recommendations based on user's mood."""
+    mood_genres = MOOD_GENRE_MAP.get(mood.lower(), [])
+    if not mood_genres:
+        return await generate_smart_recommendations(user_id, limit)
+
+    # Get genre IDs
+    genre_docs = list(db.genres.find({"name": {"$in": mood_genres}}))
+    genre_ids = [str(g["_id"]) for g in genre_docs]
+
+    # Get user's watched movies to exclude
+    profile = build_user_profile(user_id)
+    exclude_ids = [ObjectId(i) for i in profile.get("watched_movie_ids", [])]
+
+    # Fetch movies with matching genres
+    movies = list(
+        db.movies.find({
+            "genre_ids": {"$in": genre_ids},
+            "_id": {"$nin": exclude_ids}
+        })
+        .sort("imdb_rating", -1)
+        .limit(limit)
+    )
+
+    results = []
+    for m in movies:
+        m["id"] = str(m["_id"])
+        m["ai_reason"] = f"Perfect for when you're feeling {mood}"
+        m["genres"] = []
+        for gid in m.get("genre_ids", []):
+            try:
+                g = db.genres.find_one({"_id": ObjectId(gid)})
+                if g:
+                    g["id"] = str(g["_id"])
+                    m["genres"].append(g)
+            except Exception:
+                pass
+        results.append(m)
+
+    return results
+
+
+# ─── Duration-based recommendations ───────────────────────────────────────────
+
+async def get_duration_recommendations(user_id: str, duration: str, limit: int = 15):
+    """Get recommendations based on available time."""
+    duration_filters = {
+        "short": {"runtime": {"$lt": 90}},
+        "medium": {"runtime": {"$gte": 90, "$lt": 120}},
+        "long": {"runtime": {"$gte": 120}},
+    }
+
+    filter_criteria = duration_filters.get(duration.lower(), {})
+    if not filter_criteria:
+        return await generate_smart_recommendations(user_id, limit)
+
+    profile = build_user_profile(user_id)
+    exclude_ids = [ObjectId(i) for i in profile.get("watched_movie_ids", [])]
+    filter_criteria["_id"] = {"$nin": exclude_ids}
+
+    movies = list(
+        db.movies.find(filter_criteria)
+        .sort("imdb_rating", -1)
+        .limit(limit)
+    )
+
+    results = []
+    for m in movies:
+        m["id"] = str(m["_id"])
+        runtime = m.get("runtime", 0)
+        m["ai_reason"] = f"Great {runtime}min movie for your available time"
+        m["genres"] = []
+        for gid in m.get("genre_ids", []):
+            try:
+                g = db.genres.find_one({"_id": ObjectId(gid)})
+                if g:
+                    g["id"] = str(g["_id"])
+                    m["genres"].append(g)
+            except Exception:
+                pass
+        results.append(m)
+
+    return results

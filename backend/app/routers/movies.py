@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends, Query
 from typing import List, Optional
 from app.db.database import db
 from app.models.movie import MovieCreate, MovieResponse, GenreResponse
-from app.routers.auth import get_current_user
+from app.routers.auth import get_current_user, get_current_user_optional
 from bson import ObjectId
 
 router = APIRouter(prefix="/movies", tags=["Movies"])
@@ -130,3 +130,46 @@ async def get_movie(movie_id: str):
             pass
     movie["genres"] = m_genres
     return movie
+
+
+@router.get("/{movie_id}/similar")
+async def get_similar_movies(
+    movie_id: str,
+    limit: int = 10,
+    current_user: dict = Depends(get_current_user_optional)
+):
+    """Get movies similar to the given movie."""
+    try:
+        if not ObjectId.is_valid(movie_id):
+            raise HTTPException(status_code=400, detail="Invalid ID format")
+
+        movie = db.movies.find_one({"_id": ObjectId(movie_id)})
+        if not movie:
+            raise HTTPException(status_code=404, detail="Movie not found")
+
+        # Find movies with overlapping genres
+        similar = list(db.movies.find({
+            "genre_ids": {"$in": movie.get("genre_ids", [])},
+            "_id": {"$ne": ObjectId(movie_id)}
+        }).sort("imdb_rating", -1).limit(limit))
+
+        # Convert to response format
+        results = []
+        for m in similar:
+            m["id"] = str(m["_id"])
+            m["genres"] = []
+            for gid in m.get("genre_ids", []):
+                try:
+                    g = db.genres.find_one({"_id": ObjectId(gid)})
+                    if g:
+                        g["id"] = str(g["_id"])
+                        m["genres"].append(g)
+                except:
+                    pass
+            results.append(m)
+
+        return results
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

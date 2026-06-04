@@ -2,7 +2,12 @@ from fastapi import APIRouter, Depends, BackgroundTasks
 from typing import List
 from app.models.movie import MovieResponse
 from app.routers.auth import get_current_user_optional, get_current_user
-from app.services.recommendation import generate_smart_recommendations, get_cached_recommendations
+from app.services.recommendation import (
+    generate_smart_recommendations,
+    get_cached_recommendations,
+    get_mood_recommendations,
+    get_duration_recommendations,
+)
 from app.db.database import db
 from bson import ObjectId
 
@@ -71,3 +76,23 @@ async def get_recommendations(
 
     user_id = str(current_user["_id"])
     return await get_cached_recommendations(user_id)
+
+
+@router.get("/mood/{mood}", response_model=List[MovieResponse])
+async def get_mood_based_recommendations(
+    mood: str,
+    current_user: dict = Depends(get_current_user),
+):
+    """Get recommendations based on mood: happy, sad, exciting, relaxing, scary."""
+    user_id = str(current_user["_id"])
+    return await get_mood_recommendations(user_id, mood)
+
+
+@router.get("/duration/{duration}", response_model=List[MovieResponse])
+async def get_duration_based_recommendations(
+    duration: str,
+    current_user: dict = Depends(get_current_user),
+):
+    """Get recommendations based on available time: short (<90min), medium (90-120min), long (>120min)."""
+    user_id = str(current_user["_id"])
+    return await get_duration_recommendations(user_id, duration)

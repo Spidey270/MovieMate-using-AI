@@ -18,6 +18,7 @@ export default function MovieDetails() {
   const [loading, setLoading] = useState(true);
 
   const [isInWishlist, setIsInWishlist] = useState(false);
+  const [similarMovies, setSimilarMovies] = useState([]);
 
   useEffect(() => {
     const fetchMovieData = async () => {
@@ -31,6 +32,14 @@ export default function MovieDetails() {
           setReviews(reviewsRes.data);
         } catch (e) {
           // console.log("No reviews yet or failed to fetch")
+        }
+
+        // Fetch similar movies
+        try {
+          const similarRes = await api.get(`/movies/${id}/similar`);
+          setSimilarMovies(similarRes.data);
+        } catch (e) {
+          // console.log("Failed to fetch similar movies")
         }
 
         // Check Wishlist Status if user is logged in
@@ -357,6 +366,40 @@ export default function MovieDetails() {
             )}
           </div>
         </div>
+
+        {/* Similar Movies */}
+        {similarMovies.length > 0 && (
+          <div className="mt-8">
+            <h2 className="text-2xl font-bold mb-4">Similar Movies</h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+              {similarMovies.map((similar) => (
+                <Link
+                  key={similar.id}
+                  to={`/movie/${similar.id}`}
+                  className="group"
+                >
+                  <div className="bg-zinc-900 rounded-lg overflow-hidden border border-white/5 hover:border-primary/50 transition">
+                    <img
+                      src={similar.poster_url || `https://via.placeholder.com/300x450?text=${encodeURIComponent(similar.title)}`}
+                      alt={similar.title}
+                      className="w-full h-64 object-cover"
+                      loading="lazy"
+                    />
+                    <div className="p-3">
+                      <h3 className="font-semibold text-sm line-clamp-1">
+                        {similar.title}
+                      </h3>
+                      <div className="flex items-center gap-1 text-xs text-yellow-400 mt-1">
+                        <Star className="h-3 w-3 fill-yellow-400" />
+                        <span>{similar.imdb_rating || "N/A"}</span>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

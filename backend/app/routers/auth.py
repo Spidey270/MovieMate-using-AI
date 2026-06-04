@@ -186,8 +186,26 @@ async def update_profile(
     
     if not update_data:
         raise HTTPException(status_code=400, detail="No changes provided")
-    
+
     db.users.update_one({"_id": user_id}, {"$set": update_data})
+
+    updated_user = db.users.find_one({"_id": user_id})
+    updated_user["id"] = str(updated_user["_id"])
+    return updated_user
+
+
+@router.put("/notification-preferences", response_model=UserResponse)
+async def update_notification_preferences(
+    prefs: dict,
+    current_user: dict = Depends(get_current_user),
+):
+    """Update notification preferences."""
+    user_id = current_user["_id"]
+
+    db.users.update_one(
+        {"_id": user_id},
+        {"$set": {"notification_preferences": prefs}}
+    )
 
     updated_user = db.users.find_one({"_id": user_id})
     updated_user["id"] = str(updated_user["_id"])
