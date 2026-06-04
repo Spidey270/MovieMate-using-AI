@@ -1,12 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth, api } from "../context/AuthContext";
-import { Search, Bell, LogOut, X, Menu, Home, Film, Heart, Users, Sparkles, MessageCircle, Crown, ChevronLeft, MessageSquare } from "lucide-react";
+import { useTheme } from "../context/ThemeContext";
+import { Search, Bell, LogOut, X, Menu, Home, Film, Heart, Users, Sparkles, MessageCircle, Crown, ChevronLeft, MessageSquare, Moon, Sun, Settings } from "lucide-react";
 import { Button } from "./ui/button";
 import AuthModal from "./AuthModal";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
   // Sidebar State
@@ -277,6 +279,15 @@ export default function Navbar() {
               )}
             </div>
 
+            {/* THEME TOGGLE */}
+            <button
+              onClick={toggleTheme}
+              className="text-white hover:text-gray-300 transition"
+              title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+            >
+              {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+            </button>
+
             {/* USER PROFILE / LOGIN */}
             {user ? (
               <>
@@ -385,6 +396,14 @@ export default function Navbar() {
                       >
                         <Bell className="h-4 w-4" />
                         Notifications
+                      </Link>
+                      <Link
+                        to="/notification-settings"
+                        className="flex w-full items-center gap-2 rounded px-4 py-2 text-sm text-gray-300 hover:bg-gray-800"
+                        onClick={() => setShowProfile(false)}
+                      >
+                        <Settings className="h-4 w-4" />
+                        Settings
                       </Link>
                       <button
                         onClick={() => {

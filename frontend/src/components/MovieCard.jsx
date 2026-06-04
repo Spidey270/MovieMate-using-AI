@@ -18,6 +18,7 @@ export default function MovieCard({ movie }) {
             src={posterUrl}
             alt={movie.title}
             className="h-full w-full object-cover"
+            loading="lazy"
             onError={(e) => {
               e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(movie.title)}&background=18181b&color=fff&size=300`;
             }}

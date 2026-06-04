@@ -10,6 +10,15 @@ export default {
                 primary: "#E50914", // Netflix Red-ish
                 secondary: "#141414", // Dark background
                 accent: "#46d369", // Success green
+            },
+            keyframes: {
+                slideIn: {
+                    '0%': { transform: 'translateX(100%)', opacity: '0' },
+                    '100%': { transform: 'translateX(0)', opacity: '1' },
+                }
+            },
+            animation: {
+                slideIn: 'slideIn 0.3s ease-out',
             }
         },
     },

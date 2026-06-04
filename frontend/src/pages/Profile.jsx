@@ -7,7 +7,8 @@ import LoadingSpinner from "../components/ui/LoadingSpinner";
 import PreferencesModal from "../components/PreferencesModal";
 import ProfilePictureModal from "../components/ProfilePictureModal";
 import EditProfileModal from "../components/EditProfileModal";
-import { Settings, Camera, Heart, Users, User } from "lucide-react";
+import AchievementBadge from "../components/AchievementBadge";
+import { Settings, Camera, Heart, Users, User, Trophy, Zap, TrendingUp } from "lucide-react";
 
 export default function Profile() {
   const { user } = useAuth();
@@ -15,6 +16,20 @@ export default function Profile() {
   const [showPrefs, setShowPrefs] = useState(false);
   const [showProfilePic, setShowProfilePic] = useState(false);
   const [showEditProfile, setShowEditProfile] = useState(false);
+  const [achievements, setAchievements] = useState(null);
+
+  useEffect(() => {
+    fetchAchievements();
+  }, []);
+
+  const fetchAchievements = async () => {
+    try {
+      const response = await api.get("/achievements/my");
+      setAchievements(response.data);
+    } catch (error) {
+      console.error("Failed to fetch achievements");
+    }
+  };
 
   const handlePrefsSaved = async () => {
     try {
@@ -42,7 +57,7 @@ export default function Profile() {
 
       <div className="pt-24 mx-auto max-w-4xl px-4">
         {/* Quick Links */}
-        <div className="grid grid-cols-2 gap-4 mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <Link
             to="/wishlist"
             className="bg-zinc-900 rounded-xl p-6 shadow-lg border border-white/5 hover:border-primary/50 transition flex items-center gap-4"
@@ -61,6 +76,26 @@ export default function Profile() {
             <div>
               <h3 className="font-bold text-lg">Friends</h3>
               <p className="text-gray-400 text-sm">Manage connections</p>
+            </div>
+          </Link>
+          <Link
+            to="/analytics"
+            className="bg-zinc-900 rounded-xl p-6 shadow-lg border border-white/5 hover:border-primary/50 transition flex items-center gap-4"
+          >
+            <TrendingUp className="h-8 w-8 text-blue-400" />
+            <div>
+              <h3 className="font-bold text-lg">Analytics</h3>
+              <p className="text-gray-400 text-sm">Your stats</p>
+            </div>
+          </Link>
+          <Link
+            to="/challenges"
+            className="bg-zinc-900 rounded-xl p-6 shadow-lg border border-white/5 hover:border-primary/50 transition flex items-center gap-4"
+          >
+            <Trophy className="h-8 w-8 text-yellow-400" />
+            <div>
+              <h3 className="font-bold text-lg">Challenges</h3>
+              <p className="text-gray-400 text-sm">Monthly goals</p>
             </div>
           </Link>
         </div>
@@ -86,7 +121,25 @@ export default function Profile() {
             </div>
             <div className="flex-grow text-center md:text-left">
               <h1 className="text-4xl font-bold mb-2">{user?.username}</h1>
-              <p className="text-gray-400 mb-6">{user?.email}</p>
+              <p className="text-gray-400 mb-2">{user?.email}</p>
+
+              {/* Level and XP */}
+              <div className="mb-6 max-w-md">
+                <div className="flex items-center gap-3 mb-2">
+                  <Zap className="h-5 w-5 text-yellow-400" />
+                  <span className="font-semibold">Level {user?.level || 1}</span>
+                  <span className="text-gray-400 text-sm">({user?.xp || 0} XP)</span>
+                </div>
+                <div className="h-2 bg-zinc-800 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-gradient-to-r from-yellow-400 to-orange-500 transition-all"
+                    style={{ width: `${((user?.xp || 0) % 100)}%` }}
+                  />
+                </div>
+                <p className="text-xs text-gray-500 mt-1">
+                  {100 - ((user?.xp || 0) % 100)} XP to next level
+                </p>
+              </div>
               <div className="flex gap-3 justify-center md:justify-start">
                 <Button
                   onClick={() => setShowEditProfile(true)}
@@ -160,6 +213,44 @@ export default function Profile() {
             </div>
           </div>
         </div>
+
+        {/* Achievements Section */}
+        {achievements && (
+          <div className="mt-8 bg-zinc-900 rounded-2xl p-8 shadow-xl border border-white/5">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold flex items-center gap-3">
+                <Trophy className="h-7 w-7 text-yellow-400" />
+                Achievements
+              </h2>
+              <span className="text-gray-400">
+                {achievements.total_unlocked} / {achievements.total_available}
+              </span>
+            </div>
+
+            {achievements.unlocked.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                {achievements.unlocked.slice(0, 4).map((achievement) => (
+                  <AchievementBadge
+                    key={achievement.id}
+                    achievement={achievement}
+                    unlocked={true}
+                  />
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-400 mb-6">No achievements unlocked yet. Start watching movies!</p>
+            )}
+
+            {achievements.unlocked.length > 4 && (
+              <Link
+                to="/achievements"
+                className="text-primary hover:underline text-sm"
+              >
+                View all achievements →
+              </Link>
+            )}
+          </div>
+        )}
       </div>
 
       <PreferencesModal

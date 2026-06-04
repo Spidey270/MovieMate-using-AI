@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from contextlib import asynccontextmanager
 from app.routers import (
     auth,
     movies,
@@ -14,9 +15,23 @@ from app.routers import (
     admin,
     streaming,
     comments,
+    search,
 )
+from app.routers import social_feed, leaderboards, analytics, collections, achievements, challenges
+from app.db.indexes import create_indexes
 
-app = FastAPI(title="MovieMate API", version="1.0.0")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup: Create database indexes
+    print("🚀 Starting MovieMate API...")
+    create_indexes()
+    yield
+    # Shutdown
+    print("👋 Shutting down MovieMate API...")
+
+
+app = FastAPI(title="MovieMate API", version="1.0.0", lifespan=lifespan)
 
 import os
 
@@ -55,6 +70,13 @@ app.include_router(users.router)
 app.include_router(admin.router)
 app.include_router(streaming.router)
 app.include_router(comments.router)
+app.include_router(search.router)
+app.include_router(social_feed.router)
+app.include_router(leaderboards.router)
+app.include_router(analytics.router)
+app.include_router(collections.router)
+app.include_router(achievements.router)
+app.include_router(challenges.router)
 
 # Register websocket explicitly on app to avoid APIRouter prefix bugs/conflicts
 app.websocket("/chat/ws/{client_id}")(chat.websocket_endpoint)

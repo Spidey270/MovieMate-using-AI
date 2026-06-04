@@ -140,15 +140,8 @@ export default function Watch() {
   const [newComment, setNewComment] = useState("");
   const [submittingComment, setSubmittingComment] = useState(false);
   const [commentError, setCommentError] = useState("");
+  const [initialProgress, setInitialProgress] = useState(0);
   const commentsEndRef = useRef(null);
-
-  const mirrors = [
-    { name: "StreamFlix", url: (id) => `https://vidsrc.me/embed/movie?imdb=${id}` },
-    { name: "MovieHub", url: (id) => `https://vidsrc.net/embed/movie?imdb=${id}` },
-    { name: "CinemaStream", url: (id) => `https://embed.su/embed/movie/${id}` },
-    { name: "FilmFlix", url: (id) => `https://vidsrc.in/embed/movie?imdb=${id}` },
-    { name: "VidPlay", url: (id) => `https://autoembed.to/movie/imdb/${id}` },
-  ];
 
   useEffect(() => {
     const fetch = async () => {
@@ -159,7 +152,13 @@ export default function Watch() {
         ]);
         const mData = movieRes.data;
         setMovie(mData);
-        setLinks(linksRes.data);
+        const linksData = linksRes.data;
+        setLinks(linksData);
+
+        // Set initial progress
+        if (linksData.progress_seconds) {
+          setInitialProgress(linksData.progress_seconds);
+        }
 
         if (user && (mData.imdb_id || mData.archive_url)) {
           setActiveTab("full");
@@ -252,6 +251,18 @@ export default function Watch() {
     }
   };
 
+  const handleProgressUpdate = async (progressSeconds) => {
+    if (!user) return;
+    try {
+      await api.put(`/streaming/watch/${id}/progress`, {
+        movie_id: id,
+        progress_seconds: progressSeconds,
+      });
+    } catch (err) {
+      console.error("Failed to update progress:", err);
+    }
+  };
+
   if (loading) return <LoadingSpinner />;
   if (!movie) return (
     <div className="min-h-screen bg-black flex items-center justify-center text-white">
@@ -260,12 +271,15 @@ export default function Watch() {
   );
 
   const trailerEmbed = getYouTubeEmbedUrl(movie.trailer_url);
-  const hasFullMovie = !!(movie.imdb_id || movie.archive_url);
+  const hasFullMovie = !!(links?.imdb_id || links?.archive_url);
   const hasTrailer = !!trailerEmbed;
 
-  // Final Embed logic using multiple mirrors
+  // Use backend-provided mirrors
+  const mirrors = links?.mirrors || [];
+
+  // Final Embed logic using backend mirrors
   const embedSrc = activeTab === "full" && hasFullMovie && user
-    ? (movie.imdb_id ? mirrors[activeMirror].url(movie.imdb_id) : movie.archive_url)
+    ? (mirrors[activeMirror]?.url || links?.archive_url)
     : (activeTab === "trailer" ? trailerEmbed : null);
 
   return (
@@ -329,7 +343,7 @@ export default function Watch() {
               </div>
             ) : embedSrc ? (
               <>
-                {activeTab === "full" && (
+                {activeTab === "full" && mirrors.length > 0 && (
                   <div className="absolute top-4 right-4 z-40 flex items-center gap-2 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 shadow-2xl">
                     <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest mr-2">Mirror:</span>
                     {mirrors.map((m, idx) => (
@@ -340,6 +354,7 @@ export default function Watch() {
                           ? "bg-primary text-white"
                           : "text-gray-500 hover:text-white"
                           }`}
+                        title={m.name}
                       >
                         {idx + 1}
                       </button>

@@ -28,6 +28,15 @@ class UserBase(BaseModel):
     favorite_languages: List[str] = []
     is_admin: bool = False
     profile_picture: str | None = None
+    level: int = 1
+    xp: int = 0
+    notification_preferences: dict = {
+        "friend_requests": True,
+        "new_reviews": True,
+        "mentions": True,
+        "recommendations": True,
+        "achievements": True
+    }
 
 
 class UserCreate(UserBase):

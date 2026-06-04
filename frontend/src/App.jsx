@@ -5,6 +5,9 @@ import {
   Navigate,
 } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import { ToastProvider } from "./context/ToastContext";
+import { ThemeProvider } from "./context/ThemeContext";
+import ErrorBoundary from "./components/ErrorBoundary";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
@@ -27,6 +30,16 @@ import ManageMovies from "./pages/admin/ManageMovies";
 import ModerateReviews from "./pages/admin/ModerateReviews";
 import UserDetail from "./pages/admin/UserDetail";
 import Watch from "./pages/Watch";
+import Search from "./pages/Search";
+import ActivityFeed from "./pages/ActivityFeed";
+import Leaderboards from "./pages/Leaderboards";
+import Analytics from "./pages/Analytics";
+import YearInReview from "./pages/YearInReview";
+import Collections from "./pages/Collections";
+import CollectionDetail from "./pages/CollectionDetail";
+import Challenges from "./pages/Challenges";
+import Achievements from "./pages/Achievements";
+import NotificationSettings from "./pages/NotificationSettings";
 import Footer from "./components/Footer";
 
 // ProtectedRoute definition...
@@ -44,11 +57,14 @@ const ProtectedRoute = ({ children }) => {
 
 function App() {
   return (
-    <Router>
-      <AuthProvider>
-        <div className="flex flex-col min-h-screen">
-          <main className="flex-grow flex flex-col">
-            <Routes>
+    <ErrorBoundary>
+      <Router>
+        <ThemeProvider>
+          <AuthProvider>
+            <ToastProvider>
+              <div className="flex flex-col min-h-screen">
+                <main className="flex-grow flex flex-col">
+                  <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/" element={<Home />} />
@@ -157,15 +173,82 @@ function App() {
           />
           <Route path="/movie/:id" element={<MovieDetails />} />
           <Route path="/watch/:id" element={<Watch />} />
-
-
-          <Route path="/user/:id" element={<UserProfile />} />
-            </Routes>
-          </main>
-          <Footer />
-        </div>
-      </AuthProvider>
-    </Router>
+          <Route path="/search" element={<Search />} />
+          <Route
+            path="/activity"
+            element={
+              <ProtectedRoute>
+                <ActivityFeed />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/leaderboards" element={<Leaderboards />} />
+          <Route
+            path="/analytics"
+            element={
+              <ProtectedRoute>
+                <Analytics />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/year-in-review"
+            element={
+              <ProtectedRoute>
+                <YearInReview />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/collections"
+            element={
+              <ProtectedRoute>
+                <Collections />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/collections/:id"
+            element={
+              <ProtectedRoute>
+                <CollectionDetail />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/challenges"
+            element={
+              <ProtectedRoute>
+                <Challenges />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/achievements"
+            element={
+              <ProtectedRoute>
+                <Achievements />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/notification-settings"
+            element={
+              <ProtectedRoute>
+                <NotificationSettings />
+              </ProtectedRoute>
+            }
+          />
+                  <Route path="/user/:id" element={<UserProfile />} />
+                </Routes>
+              </main>
+              <Footer />
+            </div>
+          </ToastProvider>
+        </AuthProvider>
+        </ThemeProvider>
+      </Router>
+    </ErrorBoundary>
   );
 }
 
