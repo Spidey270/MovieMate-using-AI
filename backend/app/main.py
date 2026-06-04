@@ -33,6 +33,13 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="MovieMate API", version="1.0.0", lifespan=lifespan)
 
+
+# Health check endpoint for deployment
+@app.get("/health")
+async def health_check():
+    """Health check endpoint for load balancers and monitoring."""
+    return {"status": "healthy", "service": "MovieMate API", "version": "1.0.0"}
+
 import os
 
 # CORS Middleware
